@@ -1,4 +1,5 @@
 import {Component} from 'react';
+import IConfiguration from '../../interfaces/IConfiguration';
 import { AvailableViews } from '../AvailableViews';
 import { ComponentConfiguratorView } from '../componentConfigurator/ComponentConfiguratorView';
 import { ConfigurationExportView } from '../configurationExport/ConfigurationExportView';
@@ -17,6 +18,7 @@ export interface ViewProps {
  */
 export interface WizardState{
     activeView: AvailableViews;
+    configuration: IConfiguration;
 }
 
 
@@ -31,7 +33,8 @@ export class Wizard extends Component<{},{}>{
         super(props);    
 
         this.state  = {
-            activeView: AvailableViews.WelcomeView            
+            activeView: AvailableViews.WelcomeView,
+            configuration: {subcomponents: []}          
         };
     }
 
@@ -49,7 +52,7 @@ export class Wizard extends Component<{},{}>{
             case AvailableViews.WelcomeView:
                 return <WelcomeView showView={(availableView) => {this.showView(availableView);}} />
             case AvailableViews.ComponentConfigurationView:
-                return <ComponentConfiguratorView showView={(availableView) => {this.showView(availableView);}} />
+                return <ComponentConfiguratorView showView={(availableView) => {this.showView(availableView);}} configuration={this.state.configuration}/>
             case AvailableViews.ConfigurationImportView:
                 return <ConfigurationImportView showView={(availableView) => {this.showView(availableView);}} />
             case AvailableViews.ConfigurationExportView:
