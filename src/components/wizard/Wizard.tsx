@@ -1,110 +1,70 @@
 import {Component} from 'react';
+import { AvailableViews } from '../AvailableViews';
+import { ComponentConfiguratorView } from '../componentConfigurator/ComponentConfiguratorView';
+import { ConfigurationExportView } from '../configurationExport/ConfigurationExportView';
+import { ConfigurationImportView } from '../configurationImport/ConfigurationImportView';
+import { WelcomeView } from '../welcome/WelcomeView';
 
 /**
  * Properties of a View
  */
 export interface ViewProps {
-    showNextView: () => void;
-    showPreviousView: () => void;
-    showView: (viewIndex: number) => void;
-    currentView: number;
-    isLast: boolean;
-    isFirst: boolean;
+    showView: (availableView: AvailableViews) => void;
  }
-
- /**
-  * View that will be used in the wizard
-  */
-export interface View{
-    title: string;
-    element: (viewProps: ViewProps) => JSX.Element;
-}
 
 /**
  * State of the Wizard
  */
 export interface WizardState{
-    activeView: number;
+    activeView: AvailableViews;
 }
 
-/**
- * Properties for the wizard
- */
-export interface WizardProps {
-    views: View[];
-}
 
 /**
  * Wizard to navigate through Views forward and backwards 
  */
-export class Wizard extends Component<WizardProps,{}>{
+export class Wizard extends Component<{},{}>{
 
     state: WizardState;
-    private amountOfViews: number;
-    private views: View[];
 
-    constructor(props: WizardProps){ 
+    constructor(props: {}){ 
         super(props);    
 
-        this.views= props.views;
-        this.amountOfViews = this.views.length;    
-
         this.state  = {
-            activeView: 0            
+            activeView: AvailableViews.WelcomeView            
         };
-    }
-
-    /**
-     * Show the next view
-     */
-    private showNextView(){
-        const nextView = this.state.activeView + 1;
-        if (nextView < this.amountOfViews) {
-            this.setState({
-                activeView: nextView
-            });
-        }
-    }
-
-    /**
-     * Show the previous view
-     */
-    private showPreviousView(){
-        const nextView = this.state.activeView - 1;
-        if (nextView >= 0) {
-            this.setState({
-                activeView: nextView
-            });
-        }
     }
 
     /**
      * Show a selected view
      */
-    private showView(viewId: number){
-        if (viewId >= 0 && viewId < this.amountOfViews) {
-            this.setState({
-                activeView: viewId
-            });
-        }
+    private showView(view: AvailableViews){
+        this.setState({
+            activeView: view
+        });        
+    }
+
+    private GetView(availableView: AvailableViews): JSX.Element{
+        switch(this.state.activeView){
+            case AvailableViews.WelcomeView:
+                return <WelcomeView showView={(availableView) => {this.showView(availableView);}} />
+            case AvailableViews.ComponentConfigurationView:
+                return <ComponentConfiguratorView showView={(availableView) => {this.showView(availableView);}} />
+            case AvailableViews.ConfigurationImportView:
+                return <ConfigurationImportView showView={(availableView) => {this.showView(availableView);}} />
+            case AvailableViews.ConfigurationExportView:
+                return <ConfigurationExportView showView={(availableView) => {this.showView(availableView);}} />
+            default:
+                return <WelcomeView showView={(availableView) => {this.showView(availableView);}} />;
+
+        };
     }
 
     render() {
-
-        const currentIndex = this.state.activeView;
-        const view = this.views[currentIndex];
         return  (
-        <div>       
-            {<view.element
-              showNextView= {() => {this.showNextView();}}
-              showPreviousView={() => {this.showPreviousView();}}
-              showView={(index) => {this.showView(index);}}
-              currentView={currentIndex}
-              isFirst={false}
-              isLast={false}
-            />
-            }
-        </div>
+            <div>     
+                {this.GetView(this.state.activeView)}
+            </div>
         ); 
     }
 }
