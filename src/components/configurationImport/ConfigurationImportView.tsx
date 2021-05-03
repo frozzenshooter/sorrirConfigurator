@@ -13,10 +13,14 @@ import {ViewProps} from '../wizard/Wizard';
                 <h1>Import the configuration</h1>
                 <Button variant="contained" color="primary" onClick={() => this.props.showView(AvailableViews.WelcomeView)}>
                     Go back
-                </Button>
+                </Button><br/>
                 <Button variant="contained" color="primary" onClick={() => this.props.showView(AvailableViews.ComponentConfigurationView)}>
                     Create new instead
                 </Button>
+                <br/>
+                <Button variant="contained" color="primary" onClick={() => this.props.showView(AvailableViews.ConfigurationExportView)}>
+                    Export
+                </Button><br/>
             </div>
         );
     }

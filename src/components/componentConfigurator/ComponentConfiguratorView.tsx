@@ -11,25 +11,47 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
-import Chip from '@material-ui/core/Chip';
-
 // Local imports
 
 import IConfiguration from '../../interfaces/IConfiguration';
 import './ComponentConfiguratorView.css';
+import { ChipCreator } from '../chipCreator/ChipCreator';
 
 export interface ComponentConfigurationViewProps extends ViewProps{
     configuration: IConfiguration;
+}
+
+export interface ComponentConfiguratorViewState {
+    shadowmodes: string[]
 }
 
 /**
  * View for the configuration of subcomponents 
  */
  export class ComponentConfiguratorView extends Component<ComponentConfigurationViewProps,{}> {
+
+    state: ComponentConfiguratorViewState;
+
     constructor(props:ComponentConfigurationViewProps){
-        super(props);        
+        super(props);     
+        this.state = {
+            shadowmodes:[]
+        };   
     }
       
+    private handleChipDeletion(shadowmode: string){
+        let newShadowmodes = this.state.shadowmodes.filter(e => e !== shadowmode).slice();
+        this.setState({shadowmodes: newShadowmodes});
+    }
+
+    private handleChipCreation(shadowmode: string){
+        let newShadowmodes = this.state.shadowmodes.slice();
+        if(newShadowmodes.indexOf(shadowmode) === -1){
+            newShadowmodes.push(shadowmode);
+            this.setState({shadowmodes: newShadowmodes});
+        }
+    }
+
     render() {
 
         return (
@@ -46,17 +68,17 @@ export interface ComponentConfigurationViewProps extends ViewProps{
                             </TableRow>
                             </TableHead>
                             <TableBody>
-                            <TableRow
-                                onClick={(event) => console.log("click")}
-                            >
-                            <TableCell padding="checkbox">
-                               Test
-                            </TableCell>
-                            <TableCell padding="none">
-                                <Chip label={"Test Chip 1"} />
-                                <Chip label={"Test Chip 2"} />
-                                <Chip label={"Test Chip 3"} />
-                            </TableCell>
+                            <TableRow>
+                                <TableCell padding="checkbox">
+                                Test
+                                </TableCell>
+                                <TableCell padding="none">
+                                    <ChipCreator
+                                        handleChipDeletion={(shadowmode: string) => {this.handleChipDeletion(shadowmode);}}
+                                        handleChipCreation={(shadowmode: string) => {this.handleChipCreation(shadowmode);}}
+                                        shadowmodes={this.state.shadowmodes}
+                                    />
+                                </TableCell>
                             </TableRow>
                             </TableBody>
                         </Table>
