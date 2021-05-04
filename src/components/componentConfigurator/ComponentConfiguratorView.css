@@ -9,3 +9,16 @@
     justify-content: space-between;
     padding: 2%;
 }
+
+.component-configurator-shadowmode-list{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    padding-left: 0;
+}
+
+.component-configurator-shadowmode-list-item{
+    list-style: none;
+}
+

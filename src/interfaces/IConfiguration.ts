@@ -1,6 +1,5 @@
-import IComponent from "./IComponent";
+import ISubcomponent from "./ISubcomponent";
 
 export default interface IConfiguration {
-    subcomponents: IComponent[];
-
+    subcomponents: ISubcomponent[];
 }

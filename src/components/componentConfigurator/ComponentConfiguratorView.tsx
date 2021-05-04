@@ -10,19 +10,18 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import Chip from '@material-ui/core/Chip';
 
 // Local imports
 
 import IConfiguration from '../../interfaces/IConfiguration';
 import './ComponentConfiguratorView.css';
 import { ChipCreator } from '../chipCreator/ChipCreator';
+import IShadowmode from '../../interfaces/IShadowmode';
+
 
 export interface ComponentConfigurationViewProps extends ViewProps{
     configuration: IConfiguration;
-}
-
-export interface ComponentConfiguratorViewState {
-    shadowmodes: string[]
 }
 
 /**
@@ -30,26 +29,39 @@ export interface ComponentConfiguratorViewState {
  */
  export class ComponentConfiguratorView extends Component<ComponentConfigurationViewProps,{}> {
 
-    state: ComponentConfiguratorViewState;
-
     constructor(props:ComponentConfigurationViewProps){
-        super(props);     
-        this.state = {
-            shadowmodes:[]
-        };   
+        super(props); 
     }
       
-    private handleChipDeletion(shadowmode: string){
-        let newShadowmodes = this.state.shadowmodes.filter(e => e !== shadowmode).slice();
-        this.setState({shadowmodes: newShadowmodes});
+    private handleChipDeletion(subcomponentId: string, shadowmodeToDelete: IShadowmode){
+
+        const subcomponentIndex = this.props.configuration.subcomponents.findIndex(subcomponent => subcomponent.id === subcomponentId);
+        const updatedShadomodes = this.props.configuration.subcomponents[subcomponentIndex].shadowmodes.filter(shadowmode => shadowmode.id !== shadowmodeToDelete.id ).slice();
+
+        this.props.configuration.subcomponents[subcomponentIndex].shadowmodes = updatedShadomodes;
+
+        this.props.handleConfigurationUpdate(this.props.configuration);
     }
 
-    private handleChipCreation(shadowmode: string){
-        let newShadowmodes = this.state.shadowmodes.slice();
-        if(newShadowmodes.indexOf(shadowmode) === -1){
-            newShadowmodes.push(shadowmode);
-            this.setState({shadowmodes: newShadowmodes});
+    private handleChipCreation(subcomponentId: string, shadowmodeToCreate: IShadowmode){
+
+        const subcomponentIndex = this.props.configuration.subcomponents.findIndex(subcomponent => subcomponent.id === subcomponentId);
+        
+        const chipExisting = this.props.configuration.subcomponents[subcomponentIndex].shadowmodes.findIndex(shadowmode => shadowmode.id === shadowmodeToCreate.id);
+
+        if(chipExisting === -1){
+            this.props.configuration.subcomponents[subcomponentIndex].shadowmodes.push(
+                {
+                    id: shadowmodeToCreate.id,
+                    name: shadowmodeToCreate.name
+            });
+
+            this.props.handleConfigurationUpdate(this.props.configuration);
+        }else{
+            //TODO
+            console.log("Chip already existing!");
         }
+
     }
 
     render() {
@@ -67,17 +79,40 @@ export interface ComponentConfiguratorViewState {
                                 <TableCell align="left">Shadowmodes</TableCell>
                             </TableRow>
                             </TableHead>
-                            <TableBody>
+                            <TableBody>                            
+                            {this.props.configuration.subcomponents.map((subcomponent)=> {
+
+                                return (
+                                    <TableRow>
+                                        <TableCell padding="checkbox">
+                                            {subcomponent.name}
+                                        </TableCell>
+                                        <TableCell padding="default">
+                                            <ul className="component-configurator-shadowmode-list">
+                                            {subcomponent.shadowmodes.map((shadowmode)=> {
+
+                                                    return (
+                                                    <li key={shadowmode.id} className="component-configurator-shadowmode-list-item">
+                                                        <Chip label={shadowmode.name} />
+                                                    </li>);
+                                                })
+                                            }
+                                            </ul>
+                                        </TableCell>
+                                    </TableRow>
+
+                                );
+                            })}
                             <TableRow>
                                 <TableCell padding="checkbox">
-                                Test
+                                    Input
                                 </TableCell>
-                                <TableCell padding="none">
+                                <TableCell padding="default">
                                     <ChipCreator
-                                        handleChipDeletion={(shadowmode: string) => {this.handleChipDeletion(shadowmode);}}
-                                        handleChipCreation={(shadowmode: string) => {this.handleChipCreation(shadowmode);}}
-                                        shadowmodes={this.state.shadowmodes}
-                                    />
+                                        handleChipCreation = {(subcomponentId: string, shadowmodeToCreate: IShadowmode) => {this.handleChipCreation(subcomponentId, shadowmodeToCreate);}}
+                                        handleChipDeletion = {(subcomponentId: string, shadowmodeToDelete: IShadowmode) => {this.handleChipDeletion(subcomponentId, shadowmodeToDelete);}}
+                                        shadowmodes={this.props.configuration.subcomponents[0].shadowmodes}
+                                    ></ChipCreator>
                                 </TableCell>
                             </TableRow>
                             </TableBody>

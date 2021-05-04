@@ -1,12 +1,13 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import Chip from '@material-ui/core/Chip';
+import IShadowmode from '../../interfaces/IShadowmode';
 
 
 export interface ChipCreatorProps{
-    shadowmodes: string[];
-    handleChipCreation: (shadowmode: string) => void;
-    handleChipDeletion: (shadowmode: string)=> void;
+    shadowmodes: IShadowmode[];
+    handleChipCreation: (subcomponentId: string, shadowmode: IShadowmode) => void;
+    handleChipDeletion: (subcomponentId: string, shadowmode: IShadowmode)=> void;
 }
 
 export interface ChipCreatorState{
@@ -36,29 +37,29 @@ export class ChipCreator extends React.Component<ChipCreatorProps, {}> {
 
                     onKeyPress={(ev) =>
                     {                        
-                        if (ev.key === 'Enter' && this.state.shadowmodeInput != "") {
+                        if (ev.key === 'Enter' && this.state.shadowmodeInput !== "") {
                             ev.preventDefault();
                             this.setState({shadowmodeInput: ""});
-                            this.props.handleChipCreation(this.state.shadowmodeInput);
+                            this.props.handleChipCreation("Subcomponent1", { id: this.state.shadowmodeInput, name: this.state.shadowmodeInput});
                         }
                     }
                 }/>
-                <ol>
+                <ul>
                     {this.props.shadowmodes.map((shadowmode) => {
                         return (
-                            <li key={shadowmode}>
+                            <li key={shadowmode.id}>
                                 <Chip
-                                label={shadowmode}
+                                label={shadowmode.name}
                                 onDelete={(ev) => {
                                         ev.preventDefault();
-                                        this.props.handleChipDeletion(shadowmode);
+                                        this.props.handleChipDeletion("Subcomponent1", shadowmode);
                                     }
                                 }
                                 />
                             </li>);
                         })
                     }
-                </ol>
+                </ul>
             </div>
         );
     }    

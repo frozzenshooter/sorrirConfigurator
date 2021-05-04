@@ -11,6 +11,7 @@ import { WelcomeView } from '../welcome/WelcomeView';
  */
 export interface ViewProps {
     showView: (availableView: AvailableViews) => void;
+    handleConfigurationUpdate: (configuration: IConfiguration) => void;
  }
 
 /**
@@ -34,7 +35,23 @@ export class Wizard extends Component<{},{}>{
 
         this.state  = {
             activeView: AvailableViews.WelcomeView,
-            configuration: {subcomponents: []}          
+            configuration: {subcomponents: [
+                {
+                    id: "Subcomponent1",
+                    name: "Subcomponent1",
+                    shadowmodes: [
+                        {
+                            id: "1",
+                            name:"ON"
+
+                        },
+                        {
+                            id: "2",
+                            name: "OFF"
+                        }
+                    ]
+                }
+            ]}          
         };
     }
 
@@ -47,18 +64,24 @@ export class Wizard extends Component<{},{}>{
         });        
     }
 
+    private handleConfigurationUpdate(configuration: IConfiguration){
+        const newState = JSON.parse(JSON.stringify(this.state));
+        newState.configuration = configuration;
+        this.setState(newState);
+    }
+
     private GetView(availableView: AvailableViews): JSX.Element{
         switch(this.state.activeView){
             case AvailableViews.WelcomeView:
-                return <WelcomeView showView={(availableView) => {this.showView(availableView);}} />
+                return <WelcomeView showView={(availableView) => {this.showView(availableView);}} handleConfigurationUpdate={(configuration) => {this.handleConfigurationUpdate(configuration);}} />
             case AvailableViews.ComponentConfigurationView:
-                return <ComponentConfiguratorView showView={(availableView) => {this.showView(availableView);}} configuration={this.state.configuration}/>
+                return <ComponentConfiguratorView showView={(availableView) => {this.showView(availableView);}} configuration={this.state.configuration} handleConfigurationUpdate={(configuration) => {this.handleConfigurationUpdate(configuration);}}/>
             case AvailableViews.ConfigurationImportView:
-                return <ConfigurationImportView showView={(availableView) => {this.showView(availableView);}} />
+                return <ConfigurationImportView showView={(availableView) => {this.showView(availableView);}} handleConfigurationUpdate={(configuration) => {this.handleConfigurationUpdate(configuration);}}/>
             case AvailableViews.ConfigurationExportView:
-                return <ConfigurationExportView showView={(availableView) => {this.showView(availableView);}} />
+                return <ConfigurationExportView showView={(availableView) => {this.showView(availableView);}} handleConfigurationUpdate={(configuration) => {this.handleConfigurationUpdate(configuration);}}/>
             default:
-                return <WelcomeView showView={(availableView) => {this.showView(availableView);}} />;
+                return <WelcomeView showView={(availableView) => {this.showView(availableView);}} handleConfigurationUpdate={(configuration) => {this.handleConfigurationUpdate(configuration);}}/>;
 
         };
     }
