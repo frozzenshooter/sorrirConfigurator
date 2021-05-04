@@ -19,6 +19,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import Paper from '@material-ui/core/Paper';
 import Tooltip from '@material-ui/core/Tooltip';
 import IShadowmode from '../../interfaces/IShadowmode';
+import Chip from '@material-ui/core/Chip';
 
 /**
  * Order of the sorting
@@ -88,10 +89,12 @@ interface HeadCell {
  */
 const headCells: HeadCell[] = [
     {id: "id", label: 'ID'},
-    {id: "name", label: 'Name'}
+    {id: "name", label: 'Name'},
+    {id: "shadowmodes", label: 'Shadow Modes'}
 ];
 
 interface SubComponentTableHeadProps{
+    classes: ReturnType<typeof useStyles>;
     numSelected: number;
     onRequestSort: (event: React.MouseEvent<unknown>, property: keyof ISubcomponent) => void;
     onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -107,7 +110,7 @@ interface SubComponentTableHeadProps{
  * @returns 
  */
 function SubComponentTableHead(props: SubComponentTableHeadProps){
-    const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort} = props;
+    const {classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort} = props;
     const createSortHandler = (property: keyof ISubcomponent) => (event: React.MouseEvent<unknown>) => {
       onRequestSort(event, property);
     };
@@ -136,7 +139,7 @@ function SubComponentTableHead(props: SubComponentTableHeadProps){
                 >
                   {headCell.label}
                   {orderBy === headCell.id ? (
-                    <span>
+                    <span className={classes.visuallyHidden}>
                       {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
                     </span>
                   ) : null}
@@ -335,14 +338,9 @@ export function SubComponentTable(props: SubComponentTableProps) {
     };
 
     const handleSubComponentEdit = () => {
-        if(selected.length > 0){
-            if(selected.length == 1){
+            if(selected.length === 1){
                 console.log("Selection", selected[0]);
-            }else{
-                //TODO: show error - only one can be edited
-                console.log("More than one selected");
             }
-        }
     };
 
     return(  <div className={classes.root}>
@@ -359,6 +357,7 @@ export function SubComponentTable(props: SubComponentTableProps) {
               aria-label="enhanced table"
             >
               <SubComponentTableHead
+                classes={classes}
                 numSelected={selected.length}
                 order={order}
                 orderBy={orderBy}
@@ -393,6 +392,18 @@ export function SubComponentTable(props: SubComponentTableProps) {
                           {subcomponent.id}
                         </TableCell>
                         <TableCell>{subcomponent.name}</TableCell>
+                        <TableCell>
+                            <ul className="component-configurator-shadowmode-list">
+                                {subcomponent.shadowmodes.map((shadowmode)=> {
+
+                                        return (
+                                        <li key={shadowmode.id} className="component-configurator-shadowmode-list-item">
+                                            <Chip label={shadowmode.name} />
+                                        </li>);
+                                    })
+                                }
+                            </ul>
+                        </TableCell>
                       </TableRow>
                     );
                   })}

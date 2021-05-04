@@ -48,6 +48,93 @@ export class Wizard extends Component<{},{}>{
                         {
                             id: "2",
                             name: "OFF"
+                        },
+                        {
+                            id: "3",
+                            name: "DC"
+                        }
+                    ]
+                },
+                {
+                    id: "Subcomponent2",
+                    name: "Subcomponent2",
+                    shadowmodes: [
+                        {
+                            id: "1",
+                            name:"ON"
+
+                        },
+                        {
+                            id: "2",
+                            name: "OFF"
+                        }
+                    ]
+                },
+                {
+                    id: "Subcomponent3",
+                    name: "Subcomponent3",
+                    shadowmodes: [
+                        {
+                            id: "1",
+                            name:"ON"
+
+                        },
+                        {
+                            id: "2",
+                            name: "OFF"
+                        },
+                        {
+                            id: "3",
+                            name: "DC"
+                        }
+                    ]
+                },
+                {
+                    id: "Subcomponent4",
+                    name: "Subcomponent4",
+                    shadowmodes: [
+                        {
+                            id: "1",
+                            name:"ON"
+
+                        },
+                        {
+                            id: "2",
+                            name: "OFF"
+                        }
+                    ]
+                },
+                {
+                    id: "Subcomponent5",
+                    name: "Subcomponent5",
+                    shadowmodes: [
+                        {
+                            id: "1",
+                            name:"ON"
+
+                        },
+                        {
+                            id: "2",
+                            name: "OFF"
+                        },
+                        {
+                            id: "3",
+                            name: "DC"
+                        }
+                    ]
+                },
+                {
+                    id: "Subcomponent6",
+                    name: "Subcomponent6",
+                    shadowmodes: [
+                        {
+                            id: "1",
+                            name:"ON"
+
+                        },
+                        {
+                            id: "2",
+                            name: "OFF"
                         }
                     ]
                 }

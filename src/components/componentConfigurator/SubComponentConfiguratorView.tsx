@@ -7,7 +7,6 @@ import { ViewProps } from '../wizard/Wizard';
 
 import IConfiguration from '../../interfaces/IConfiguration';
 import './SubComponentConfiguratorView.css';
-import { ChipCreator } from '../chipCreator/ChipCreator';
 import IShadowmode from '../../interfaces/IShadowmode';
 import { SubComponentTable } from './SubComponentTable';
 
@@ -21,10 +20,6 @@ export interface SubComponentConfigurationViewProps extends ViewProps{
  */
  export class SubComponentConfiguratorView extends Component<SubComponentConfigurationViewProps,{}> {
 
-    constructor(props:SubComponentConfigurationViewProps){
-        super(props); 
-    }
-      
     private handleChipDeletion(subcomponentId: string, shadowmodeToDelete: IShadowmode){
 
         const subcomponentIndex = this.props.configuration.subcomponents.findIndex(subcomponent => subcomponent.id === subcomponentId);
