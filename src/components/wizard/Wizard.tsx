@@ -1,7 +1,7 @@
 import {Component} from 'react';
 import IConfiguration from '../../interfaces/IConfiguration';
 import { AvailableViews } from '../AvailableViews';
-import { ComponentConfiguratorView } from '../componentConfigurator/ComponentConfiguratorView';
+import { SubComponentConfiguratorView } from '../componentConfigurator/SubComponentConfiguratorView';
 import { ConfigurationExportView } from '../configurationExport/ConfigurationExportView';
 import { ConfigurationImportView } from '../configurationImport/ConfigurationImportView';
 import { WelcomeView } from '../welcome/WelcomeView';
@@ -75,7 +75,7 @@ export class Wizard extends Component<{},{}>{
             case AvailableViews.WelcomeView:
                 return <WelcomeView showView={(availableView) => {this.showView(availableView);}} handleConfigurationUpdate={(configuration) => {this.handleConfigurationUpdate(configuration);}} />
             case AvailableViews.ComponentConfigurationView:
-                return <ComponentConfiguratorView showView={(availableView) => {this.showView(availableView);}} configuration={this.state.configuration} handleConfigurationUpdate={(configuration) => {this.handleConfigurationUpdate(configuration);}}/>
+                return <SubComponentConfiguratorView showView={(availableView) => {this.showView(availableView);}} configuration={this.state.configuration} handleConfigurationUpdate={(configuration) => {this.handleConfigurationUpdate(configuration);}}/>
             case AvailableViews.ConfigurationImportView:
                 return <ConfigurationImportView showView={(availableView) => {this.showView(availableView);}} handleConfigurationUpdate={(configuration) => {this.handleConfigurationUpdate(configuration);}}/>
             case AvailableViews.ConfigurationExportView:
