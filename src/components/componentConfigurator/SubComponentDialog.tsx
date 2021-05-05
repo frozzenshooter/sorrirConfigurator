@@ -79,12 +79,12 @@ export function SubComponentDialog(props: SubComponentDialogProps){
 
     const {type, open, onAbort, onSaveClose, subcomponent} = props;
 
-    // DIalog can be used as Edit and Create Dialog
+    // Dialog can be used as Edit and Create Dialog
     let initalSubComponent: ISubcomponent = subcomponent;
-    if(type === SubComponentDialogType.Create || subcomponent === null){
+    if(type === SubComponentDialogType.Create){
         initalSubComponent = {
-            id: "",
-            name: "",
+            id: "123",
+            name: "123",
             shadowmodes: []
         };
     }
@@ -158,26 +158,27 @@ export function SubComponentDialog(props: SubComponentDialogProps){
                 <SubComponentDialogContent dividers>    
                     <div className="subcomponent-dialog-content-container">            
                         <TextField 
+                            disabled ={type === SubComponentDialogType.Edit ? true : false}
                             id="id"
                             label="ID" 
-                            value={subcomponentState.id}
+                            value={subcomponent.id}
                             onChange={handleIDInput}
                             className="subcomponent-dialog-content-container-item"/>
                         <TextField 
                             id="name"
                             label="Name"
-                            value={subcomponentState.name}
+                            value={subcomponent.name}
                             onChange={handleNameInput}
                             className="subcomponent-dialog-content-container-item"/>
                         <ChipCreator
-                            shadowmodes={subcomponentState.shadowmodes}
+                            shadowmodes={subcomponent.shadowmodes}
                             handleChipCreation={handleChipCreation}
                             handleChipDeletion={handleChipDeletion}
                         />
                     </div>    
                 </SubComponentDialogContent>
                 <SubComponentDialogActions>
-                    <Button autoFocus onClick={() => {onSaveClose(subcomponent);}} color="primary">
+                    <Button autoFocus onClick={() => {onSaveClose(subcomponentState);}} color="primary">
                         Save changes
                     </Button>
                     <Button onClick={onAbort} color="secondary">

@@ -249,6 +249,9 @@ const SubComponentTableToolbar = (props: SubComponentTableToolbarProps) => {
  */
 export interface SubComponentTableProps {
     subcomponents: ISubcomponent[];
+    handleCreateSubComponent: () => void;
+    handleEditSubComponent: (subcomponent: ISubcomponent) => void;
+    handleDeleteSubComponents: (subcomponents: ISubcomponent[]) => void;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -284,6 +287,10 @@ const useStyles = makeStyles((theme: Theme) =>
  * @returns Table
  */
 export function SubComponentTable(props: SubComponentTableProps) {
+
+    const {subcomponents, handleCreateSubComponent, handleDeleteSubComponents, handleEditSubComponent} = props;
+
+
     const classes = useStyles();
     const [order, setOrder] = React.useState<Order>('asc');
     const [orderBy, setOrderBy] = React.useState<keyof ISubcomponent>('name');
@@ -299,7 +306,7 @@ export function SubComponentTable(props: SubComponentTableProps) {
 
     const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.checked) {
-          const newSelecteds = props.subcomponents.map((n) => n.id);
+          const newSelecteds = subcomponents.map((n) => n.id);
           setSelected(newSelecteds);
           return;
         }
@@ -337,22 +344,24 @@ export function SubComponentTable(props: SubComponentTableProps) {
 
     const isSelected = (name: string) => selected.indexOf(name) !== -1;
 
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, props.subcomponents.length - page * rowsPerPage);
+    const emptyRows = rowsPerPage - Math.min(rowsPerPage, subcomponents.length - page * rowsPerPage);
 
     const handleSubComponentDeletion = () => {
-        //TODO
-        console.log("Deletion of elements", selected);
+        const subcomponentsToDelete :ISubcomponent[] = subcomponents.filter(subcomponent => isSelected(subcomponent.name)).slice();
+        handleDeleteSubComponents(subcomponentsToDelete);
     };
 
     const handleSubComponentEdit = () => {
             if(selected.length === 1){
-                console.log("Selection", selected[0]);
+                //TODO: SELECTION WORKS WITH THE NAME OF A SUBCOMPONENT - THERE MIGHT BE DUPLICATES
+                const subComponentIndex = subcomponents.findIndex(subcomponent => isSelected(subcomponent.name));
+                console.log("Selected subcomponent to edit:", subcomponents[subComponentIndex]);
+                handleEditSubComponent(subcomponents[subComponentIndex]);
             }
     };
 
     const handleSubComponentCreation = () => {
-        //TODO
-        console.log("Creation of elements", selected);
+        handleCreateSubComponent();
     };
 
     return(  <div className={classes.root}>
@@ -376,10 +385,10 @@ export function SubComponentTable(props: SubComponentTableProps) {
                 orderBy={orderBy}
                 onSelectAllClick={handleSelectAllClick}
                 onRequestSort={handleRequestSort}
-                rowCount={props.subcomponents.length}
+                rowCount={subcomponents.length}
               />
               <TableBody>
-                {stableSort<ISubcomponent>(props.subcomponents, getComparator(order, orderBy))
+                {stableSort<ISubcomponent>(subcomponents, getComparator(order, orderBy))
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((subcomponent, index) => {
                     const isItemSelected = isSelected(subcomponent.name);
@@ -431,7 +440,7 @@ export function SubComponentTable(props: SubComponentTableProps) {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={props.subcomponents.length}
+            count={subcomponents.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onChangePage={handleChangePage}

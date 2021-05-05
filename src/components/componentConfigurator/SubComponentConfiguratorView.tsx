@@ -16,22 +16,77 @@ export interface SubComponentConfigurationViewProps extends ViewProps{
     configuration: IConfiguration;
 }
 
+interface EditDialogState{
+    isOpen: boolean;
+    subcomponentToEdit: ISubcomponent;
+}
+
 /**
  * View for the configuration of subcomponents 
  */
  export function SubComponentConfiguratorView (props: SubComponentConfigurationViewProps) {
 
+    /**
+     * IDEA: THE DIALOG NEEDS A HANDLER THAT WILL UPDATE A STATE HERE: you have a subcomponentToEdit as state
+     *   
+     * the dialog gets a handler via his props -> whenever sth is edited the handler will be called and update the state to edit
+     * 
+     * on close the state will be taken and handleConfigurationUpdate will be triggered to update the global configuration
+     * 
+     *  The state of the values in the dialog will be removed and only the props will be set
+     */
+
+    const emptySubComponent:ISubcomponent = {id:"", name:"", shadowmodes: []};
+
     const {configuration, showView, handleConfigurationUpdate} = props;
 
-    const [openEditDialog, setOpenEditDialog] = React.useState(false);
+    //const [openEditDialog, setOpenEditDialog] = React.useState(false);
+    //const [subComponentToEdit, setSubComponentToEdit] = React.useState<ISubcomponent>(emptySubComponent);
 
-    const handleClickOpenEditDialog = () => {
-        setOpenEditDialog(true);
-        //handleConfigurationUpdate
+    const [editDialogState, setEditDialogState] = React.useState<EditDialogState>({ isOpen:false, subcomponentToEdit: emptySubComponent});
+
+    const handleClickOpenEditDialog = (subcomponent: ISubcomponent) => {
+        console.log("Open EditDialog with: ", subcomponent);
+        //setSubComponentToEdit(subcomponent);
+        //setOpenEditDialog(true);
+
+        setEditDialogState({isOpen:true, subcomponentToEdit: subcomponent});
     };
+
     const handleCloseEditDialog = () => {
-        setOpenEditDialog(false);
+        //setOpenEditDialog(false);        
+        //setSubComponentToEdit(emptySubComponent);
+
+        
+        setEditDialogState({isOpen:false, subcomponentToEdit: emptySubComponent});
+    };
+
+    const handleSaveCloseEditDialog = (subcomponent: ISubcomponent) => {
+
         //handleConfigurationUpdate
+        //setOpenEditDialog(false);
+        //setSubComponentToEdit(emptySubComponent);
+        setEditDialogState({isOpen:false, subcomponentToEdit: emptySubComponent});
+    };
+
+    const [openCreateDialog, setOpenCreateDialog] = React.useState(false);
+
+    const handleClickOpenCreateDialog = () => {
+        setOpenCreateDialog(true);
+    };
+
+    const handleCloseCreateDialog = () => {
+        setOpenCreateDialog(false);
+    };
+
+    const handleSaveCloseCreateDialog = (subcomponent: ISubcomponent) => {
+        
+        //handleConfigurationUpdate
+        setOpenCreateDialog(false);
+    };
+
+    const handleDeleteSubComponents = (subComponentsToDelete: ISubcomponent[]) => {
+        console.log("Deletion", subComponentsToDelete);
     };
 
     return (
@@ -41,6 +96,9 @@ export interface SubComponentConfigurationViewProps extends ViewProps{
             <div className="component-configurator-container">
                     <SubComponentTable
                         subcomponents={configuration.subcomponents}
+                        handleCreateSubComponent={handleClickOpenCreateDialog}
+                        handleDeleteSubComponents={handleDeleteSubComponents}
+                        handleEditSubComponent={handleClickOpenEditDialog}
                     />
             </div>
 
@@ -53,15 +111,19 @@ export interface SubComponentConfigurationViewProps extends ViewProps{
                 </Button>
             </div>
 
-            <Button variant="outlined" color="primary" onClick={handleClickOpenEditDialog}>
-                Open dialog
-            </Button>
             <SubComponentDialog
                 type={SubComponentDialogType.Edit}
-                open={openEditDialog}
-                subcomponent={configuration.subcomponents[0]}
-                onAbort={() => {console.log("OnAbort called"); setOpenEditDialog(false);}}
-                onSaveClose={(subcomponent: ISubcomponent) => {console.log("OnSaveClose called", subcomponent); setOpenEditDialog(false);}}
+                open={editDialogState.isOpen}
+                subcomponent={editDialogState.subcomponentToEdit}
+                onAbort={handleCloseEditDialog}
+                onSaveClose={handleSaveCloseEditDialog}
+            />
+            <SubComponentDialog
+                type={SubComponentDialogType.Create}
+                open={openCreateDialog}
+                subcomponent={emptySubComponent}
+                onAbort={handleCloseCreateDialog}
+                onSaveClose={handleSaveCloseCreateDialog}
             />
            
         </div>
