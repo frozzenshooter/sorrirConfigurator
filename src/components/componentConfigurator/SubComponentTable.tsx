@@ -20,6 +20,7 @@ import Paper from '@material-ui/core/Paper';
 import Tooltip from '@material-ui/core/Tooltip';
 import IShadowmode from '../../interfaces/IShadowmode';
 import Chip from '@material-ui/core/Chip';
+import AddIcon from '@material-ui/icons/Add';
 
 /**
  * Order of the sorting
@@ -183,6 +184,7 @@ interface SubComponentTableToolbarProps {
     numSelected: number;
     handleSubComponentDeletion: () => void;
     handleSubComponentEdit: () => void;
+    handleSubComponentCreation: () => void;
 }
 
 /**
@@ -193,7 +195,7 @@ interface SubComponentTableToolbarProps {
  */
 const SubComponentTableToolbar = (props: SubComponentTableToolbarProps) => {
     const classes = useToolbarStyles();
-    const { numSelected, handleSubComponentDeletion, handleSubComponentEdit} = props;
+    const { numSelected, handleSubComponentDeletion, handleSubComponentEdit, handleSubComponentCreation} = props;
 
     return (
         <Toolbar
@@ -210,9 +212,15 @@ const SubComponentTableToolbar = (props: SubComponentTableToolbarProps) => {
               Subcomponents
             </Typography>
           )}
+          <Tooltip title="Create">
+            <IconButton aria-label="Create" onClick={()=>{handleSubComponentCreation();}}>
+              <AddIcon />
+            </IconButton>
+          </Tooltip>
           { numSelected > 0 ? (
                 numSelected === 1 ? 
                 (   <div style={{display: "inline-flex"}}>
+ 
                         <Tooltip title="Edit">
                             <IconButton aria-label="edit" onClick={()=>{handleSubComponentEdit();}}>
                                 <EditIcon />
@@ -225,12 +233,11 @@ const SubComponentTableToolbar = (props: SubComponentTableToolbarProps) => {
                         </Tooltip>
                     </div>
                 ) : 
-                (
-                    <Tooltip title="Delete">
+                ( <Tooltip title="Delete">
                         <IconButton aria-label="delete" onClick={()=>{handleSubComponentDeletion();}}>
                             <DeleteIcon />
                         </IconButton>
-                    </Tooltip>     
+                    </Tooltip>    
                 )
             ) : (<div></div>)}
         </Toolbar>
@@ -343,12 +350,18 @@ export function SubComponentTable(props: SubComponentTableProps) {
             }
     };
 
+    const handleSubComponentCreation = () => {
+        //TODO
+        console.log("Creation of elements", selected);
+    };
+
     return(  <div className={classes.root}>
         <Paper className={classes.paper}>
           <SubComponentTableToolbar 
             numSelected={selected.length} 
             handleSubComponentDeletion={handleSubComponentDeletion} 
-            handleSubComponentEdit={handleSubComponentEdit} />
+            handleSubComponentEdit={handleSubComponentEdit}
+            handleSubComponentCreation={handleSubComponentCreation}/>
           <TableContainer>
             <Table
               className={classes.table}

@@ -2,19 +2,19 @@ import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import Chip from '@material-ui/core/Chip';
 import IShadowmode from '../../interfaces/IShadowmode';
-
+import './ChipCreator.css';
 
 export interface ChipCreatorProps{
     shadowmodes: IShadowmode[];
-    handleChipCreation: (subcomponentId: string, shadowmode: IShadowmode) => void;
-    handleChipDeletion: (subcomponentId: string, shadowmode: IShadowmode)=> void;
+    handleChipCreation: (shadowmode: IShadowmode) => void;
+    handleChipDeletion: (shadowmode: IShadowmode)=> void;
 }
 
 export interface ChipCreatorState{
     shadowmodeInput: string
 }
 
-export class ChipCreator extends React.Component<ChipCreatorProps, {}> {
+export default class ChipCreator extends React.Component<ChipCreatorProps, {}> {
 
     state: ChipCreatorState;
 
@@ -27,7 +27,7 @@ export class ChipCreator extends React.Component<ChipCreatorProps, {}> {
 
     render() {
         return (
-            <div>
+            <div className="chip-creator-container">
                 <TextField label="Shadowmode" 
 
                     value={this.state.shadowmodeInput}
@@ -40,19 +40,19 @@ export class ChipCreator extends React.Component<ChipCreatorProps, {}> {
                         if (ev.key === 'Enter' && this.state.shadowmodeInput !== "") {
                             ev.preventDefault();
                             this.setState({shadowmodeInput: ""});
-                            this.props.handleChipCreation("Subcomponent1", { id: this.state.shadowmodeInput, name: this.state.shadowmodeInput});
+                            this.props.handleChipCreation({ id: this.state.shadowmodeInput, name: this.state.shadowmodeInput});
                         }
                     }
                 }/>
-                <ul>
+                <ul className="chip-creator-list">
                     {this.props.shadowmodes.map((shadowmode) => {
                         return (
-                            <li key={shadowmode.id}>
+                            <li key={shadowmode.id} className="chip-creator-list-item">
                                 <Chip
                                 label={shadowmode.name}
                                 onDelete={(ev) => {
                                         ev.preventDefault();
-                                        this.props.handleChipDeletion("Subcomponent1", shadowmode);
+                                        this.props.handleChipDeletion(shadowmode);
                                     }
                                 }
                                 />

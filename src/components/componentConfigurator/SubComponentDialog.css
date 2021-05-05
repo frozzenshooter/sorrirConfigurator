@@ -1,0 +1,9 @@
+.subcomponent-dialog-content-container{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.subcomponent-dialog-content-container-item{
+    padding-bottom: 16px;
+}

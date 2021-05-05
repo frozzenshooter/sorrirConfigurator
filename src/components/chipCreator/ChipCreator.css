@@ -1,0 +1,16 @@
+.chip-creator-container{
+    display: inline-flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+}
+
+.chip-creator-list{
+    display: inline-flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+.chip-creator-list-item{
+    list-style: none;
+    padding: 2px;
+}
