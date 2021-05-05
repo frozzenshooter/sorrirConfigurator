@@ -5,7 +5,6 @@ import Button from '@material-ui/core/Button';
 
 import IConfiguration from '../../interfaces/IConfiguration';
 import './SubComponentConfiguratorView.css';
-import IShadowmode from '../../interfaces/IShadowmode';
 import { SubComponentTable } from './SubComponentTable';
 import { AvailableViews } from '../AvailableViews';
 import { ViewProps } from '../wizard/Wizard';
@@ -45,6 +44,10 @@ interface EditDialogState{
 
     const [editDialogState, setEditDialogState] = React.useState<EditDialogState>({ isOpen:false, subcomponentToEdit: emptySubComponent});
 
+    const handleSubComponentChange = (subcomponent: ISubcomponent) => {
+        setEditDialogState({isOpen: editDialogState.isOpen, subcomponentToEdit: subcomponent});
+    }
+
     const handleClickOpenEditDialog = (subcomponent: ISubcomponent) => {
         console.log("Open EditDialog with: ", subcomponent);
         //setSubComponentToEdit(subcomponent);
@@ -66,6 +69,7 @@ interface EditDialogState{
         //handleConfigurationUpdate
         //setOpenEditDialog(false);
         //setSubComponentToEdit(emptySubComponent);
+        console.log("Save subcomponent: ",subcomponent);
         setEditDialogState({isOpen:false, subcomponentToEdit: emptySubComponent});
     };
 
@@ -115,6 +119,7 @@ interface EditDialogState{
                 type={SubComponentDialogType.Edit}
                 open={editDialogState.isOpen}
                 subcomponent={editDialogState.subcomponentToEdit}
+                onSubComponentChange={handleSubComponentChange}
                 onAbort={handleCloseEditDialog}
                 onSaveClose={handleSaveCloseEditDialog}
             />
@@ -122,6 +127,7 @@ interface EditDialogState{
                 type={SubComponentDialogType.Create}
                 open={openCreateDialog}
                 subcomponent={emptySubComponent}
+                onSubComponentChange={handleSubComponentChange}
                 onAbort={handleCloseCreateDialog}
                 onSaveClose={handleSaveCloseCreateDialog}
             />

@@ -71,32 +71,21 @@ export interface SubComponentDialogProps{
     type: SubComponentDialogType;
     open: boolean;
     subcomponent: ISubcomponent;
+    onSubComponentChange: (subcomponent: ISubcomponent) => void;
     onAbort: () => void;
     onSaveClose: (subComponentToSave: ISubcomponent) => void;
 }
 
 export function SubComponentDialog(props: SubComponentDialogProps){
 
-    const {type, open, onAbort, onSaveClose, subcomponent} = props;
-
-    // Dialog can be used as Edit and Create Dialog
-    let initalSubComponent: ISubcomponent = subcomponent;
-    if(type === SubComponentDialogType.Create){
-        initalSubComponent = {
-            id: "123",
-            name: "123",
-            shadowmodes: []
-        };
-    }
-
-    const [subcomponentState, setSubComponent] = React.useState<ISubcomponent>(initalSubComponent);
+    const {type, open, onAbort, onSaveClose, subcomponent, onSubComponentChange} = props;
 
     const handleChipCreation = (shadowmodeToCreate: IShadowmode) => {
-        const chipExisting = subcomponentState.shadowmodes.findIndex(shadowmode => shadowmode.id === shadowmodeToCreate.id);
+        const chipExisting = subcomponent.shadowmodes.findIndex(shadowmode => shadowmode.id === shadowmodeToCreate.id);
         
         if(chipExisting === -1){
 
-            const newShadowModes : IShadowmode[] = subcomponentState.shadowmodes.slice();
+            const newShadowModes : IShadowmode[] = subcomponent.shadowmodes.slice();
             newShadowModes.push(
             {
                 id: shadowmodeToCreate.id,
@@ -104,45 +93,45 @@ export function SubComponentDialog(props: SubComponentDialogProps){
             });
 
             const newSubComponentState : ISubcomponent = {
-                id: subcomponentState.id,
-                name: subcomponentState.name,
+                id: subcomponent.id,
+                name: subcomponent.name,
                 shadowmodes: newShadowModes 
             };
 
-            setSubComponent(newSubComponentState);            
+            onSubComponentChange(newSubComponentState);            
         }
     };
 
     const handleChipDeletion = (shadowmodeToDelete: IShadowmode) => {
-        const newShadowModes = subcomponentState.shadowmodes.filter(shadowmode => shadowmode.id !== shadowmodeToDelete.id ).slice();
+        const newShadowModes = subcomponent.shadowmodes.filter(shadowmode => shadowmode.id !== shadowmodeToDelete.id ).slice();
 
         const newSubComponentState : ISubcomponent = {
-            id: subcomponentState.id,
-            name: subcomponentState.name,
+            id: subcomponent.id,
+            name: subcomponent.name,
             shadowmodes: newShadowModes 
         };
 
-        setSubComponent(newSubComponentState);
+        onSubComponentChange(newSubComponentState);  
     };
 
     const handleIDInput = (ev : React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
         const newSubComponentState : ISubcomponent = {
             id: ev.target.value,
-            name: subcomponentState.name,
-            shadowmodes: subcomponentState.shadowmodes 
+            name: subcomponent.name,
+            shadowmodes: subcomponent.shadowmodes 
         };
 
-        setSubComponent(newSubComponentState);
+        onSubComponentChange(newSubComponentState);  
     };
 
     const handleNameInput = (ev : React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
         const newSubComponentState : ISubcomponent = {
-            id: subcomponentState.id,
+            id: subcomponent.id,
             name: ev.target.value,
-            shadowmodes: subcomponentState.shadowmodes 
+            shadowmodes: subcomponent.shadowmodes 
         };
 
-        setSubComponent(newSubComponentState);
+        onSubComponentChange(newSubComponentState);
     };
 
     return (
@@ -178,7 +167,7 @@ export function SubComponentDialog(props: SubComponentDialogProps){
                     </div>    
                 </SubComponentDialogContent>
                 <SubComponentDialogActions>
-                    <Button autoFocus onClick={() => {onSaveClose(subcomponentState);}} color="primary">
+                    <Button autoFocus onClick={() => {onSaveClose(subcomponent);}} color="primary">
                         Save changes
                     </Button>
                     <Button onClick={onAbort} color="secondary">
