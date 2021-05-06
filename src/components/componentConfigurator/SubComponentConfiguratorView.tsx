@@ -10,88 +10,111 @@ import { AvailableViews } from '../AvailableViews';
 import { ViewProps } from '../wizard/Wizard';
 import { SubComponentDialog , SubComponentDialogType, SubComponentDialogProps} from './SubComponentDialog';
 import ISubcomponent from '../../interfaces/ISubcomponent';
+import { DecisionDialog } from '../decisionDialog/DecisionDialog';
 
 export interface SubComponentConfigurationViewProps extends ViewProps{
     configuration: IConfiguration;
 }
 
-interface EditDialogState{
+interface DialogState{
     isOpen: boolean;
     subcomponentToEdit: ISubcomponent;
 }
 
+interface DeleteDialogState{
+    isOpen: boolean;
+    subComponentsToDelete: ISubcomponent[];
+    resetSelection: () => void;
+}
 /**
  * View for the configuration of subcomponents 
  */
  export function SubComponentConfiguratorView (props: SubComponentConfigurationViewProps) {
 
-    /**
-     * IDEA: THE DIALOG NEEDS A HANDLER THAT WILL UPDATE A STATE HERE: you have a subcomponentToEdit as state
-     *   
-     * the dialog gets a handler via his props -> whenever sth is edited the handler will be called and update the state to edit
-     * 
-     * on close the state will be taken and handleConfigurationUpdate will be triggered to update the global configuration
-     * 
-     *  The state of the values in the dialog will be removed and only the props will be set
-     */
-
-    const emptySubComponent:ISubcomponent = {id:"", name:"", shadowmodes: []};
+    const emptySubComponent : ISubcomponent = {id:"", name:"", shadowmodes: []};
 
     const {configuration, showView, handleConfigurationUpdate} = props;
 
-    //const [openEditDialog, setOpenEditDialog] = React.useState(false);
-    //const [subComponentToEdit, setSubComponentToEdit] = React.useState<ISubcomponent>(emptySubComponent);
+    // Edit Dialog
+    const [editDialogState, setEditDialogState] = React.useState<DialogState>({ isOpen:false, subcomponentToEdit: emptySubComponent});
 
-    const [editDialogState, setEditDialogState] = React.useState<EditDialogState>({ isOpen:false, subcomponentToEdit: emptySubComponent});
-
-    const handleSubComponentChange = (subcomponent: ISubcomponent) => {
+    const handleSubComponentChangedInEditDialog = (subcomponent: ISubcomponent) => {
         setEditDialogState({isOpen: editDialogState.isOpen, subcomponentToEdit: subcomponent});
     }
 
     const handleClickOpenEditDialog = (subcomponent: ISubcomponent) => {
-        console.log("Open EditDialog with: ", subcomponent);
-        //setSubComponentToEdit(subcomponent);
-        //setOpenEditDialog(true);
-
         setEditDialogState({isOpen:true, subcomponentToEdit: subcomponent});
     };
 
     const handleCloseEditDialog = () => {
-        //setOpenEditDialog(false);        
-        //setSubComponentToEdit(emptySubComponent);
+        console.log("Abort subcomponent: ", editDialogState.subcomponentToEdit);
+        setEditDialogState({isOpen:false, subcomponentToEdit: emptySubComponent});
+    };
 
+    const handleSaveCloseEditDialog = () => {
+        const newConfiguration: IConfiguration = JSON.parse(JSON.stringify(configuration));  
+
+        // This index has to exists because the user cant edit an id
+        const index = newConfiguration.subcomponents.findIndex(subcomponent => subcomponent.id === editDialogState.subcomponentToEdit.id);
         
+        newConfiguration.subcomponents[index] = editDialogState.subcomponentToEdit;
+        handleConfigurationUpdate(newConfiguration);
+
         setEditDialogState({isOpen:false, subcomponentToEdit: emptySubComponent});
     };
 
-    const handleSaveCloseEditDialog = (subcomponent: ISubcomponent) => {
-
-        //handleConfigurationUpdate
-        //setOpenEditDialog(false);
-        //setSubComponentToEdit(emptySubComponent);
-        console.log("Save subcomponent: ",subcomponent);
-        setEditDialogState({isOpen:false, subcomponentToEdit: emptySubComponent});
-    };
-
-    const [openCreateDialog, setOpenCreateDialog] = React.useState(false);
+    // Open Dialog
+    const [createDialogState, setCreateDialogState] = React.useState<DialogState>({ isOpen:false, subcomponentToEdit: emptySubComponent});
 
     const handleClickOpenCreateDialog = () => {
-        setOpenCreateDialog(true);
+        setCreateDialogState({isOpen: true, subcomponentToEdit: emptySubComponent});
     };
+
+    const handleSubComponentChangedInCreateDialog = (subcomponent: ISubcomponent) => {
+        setCreateDialogState({isOpen: createDialogState.isOpen, subcomponentToEdit: subcomponent});
+    }
 
     const handleCloseCreateDialog = () => {
-        setOpenCreateDialog(false);
+        setCreateDialogState({isOpen: false, subcomponentToEdit: emptySubComponent});
     };
 
-    const handleSaveCloseCreateDialog = (subcomponent: ISubcomponent) => {
+    const handleSaveCloseCreateDialog = () => {
         
-        //handleConfigurationUpdate
-        setOpenCreateDialog(false);
+        const newConfiguration: IConfiguration = JSON.parse(JSON.stringify(configuration));  
+
+        const index = newConfiguration.subcomponents.findIndex(subcomponent => subcomponent.id === createDialogState.subcomponentToEdit.id);
+        
+        if(index === -1){
+            newConfiguration.subcomponents.push(createDialogState.subcomponentToEdit);
+            handleConfigurationUpdate(newConfiguration);
+            setCreateDialogState({isOpen: false, subcomponentToEdit: emptySubComponent});
+        }else{
+            //TODO: SHOW ERROR THAT ID ALREADY EXISTS
+        }
     };
 
-    const handleDeleteSubComponents = (subComponentsToDelete: ISubcomponent[]) => {
-        console.log("Deletion", subComponentsToDelete);
+    // Delete Dialog
+    const [deleteDialogState, setDeleteDialogState] = React.useState<DeleteDialogState>({isOpen: false, subComponentsToDelete:[], resetSelection: () => {}});
+
+    const handleDeleteSubComponents = (subComponentsToDelete: ISubcomponent[], resetSelection: () => void) => {
+        setDeleteDialogState({isOpen: true, subComponentsToDelete: subComponentsToDelete, resetSelection: resetSelection});
     };
+
+    const handleDeleteAccepted = () => {
+        const newConfiguration: IConfiguration = JSON.parse(JSON.stringify(configuration));  
+
+        for(let subComponentToDelete of deleteDialogState.subComponentsToDelete){
+            newConfiguration.subcomponents = newConfiguration.subcomponents.filter(subcomponent => subcomponent.id !== subComponentToDelete.id);
+        }
+       
+        deleteDialogState.resetSelection();
+        setDeleteDialogState({isOpen: false, subComponentsToDelete:[], resetSelection: () => {}});
+        handleConfigurationUpdate(newConfiguration);
+    }
+
+    const handleDeleteAborted = () => {
+        setDeleteDialogState({isOpen: false, subComponentsToDelete:[], resetSelection: () => {}});
+    }
 
     return (
         <div>
@@ -119,17 +142,24 @@ interface EditDialogState{
                 type={SubComponentDialogType.Edit}
                 open={editDialogState.isOpen}
                 subcomponent={editDialogState.subcomponentToEdit}
-                onSubComponentChange={handleSubComponentChange}
+                onSubComponentChange={handleSubComponentChangedInEditDialog}
                 onAbort={handleCloseEditDialog}
                 onSaveClose={handleSaveCloseEditDialog}
             />
             <SubComponentDialog
                 type={SubComponentDialogType.Create}
-                open={openCreateDialog}
-                subcomponent={emptySubComponent}
-                onSubComponentChange={handleSubComponentChange}
+                open={createDialogState.isOpen}
+                subcomponent={createDialogState.subcomponentToEdit}
+                onSubComponentChange={handleSubComponentChangedInCreateDialog}
                 onAbort={handleCloseCreateDialog}
                 onSaveClose={handleSaveCloseCreateDialog}
+            />
+            <DecisionDialog 
+                title={"Delete "+ deleteDialogState.subComponentsToDelete.length + " items"}
+                isOpen={deleteDialogState.isOpen}
+                text="The selected items will be irreversibly deleted."
+                handleAccept={handleDeleteAccepted}
+                handleCancel={handleDeleteAborted}            
             />
            
         </div>

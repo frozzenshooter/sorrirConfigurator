@@ -251,7 +251,7 @@ export interface SubComponentTableProps {
     subcomponents: ISubcomponent[];
     handleCreateSubComponent: () => void;
     handleEditSubComponent: (subcomponent: ISubcomponent) => void;
-    handleDeleteSubComponents: (subcomponents: ISubcomponent[]) => void;
+    handleDeleteSubComponents: (subcomponents: ISubcomponent[], resetSelection :()=>void) => void;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -342,20 +342,24 @@ export function SubComponentTable(props: SubComponentTableProps) {
         setPage(0);
     };
 
+    const resetSelection = () => {
+        // delete the selection
+        selected.splice(0, selected.length);
+    };
+
     const isSelected = (name: string) => selected.indexOf(name) !== -1;
 
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, subcomponents.length - page * rowsPerPage);
 
     const handleSubComponentDeletion = () => {
-        const subcomponentsToDelete :ISubcomponent[] = subcomponents.filter(subcomponent => isSelected(subcomponent.name)).slice();
-        handleDeleteSubComponents(subcomponentsToDelete);
+        const subcomponentsToDelete :ISubcomponent[] = subcomponents.filter(subcomponent => isSelected(subcomponent.id)).slice();
+        handleDeleteSubComponents(subcomponentsToDelete, resetSelection);
     };
 
     const handleSubComponentEdit = () => {
             if(selected.length === 1){
                 //TODO: SELECTION WORKS WITH THE NAME OF A SUBCOMPONENT - THERE MIGHT BE DUPLICATES
-                const subComponentIndex = subcomponents.findIndex(subcomponent => isSelected(subcomponent.name));
-                console.log("Selected subcomponent to edit:", subcomponents[subComponentIndex]);
+                const subComponentIndex = subcomponents.findIndex(subcomponent => isSelected(subcomponent.id));
                 handleEditSubComponent(subcomponents[subComponentIndex]);
             }
     };
@@ -391,17 +395,17 @@ export function SubComponentTable(props: SubComponentTableProps) {
                 {stableSort<ISubcomponent>(subcomponents, getComparator(order, orderBy))
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((subcomponent, index) => {
-                    const isItemSelected = isSelected(subcomponent.name);
+                    const isItemSelected = isSelected(subcomponent.id);
                     const labelId = `enhanced-table-checkbox-${index}`;
   
                     return (
                       <TableRow
                         hover
-                        onClick={(event) => handleClick(event, (subcomponent.name as string))}
+                        onClick={(event) => handleClick(event, (subcomponent.id as string))}
                         role="checkbox"
                         aria-checked={isItemSelected}
                         tabIndex={-1}
-                        key={subcomponent.name}
+                        key={subcomponent.id}
                         selected={isItemSelected}
                       >
                         <TableCell padding="checkbox">

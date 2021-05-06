@@ -73,7 +73,7 @@ export interface SubComponentDialogProps{
     subcomponent: ISubcomponent;
     onSubComponentChange: (subcomponent: ISubcomponent) => void;
     onAbort: () => void;
-    onSaveClose: (subComponentToSave: ISubcomponent) => void;
+    onSaveClose: () => void;
 }
 
 export function SubComponentDialog(props: SubComponentDialogProps){
@@ -167,7 +167,7 @@ export function SubComponentDialog(props: SubComponentDialogProps){
                     </div>    
                 </SubComponentDialogContent>
                 <SubComponentDialogActions>
-                    <Button autoFocus onClick={() => {onSaveClose(subcomponent);}} color="primary">
+                    <Button autoFocus onClick={onSaveClose} color="primary">
                         Save changes
                     </Button>
                     <Button onClick={onAbort} color="secondary">
