@@ -7,3 +7,11 @@
 .subcomponent-dialog-content-container-item{
     padding-bottom: 16px;
 }
+
+.subcomponent-dialog-error-container{
+    display: inline-flex;
+}
+
+.subcomponent-dialog-error-icon{
+    padding-right: 4px;
+}

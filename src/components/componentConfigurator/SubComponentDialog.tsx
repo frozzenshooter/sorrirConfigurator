@@ -8,6 +8,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 
 import { createStyles, Theme, withStyles, WithStyles } from '@material-ui/core/styles';
 import ISubcomponent from '../../interfaces/ISubcomponent';
@@ -70,6 +71,7 @@ export enum SubComponentDialogType {
 export interface SubComponentDialogProps{
     type: SubComponentDialogType;
     open: boolean;
+    error: string;
     subcomponent: ISubcomponent;
     onSubComponentChange: (subcomponent: ISubcomponent) => void;
     onAbort: () => void;
@@ -78,7 +80,7 @@ export interface SubComponentDialogProps{
 
 export function SubComponentDialog(props: SubComponentDialogProps){
 
-    const {type, open, onAbort, onSaveClose, subcomponent, onSubComponentChange} = props;
+    const {type, open, error, onAbort, onSaveClose, subcomponent, onSubComponentChange} = props;
 
     const handleChipCreation = (shadowmodeToCreate: IShadowmode) => {
         const chipExisting = subcomponent.shadowmodes.findIndex(shadowmode => shadowmode.id === shadowmodeToCreate.id);
@@ -144,7 +146,8 @@ export function SubComponentDialog(props: SubComponentDialogProps){
                 <SubComponentDialogTitle id="customized-dialog-title" onClose={onAbort}>
                     {type === SubComponentDialogType.Create ? "Create new subcomponent" : "Edit subcomponent"}
                 </SubComponentDialogTitle>
-                <SubComponentDialogContent dividers>    
+                <SubComponentDialogContent dividers>  
+                    {error !== ""? <div className="subcomponent-dialog-error-container"><ErrorOutlineIcon className="subcomponent-dialog-error-icon"/> {error} </div> : ""}
                     <div className="subcomponent-dialog-content-container">            
                         <TextField 
                             disabled ={type === SubComponentDialogType.Edit ? true : false}

@@ -18,6 +18,7 @@ export interface SubComponentConfigurationViewProps extends ViewProps{
 
 interface DialogState{
     isOpen: boolean;
+    error: string;
     subcomponentToEdit: ISubcomponent;
 }
 
@@ -36,19 +37,19 @@ interface DeleteDialogState{
     const {configuration, showView, handleConfigurationUpdate} = props;
 
     // Edit Dialog
-    const [editDialogState, setEditDialogState] = React.useState<DialogState>({ isOpen:false, subcomponentToEdit: emptySubComponent});
+    const [editDialogState, setEditDialogState] = React.useState<DialogState>({ isOpen:false, error:"", subcomponentToEdit: emptySubComponent});
 
     const handleSubComponentChangedInEditDialog = (subcomponent: ISubcomponent) => {
-        setEditDialogState({isOpen: editDialogState.isOpen, subcomponentToEdit: subcomponent});
+        setEditDialogState({isOpen: editDialogState.isOpen, error: "", subcomponentToEdit: subcomponent});
     }
 
     const handleClickOpenEditDialog = (subcomponent: ISubcomponent) => {
-        setEditDialogState({isOpen:true, subcomponentToEdit: subcomponent});
+        setEditDialogState({isOpen:true, error: "", subcomponentToEdit: subcomponent});
     };
 
     const handleCloseEditDialog = () => {
         console.log("Abort subcomponent: ", editDialogState.subcomponentToEdit);
-        setEditDialogState({isOpen:false, subcomponentToEdit: emptySubComponent});
+        setEditDialogState({isOpen:false, error: "", subcomponentToEdit: emptySubComponent});
     };
 
     const handleSaveCloseEditDialog = () => {
@@ -60,36 +61,41 @@ interface DeleteDialogState{
         newConfiguration.subcomponents[index] = editDialogState.subcomponentToEdit;
         handleConfigurationUpdate(newConfiguration);
 
-        setEditDialogState({isOpen:false, subcomponentToEdit: emptySubComponent});
+        setEditDialogState({isOpen:false, error: "", subcomponentToEdit: emptySubComponent});
     };
 
     // Open Dialog
-    const [createDialogState, setCreateDialogState] = React.useState<DialogState>({ isOpen:false, subcomponentToEdit: emptySubComponent});
+    const [createDialogState, setCreateDialogState] = React.useState<DialogState>({ isOpen:false, error: "", subcomponentToEdit: emptySubComponent});
 
     const handleClickOpenCreateDialog = () => {
-        setCreateDialogState({isOpen: true, subcomponentToEdit: emptySubComponent});
+        setCreateDialogState({isOpen: true, error: "", subcomponentToEdit: emptySubComponent});
     };
 
     const handleSubComponentChangedInCreateDialog = (subcomponent: ISubcomponent) => {
-        setCreateDialogState({isOpen: createDialogState.isOpen, subcomponentToEdit: subcomponent});
+        setCreateDialogState({isOpen: createDialogState.isOpen, error: "", subcomponentToEdit: subcomponent});
     }
 
     const handleCloseCreateDialog = () => {
-        setCreateDialogState({isOpen: false, subcomponentToEdit: emptySubComponent});
+        setCreateDialogState({isOpen: false, error: "", subcomponentToEdit: emptySubComponent});
     };
 
     const handleSaveCloseCreateDialog = () => {
         
-        const newConfiguration: IConfiguration = JSON.parse(JSON.stringify(configuration));  
-
-        const index = newConfiguration.subcomponents.findIndex(subcomponent => subcomponent.id === createDialogState.subcomponentToEdit.id);
-        
-        if(index === -1){
-            newConfiguration.subcomponents.push(createDialogState.subcomponentToEdit);
-            handleConfigurationUpdate(newConfiguration);
-            setCreateDialogState({isOpen: false, subcomponentToEdit: emptySubComponent});
+        if(createDialogState.subcomponentToEdit.id === ""){
+            // An id is required to be able to save a subcomponent
+            setCreateDialogState({isOpen: true, error: "No ID specified", subcomponentToEdit: createDialogState.subcomponentToEdit});
         }else{
-            //TODO: SHOW ERROR THAT ID ALREADY EXISTS
+            const newConfiguration: IConfiguration = JSON.parse(JSON.stringify(configuration));  
+
+            const index = newConfiguration.subcomponents.findIndex(subcomponent => subcomponent.id === createDialogState.subcomponentToEdit.id);
+            
+            if(index === -1){
+                newConfiguration.subcomponents.push(createDialogState.subcomponentToEdit);
+                handleConfigurationUpdate(newConfiguration);
+                setCreateDialogState({isOpen: false, error: "", subcomponentToEdit: emptySubComponent});
+            }else{
+                setCreateDialogState({isOpen: true, error: "A subcomponent with this ID already exists", subcomponentToEdit: createDialogState.subcomponentToEdit});
+            }
         }
     };
 
@@ -142,6 +148,7 @@ interface DeleteDialogState{
                 type={SubComponentDialogType.Edit}
                 open={editDialogState.isOpen}
                 subcomponent={editDialogState.subcomponentToEdit}
+                error={editDialogState.error}
                 onSubComponentChange={handleSubComponentChangedInEditDialog}
                 onAbort={handleCloseEditDialog}
                 onSaveClose={handleSaveCloseEditDialog}
@@ -153,6 +160,7 @@ interface DeleteDialogState{
                 onSubComponentChange={handleSubComponentChangedInCreateDialog}
                 onAbort={handleCloseCreateDialog}
                 onSaveClose={handleSaveCloseCreateDialog}
+                error={createDialogState.error}
             />
             <DecisionDialog 
                 title={"Delete "+ deleteDialogState.subComponentsToDelete.length + " items"}
