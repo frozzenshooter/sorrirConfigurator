@@ -1,0 +1,22 @@
+.configuration-import-view{
+    display: flex;
+    flex-flow: column;
+}
+
+.configuration-import-view-import-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: 2%;
+}
+
+.configuration-import-view-button-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 2%;
+}
+
+.configuration-import-view-import-file-import{
+    padding: 0px 8px 8px 0px;
+}
