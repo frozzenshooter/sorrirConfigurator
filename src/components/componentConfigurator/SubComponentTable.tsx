@@ -153,7 +153,7 @@ function SubComponentTableHead(props: SubComponentTableHeadProps){
 }
 
 /**
- * 
+ * Style of the table toolbar
  */
 const useToolbarStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -254,6 +254,9 @@ export interface SubComponentTableProps {
     handleDeleteSubComponents: (subcomponents: ISubcomponent[], resetSelection :()=>void) => void;
 }
 
+/**
+ * Style of the table
+ */
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {

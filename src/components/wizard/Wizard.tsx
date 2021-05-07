@@ -35,7 +35,9 @@ export class Wizard extends Component<{},{}>{
 
         this.state  = {
             activeView: AvailableViews.WelcomeView,
-            configuration: {subcomponents: [
+            configuration: {
+                isShadowModeGranularityFine: false,
+                subcomponents: [
                 {
                     id: "Subcomponent1",
                     name: "Subcomponent1",
@@ -146,6 +148,8 @@ export class Wizard extends Component<{},{}>{
      * Show a selected view
      */
     private showView(view: AvailableViews){
+
+        //TODO: does this run into a problem when managing the confguration? - do you need to pass the complete state into it?
         this.setState({
             activeView: view
         });        
@@ -166,7 +170,7 @@ export class Wizard extends Component<{},{}>{
             case AvailableViews.ConfigurationImportView:
                 return <ConfigurationImportView showView={(availableView) => {this.showView(availableView);}} handleConfigurationUpdate={(configuration) => {this.handleConfigurationUpdate(configuration);}}/>
             case AvailableViews.ConfigurationExportView:
-                return <ConfigurationExportView showView={(availableView) => {this.showView(availableView);}} handleConfigurationUpdate={(configuration) => {this.handleConfigurationUpdate(configuration);}}/>
+                return <ConfigurationExportView showView={(availableView) => {this.showView(availableView);}} configuration={this.state.configuration} handleConfigurationUpdate={(configuration) => {this.handleConfigurationUpdate(configuration);}}/>
             default:
                 return <WelcomeView showView={(availableView) => {this.showView(availableView);}} handleConfigurationUpdate={(configuration) => {this.handleConfigurationUpdate(configuration);}}/>;
 

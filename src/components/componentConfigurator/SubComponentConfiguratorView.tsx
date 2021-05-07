@@ -11,6 +11,8 @@ import { ViewProps } from '../wizard/Wizard';
 import { SubComponentDialog , SubComponentDialogType, SubComponentDialogProps} from './SubComponentDialog';
 import ISubcomponent from '../../interfaces/ISubcomponent';
 import { DecisionDialog } from '../decisionDialog/DecisionDialog';
+import Switch from '@material-ui/core/Switch';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 export interface SubComponentConfigurationViewProps extends ViewProps{
     configuration: IConfiguration;
@@ -27,6 +29,11 @@ interface DeleteDialogState{
     subComponentsToDelete: ISubcomponent[];
     resetSelection: () => void;
 }
+
+interface ShadowModeGranularityChangeState {
+    isOpen: boolean;
+}
+
 /**
  * View for the configuration of subcomponents 
  */
@@ -122,10 +129,31 @@ interface DeleteDialogState{
         setDeleteDialogState({isOpen: false, subComponentsToDelete:[], resetSelection: () => {}});
     }
 
+
+    // ShadowModeGranularity
+    const handleShadowModeGranularityChange = (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
+        const newConfiguration: IConfiguration = JSON.parse(JSON.stringify(configuration));  
+        newConfiguration.isShadowModeGranularityFine = checked;
+
+        handleConfigurationUpdate(newConfiguration);
+    }
+
     return (
         <div>
             <h1>Subcomponents and shadowmodes</h1>
-
+            <div className="component-configurator-container">
+                <FormControlLabel
+                    label={"Shadowmode Granularity: " + (configuration.isShadowModeGranularityFine ? "Fine" : "Normal")}
+                    control={        
+                        <Switch
+                            checked={configuration.isShadowModeGranularityFine}
+                            onChange={handleShadowModeGranularityChange}
+                            color="primary"
+                            name="checkedB"
+                            inputProps={{ 'aria-label': 'primary checkbox' }}
+                        />}
+                />
+            </div>
             <div className="component-configurator-container">
                     <SubComponentTable
                         subcomponents={configuration.subcomponents}
@@ -169,7 +197,6 @@ interface DeleteDialogState{
                 handleAccept={handleDeleteAccepted}
                 handleCancel={handleDeleteAborted}            
             />
-           
         </div>
     );
     
