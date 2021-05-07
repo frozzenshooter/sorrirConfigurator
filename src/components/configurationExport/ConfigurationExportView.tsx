@@ -13,7 +13,7 @@ export const ExportFile = (props:ExportFileProps) => {
     const {configuration} = props;
 
     const href= "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(configuration));
-    
+
     //TODO: The classname is static at the moment - has to be set dynamic in order to fit to the general design
     return (
         <a href={href} download="configuration.json" className="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary">
@@ -35,12 +35,12 @@ export interface ConfigurationExportViewProps extends ViewProps {
     
     return (<div className="configuration-export-view">
                 <h1>Export the configuration</h1>
-                <div className="configuration-export-view-container">
+                <div className="configuration-export-view-export-container">
                     <ExportFile 
                             configuration={configuration}
                         />
                 </div>
-                <div className="configuration-export-view-container">
+                <div className="configuration-export-view-button-container">
 
                     <Button variant="contained" color="primary" onClick={() => showView(AvailableViews.ComponentConfigurationView)}>
                         Go back

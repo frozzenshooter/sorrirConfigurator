@@ -8,7 +8,7 @@ import './SubComponentConfiguratorView.css';
 import { SubComponentTable } from './SubComponentTable';
 import { AvailableViews } from '../AvailableViews';
 import { ViewProps } from '../wizard/Wizard';
-import { SubComponentDialog , SubComponentDialogType, SubComponentDialogProps} from './SubComponentDialog';
+import { SubComponentDialog , SubComponentDialogType} from './SubComponentDialog';
 import ISubcomponent from '../../interfaces/ISubcomponent';
 import { DecisionDialog } from '../decisionDialog/DecisionDialog';
 import Switch from '@material-ui/core/Switch';

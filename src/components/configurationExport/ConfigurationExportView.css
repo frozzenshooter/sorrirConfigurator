@@ -3,7 +3,14 @@
     flex-flow: column;
 }
 
-.configuration-export-view-container{
+.configuration-export-view-export-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: 2%;
+}
+
+.configuration-export-view-button-container{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
