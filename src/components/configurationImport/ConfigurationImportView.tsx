@@ -5,8 +5,10 @@ import { AvailableViews } from '../AvailableViews';
 import {ViewProps} from '../wizard/Wizard';
 import { ConfigurationFileInput } from './ConfigurationFileInput';
 import './ConfigurationImportView.css';
-import TextField from '@material-ui/core/TextField';
 import IConfiguration from '../../interfaces/IConfiguration';
+import SyntaxHighlighter from 'react-syntax-highlighter';
+import lightfair from 'react-syntax-highlighter/dist/esm/styles/hljs/lightfair';
+import { Alert, AlertTitle } from '@material-ui/lab';
 
 /**
  * View for the configuration import
@@ -16,21 +18,29 @@ export const ConfigurationImportView = (props: ViewProps) => {
     const {showView, handleConfigurationUpdate} = props;
 
     const handleFileChange = (filename: string, jsonData: string) => {
-        console.log(filename);
+        console.log(filename, jsonData);
         try{
             const loadedConfig : IConfiguration = JSON.parse(jsonData);
             const text : string = JSON.stringify(loadedConfig, undefined, 4);
             setJsonData(text);
             handleConfigurationUpdate(loadedConfig);
+            setParserError("");
         }catch(ex){
+            setJsonData(jsonData);
 
-            setJsonData("Not possible to parse the data: " + (ex as Error).message);
+            setParserError((ex as Error).message);
         }
 
     };
 
     const [jsonData, setJsonData] = React.useState<string>("");
+    const [parserError, setParserError] = React.useState<string>("");
 
+    /*
+    
+        SYNTAX ONLY HIGHLIGHTED - YOU CANT EDIT IT 
+
+     */
     return (
         <div className="configuration-import-view">
             <h1>Import the configuration</h1>
@@ -41,22 +51,40 @@ export const ConfigurationImportView = (props: ViewProps) => {
                         value={""}
                     />
                 </div>
-                <TextField
-                    label="Configuration"
-                    multiline
-                    fullWidth={true}
-                    rowsMax={25}
-                    value={jsonData}
-                    variant="outlined"
-                    onChange={(ev)=>{setJsonData(ev.target.value);}}
-                />
+                <div className="configuration-import-view-syntaxhighlighter-container">
+                    {parserError != ""?
+                            <Alert severity="error">
+                                <AlertTitle>Error</AlertTitle>
+                                <strong>Failure in the import:</strong>{parserError}
+                            </Alert>
+                            : ""
+                        }
+                    {jsonData.trim() != ""?
+                        <SyntaxHighlighter 
+                            language='json' 
+                            style={lightfair}
+                            showLineNumbers={true}
+                            wrapLongLines={true}
+                        >
+                            {jsonData}
+                        </SyntaxHighlighter> 
+                    :
+                        ""
+                    }
+                </div>
+
+
             </div>
             <div className="configuration-import-view-button-container">
                 <Button variant="contained" color="primary" onClick={() => showView(AvailableViews.WelcomeView)}>
                     Go back
                 </Button><br/>
-                <Button variant="contained" color="primary" onClick={() => showView(AvailableViews.ComponentConfigurationView)}>
-                    Create new instead
+                <Button 
+                    variant="contained" 
+                    color="primary" 
+                    onClick={() => showView(AvailableViews.ComponentConfigurationView)}
+                    disabled={parserError != ""}>
+                    Edit subcomponents
                 </Button>
             </div>
 

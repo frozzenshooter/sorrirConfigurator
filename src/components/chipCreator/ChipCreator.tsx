@@ -37,7 +37,7 @@ export default class ChipCreator extends React.Component<ChipCreatorProps, {}> {
 
                     onKeyPress={(ev) =>
                     {                        
-                        if (ev.key === 'Enter' && this.state.shadowmodeInput !== "") {
+                        if (ev.key === 'Enter' && this.state.shadowmodeInput.trim() !== "" ) {
                             ev.preventDefault();
                             this.setState({shadowmodeInput: ""});
                             this.props.handleChipCreation({ id: this.state.shadowmodeInput, name: this.state.shadowmodeInput});

@@ -16,3 +16,9 @@
     justify-content: space-between;
     padding: 2%;
 }
+
+.configuration-export-view-syntaxhighlighter-container{
+    padding-right: 2%;
+    padding-left: 2%;
+    width: 96%;
+}

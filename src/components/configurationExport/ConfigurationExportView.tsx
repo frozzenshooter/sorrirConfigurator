@@ -3,6 +3,8 @@ import IConfiguration from '../../interfaces/IConfiguration';
 import { AvailableViews } from '../AvailableViews';
 import {ViewProps} from '../wizard/Wizard';
 import './ConfigurationExportView.css';
+import SyntaxHighlighter from 'react-syntax-highlighter';
+import lightfair from 'react-syntax-highlighter/dist/esm/styles/hljs/lightfair';
 
 interface ExportFileProps {
     configuration: IConfiguration;
@@ -31,6 +33,7 @@ export interface ConfigurationExportViewProps extends ViewProps {
  export const ConfigurationExportView = (props: ConfigurationExportViewProps) => {
 
     const {configuration, showView} = props;
+    const configurationString = JSON.stringify(configuration, undefined, 4)
     
     return (<div className="configuration-export-view">
                 <h1>Export the configuration</h1>
@@ -38,6 +41,20 @@ export interface ConfigurationExportViewProps extends ViewProps {
                     <ExportFile 
                             configuration={configuration}
                         />
+                </div>
+                <div className="configuration-export-view-syntaxhighlighter-container">
+                    {configurationString.trim() != ""?
+                        <SyntaxHighlighter 
+                            language='json' 
+                            style={lightfair}
+                            showLineNumbers={true}
+                            wrapLongLines={true}
+                        >
+                            {configurationString}
+                        </SyntaxHighlighter> 
+                    :
+                        ""
+                    }
                 </div>
                 <div className="configuration-export-view-button-container">
 

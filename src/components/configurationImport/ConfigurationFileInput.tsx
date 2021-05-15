@@ -47,6 +47,7 @@ export const ConfigurationFileInput = (props: ConfigurationFileInput) => {
                 multiple={false}
                 value={value}
             />
-        </Button>
+
+       </Button>
     );
 }

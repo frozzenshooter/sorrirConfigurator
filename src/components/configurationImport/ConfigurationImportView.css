@@ -5,9 +5,10 @@
 
 .configuration-import-view-import-container{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     padding: 2%;
+    align-items: center;
 }
 
 .configuration-import-view-button-container{
@@ -19,4 +20,10 @@
 
 .configuration-import-view-import-file-import{
     padding: 0px 8px 8px 0px;
+}
+
+.configuration-import-view-syntaxhighlighter-container{
+    padding-right: 2%;
+    padding-left: 2%;
+    width: 96%;
 }
