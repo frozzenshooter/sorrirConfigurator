@@ -4,12 +4,12 @@
 }
 
 .configuration-import-view-import-container{
-    padding-top: 76px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     padding-left: 2%;
     padding-right: 2%;
+    padding-top: 16px;
     align-items: center;
 }
 

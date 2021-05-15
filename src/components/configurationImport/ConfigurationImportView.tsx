@@ -16,15 +16,13 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    grow: {
-      flexGrow: 1,
-    },
-    title: {
-      display: 'none',
-      [theme.breakpoints.up('sm')]: {
-        display: 'block',
-        }
-    },
+        grow: {
+            flexGrow: 1,
+        },
+        title: {
+            display: 'block'
+        },
+        appBarSpacer: theme.mixins.toolbar
     })
 );
 
@@ -72,7 +70,8 @@ export const ConfigurationImportView = (props: ViewProps) => {
                     </Toolbar>
                 </AppBar>
             </div>
-            <div className="configuration-import-view-import-container">
+            <div className={classes.appBarSpacer}></div>
+            <div className="configuration-import-view-import-container ">
                     <ConfigurationFileInput
                         handleChange={handleFileChange}
                         value={""}

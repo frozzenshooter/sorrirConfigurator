@@ -12,15 +12,13 @@ import Toolbar from '@material-ui/core/Toolbar';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    grow: {
-      flexGrow: 1,
-    },
-    title: {
-      display: 'none',
-      [theme.breakpoints.up('sm')]: {
-        display: 'block',
-        }
-    },
+        grow: {
+        flexGrow: 1,
+        },
+        title: {
+            display: 'block'
+        },
+        appBarSpacer: theme.mixins.toolbar
     })
 );
 
@@ -66,6 +64,7 @@ export interface ConfigurationExportViewProps extends ViewProps {
                         </Toolbar>
                     </AppBar>
                 </div>
+                <div className={classes.appBarSpacer}></div>
                 <div  className="configuration-export-view-export-container">
                         <ExportFile 
                                 configuration={configuration}

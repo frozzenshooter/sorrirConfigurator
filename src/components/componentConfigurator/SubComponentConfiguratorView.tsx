@@ -21,15 +21,13 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    grow: {
-      flexGrow: 1,
-    },
-    title: {
-      display: 'none',
-      [theme.breakpoints.up('sm')]: {
-        display: 'block',
-        }
-    },
+        grow: {
+        flexGrow: 1,
+        },
+        title: {
+            display: 'block'
+        },
+        appBarSpacer: theme.mixins.toolbar
     })
 );
 
@@ -170,6 +168,7 @@ interface ShadowModeGranularityChangeState {
                     </Toolbar>
                 </AppBar>
             </div>
+            <div className={classes.appBarSpacer}></div>
             <div className="component-configurator-container">
                     <SubComponentTable
                         subcomponents={configuration.subComponents}
