@@ -1,6 +1,6 @@
 import { Button } from '@material-ui/core';
 import React from 'react';
-import {Component, VoidFunctionComponent} from 'react';
+import Toolbar from '@material-ui/core/Toolbar';
 import { AvailableViews } from '../AvailableViews';
 import {ViewProps} from '../wizard/Wizard';
 import { ConfigurationFileInput } from './ConfigurationFileInput';
@@ -9,6 +9,24 @@ import IConfiguration from '../../interfaces/IConfiguration';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import lightfair from 'react-syntax-highlighter/dist/esm/styles/hljs/lightfair';
 import { Alert, AlertTitle } from '@material-ui/lab';
+import AppBar from '@material-ui/core/AppBar';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    grow: {
+      flexGrow: 1,
+    },
+    title: {
+      display: 'none',
+      [theme.breakpoints.up('sm')]: {
+        display: 'block',
+        }
+    },
+    })
+);
 
 /**
  * View for the configuration import
@@ -16,6 +34,8 @@ import { Alert, AlertTitle } from '@material-ui/lab';
 export const ConfigurationImportView = (props: ViewProps) => {
 
     const {showView, handleConfigurationUpdate} = props;
+
+    const classes = useStyles();
 
     const handleFileChange = (filename: string, jsonData: string) => {
         console.log(filename, jsonData);
@@ -43,23 +63,29 @@ export const ConfigurationImportView = (props: ViewProps) => {
      */
     return (
         <div className="configuration-import-view">
-            <h1>Import the configuration</h1>
+            <div className={classes.grow}>
+                <AppBar position="fixed">
+                    <Toolbar>
+                        <Typography className={classes.title} variant="h6" noWrap>
+                            Configuration import
+                        </Typography>
+                    </Toolbar>
+                </AppBar>
+            </div>
             <div className="configuration-import-view-import-container">
-                <div className="configuration-import-view-import-file-import">
                     <ConfigurationFileInput
                         handleChange={handleFileChange}
                         value={""}
                     />
-                </div>
                 <div className="configuration-import-view-syntaxhighlighter-container">
-                    {parserError != ""?
+                    {parserError !== ""?
                             <Alert severity="error">
                                 <AlertTitle>Error</AlertTitle>
                                 <strong>Failure in the import:</strong>{parserError}
                             </Alert>
                             : ""
                         }
-                    {jsonData.trim() != ""?
+                    {jsonData.trim() !== ""?
                         <SyntaxHighlighter 
                             language='json' 
                             style={lightfair}
@@ -72,8 +98,6 @@ export const ConfigurationImportView = (props: ViewProps) => {
                         ""
                     }
                 </div>
-
-
             </div>
             <div className="configuration-import-view-button-container">
                 <Button variant="contained" color="primary" onClick={() => showView(AvailableViews.WelcomeView)}>
@@ -83,7 +107,7 @@ export const ConfigurationImportView = (props: ViewProps) => {
                     variant="contained" 
                     color="primary" 
                     onClick={() => showView(AvailableViews.ComponentConfigurationView)}
-                    disabled={parserError != ""}>
+                    disabled={parserError !== ""}>
                     Edit subcomponents
                 </Button>
             </div>

@@ -5,9 +5,12 @@
 
 .configuration-export-view-export-container{
     display: flex;
-    flex-direction: row;
     justify-content: center;
-    padding: 2%;
+    padding-right: 2%;
+    padding-left: 2%;
+    width: 96%;
+    flex-direction: column;
+    padding-top: 76px;
 }
 
 .configuration-export-view-button-container{
@@ -17,8 +20,3 @@
     padding: 2%;
 }
 
-.configuration-export-view-syntaxhighlighter-container{
-    padding-right: 2%;
-    padding-left: 2%;
-    width: 96%;
-}

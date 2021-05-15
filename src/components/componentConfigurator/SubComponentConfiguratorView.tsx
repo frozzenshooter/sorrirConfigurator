@@ -1,5 +1,9 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
+import AppBar from '@material-ui/core/AppBar';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import Toolbar from '@material-ui/core/Toolbar';
 
 // Local imports
 
@@ -13,6 +17,21 @@ import ISubComponent from '../../interfaces/ISubComponent';
 import { DecisionDialog } from '../decisionDialog/DecisionDialog';
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    grow: {
+      flexGrow: 1,
+    },
+    title: {
+      display: 'none',
+      [theme.breakpoints.up('sm')]: {
+        display: 'block',
+        }
+    },
+    })
+);
 
 export interface SubComponentConfigurationViewProps extends ViewProps{
     configuration: IConfiguration;
@@ -42,6 +61,8 @@ interface ShadowModeGranularityChangeState {
     const emptySubComponent : ISubComponent = {id:"", name:"", shadowmodes: []};
 
     const {configuration, showView, handleConfigurationUpdate} = props;
+
+    const classes = useStyles();
 
     // Edit Dialog
     const [editDialogState, setEditDialogState] = React.useState<DialogState>({ isOpen:false, error:"", subcomponentToEdit: emptySubComponent});
@@ -140,8 +161,24 @@ interface ShadowModeGranularityChangeState {
 
     return (
         <div>
-            <h1>Subcomponents and shadowmodes</h1>
+            <div className={classes.grow}>
+                <AppBar position="fixed">
+                    <Toolbar>
+                        <Typography className={classes.title} variant="h6" noWrap>
+                            Configuration import
+                        </Typography>
+                    </Toolbar>
+                </AppBar>
+            </div>
             <div className="component-configurator-container">
+                    <SubComponentTable
+                        subcomponents={configuration.subComponents}
+                        handleCreateSubComponent={handleClickOpenCreateDialog}
+                        handleDeleteSubComponents={handleDeleteSubComponents}
+                        handleEditSubComponent={handleClickOpenEditDialog}
+                    />
+            </div>
+            <div className="component-configurator-button-container">
                 <FormControlLabel
                     label={"Shadowmode Granularity: " + (configuration.isShadowModeGranularityFine ? "Fine" : "Normal")}
                     control={        
@@ -154,15 +191,6 @@ interface ShadowModeGranularityChangeState {
                         />}
                 />
             </div>
-            <div className="component-configurator-container">
-                    <SubComponentTable
-                        subcomponents={configuration.subComponents}
-                        handleCreateSubComponent={handleClickOpenCreateDialog}
-                        handleDeleteSubComponents={handleDeleteSubComponents}
-                        handleEditSubComponent={handleClickOpenEditDialog}
-                    />
-            </div>
-
             <div className="component-configurator-button-container">
                 <Button variant="contained" color="primary" onClick={() => showView(AvailableViews.WelcomeView)}>
                     Go back

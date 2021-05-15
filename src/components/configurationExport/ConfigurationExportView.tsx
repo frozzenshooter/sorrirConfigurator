@@ -5,6 +5,25 @@ import {ViewProps} from '../wizard/Wizard';
 import './ConfigurationExportView.css';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import lightfair from 'react-syntax-highlighter/dist/esm/styles/hljs/lightfair';
+import AppBar from '@material-ui/core/AppBar';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import Toolbar from '@material-ui/core/Toolbar';
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    grow: {
+      flexGrow: 1,
+    },
+    title: {
+      display: 'none',
+      [theme.breakpoints.up('sm')]: {
+        display: 'block',
+        }
+    },
+    })
+);
+
 
 interface ExportFileProps {
     configuration: IConfiguration;
@@ -35,26 +54,34 @@ export interface ConfigurationExportViewProps extends ViewProps {
     const {configuration, showView} = props;
     const configurationString = JSON.stringify(configuration, undefined, 4)
     
+    const classes = useStyles();
+
     return (<div className="configuration-export-view">
-                <h1>Export the configuration</h1>
-                <div className="configuration-export-view-export-container">
-                    <ExportFile 
-                            configuration={configuration}
-                        />
+                <div className={classes.grow}>
+                    <AppBar position="fixed">
+                        <Toolbar>
+                            <Typography className={classes.title} variant="h6" noWrap>
+                                Configuration export
+                            </Typography>
+                        </Toolbar>
+                    </AppBar>
                 </div>
-                <div className="configuration-export-view-syntaxhighlighter-container">
-                    {configurationString.trim() != ""?
-                        <SyntaxHighlighter 
-                            language='json' 
-                            style={lightfair}
-                            showLineNumbers={true}
-                            wrapLongLines={true}
-                        >
-                            {configurationString}
-                        </SyntaxHighlighter> 
-                    :
-                        ""
-                    }
+                <div  className="configuration-export-view-export-container">
+                        <ExportFile 
+                                configuration={configuration}
+                            />
+                        {configurationString.trim() !== ""?
+                            <SyntaxHighlighter 
+                                language='json' 
+                                style={lightfair}
+                                showLineNumbers={true}
+                                wrapLongLines={true}
+                            >
+                                {configurationString}
+                            </SyntaxHighlighter> 
+                        :
+                            ""
+                        }
                 </div>
                 <div className="configuration-export-view-button-container">
 

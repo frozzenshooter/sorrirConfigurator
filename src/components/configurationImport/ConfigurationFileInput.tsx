@@ -1,6 +1,6 @@
 import { Button } from '@material-ui/core';
 
-export interface ConfigurationFileInput{
+export interface IConfigurationFileInput{
     handleChange: (filename: string, jsonData: string) => void;
     value: string;
 }
@@ -11,7 +11,7 @@ export interface ConfigurationFileInput{
  * @param props 
  * @returns 
  */
-export const ConfigurationFileInput = (props: ConfigurationFileInput) => {
+export const ConfigurationFileInput = (props: IConfigurationFileInput) => {
     const {handleChange, value} = props;
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
