@@ -9,7 +9,7 @@ import { SubComponentTable } from './SubComponentTable';
 import { AvailableViews } from '../AvailableViews';
 import { ViewProps } from '../wizard/Wizard';
 import { SubComponentDialog , SubComponentDialogType} from './SubComponentDialog';
-import ISubcomponent from '../../interfaces/ISubcomponent';
+import ISubComponent from '../../interfaces/ISubComponent';
 import { DecisionDialog } from '../decisionDialog/DecisionDialog';
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -21,12 +21,12 @@ export interface SubComponentConfigurationViewProps extends ViewProps{
 interface DialogState{
     isOpen: boolean;
     error: string;
-    subcomponentToEdit: ISubcomponent;
+    subcomponentToEdit: ISubComponent;
 }
 
 interface DeleteDialogState{
     isOpen: boolean;
-    subComponentsToDelete: ISubcomponent[];
+    subComponentsToDelete: ISubComponent[];
     resetSelection: () => void;
 }
 
@@ -39,18 +39,18 @@ interface ShadowModeGranularityChangeState {
  */
  export function SubComponentConfiguratorView (props: SubComponentConfigurationViewProps) {
 
-    const emptySubComponent : ISubcomponent = {id:"", name:"", shadowmodes: []};
+    const emptySubComponent : ISubComponent = {id:"", name:"", shadowmodes: []};
 
     const {configuration, showView, handleConfigurationUpdate} = props;
 
     // Edit Dialog
     const [editDialogState, setEditDialogState] = React.useState<DialogState>({ isOpen:false, error:"", subcomponentToEdit: emptySubComponent});
 
-    const handleSubComponentChangedInEditDialog = (subcomponent: ISubcomponent) => {
+    const handleSubComponentChangedInEditDialog = (subcomponent: ISubComponent) => {
         setEditDialogState({isOpen: editDialogState.isOpen, error: "", subcomponentToEdit: subcomponent});
     }
 
-    const handleClickOpenEditDialog = (subcomponent: ISubcomponent) => {
+    const handleClickOpenEditDialog = (subcomponent: ISubComponent) => {
         setEditDialogState({isOpen:true, error: "", subcomponentToEdit: subcomponent});
     };
 
@@ -63,9 +63,9 @@ interface ShadowModeGranularityChangeState {
         const newConfiguration: IConfiguration = JSON.parse(JSON.stringify(configuration));  
 
         // This index has to exists because the user cant edit an id
-        const index = newConfiguration.subcomponents.findIndex(subcomponent => subcomponent.id === editDialogState.subcomponentToEdit.id);
+        const index = newConfiguration.subComponents.findIndex(subcomponent => subcomponent.id === editDialogState.subcomponentToEdit.id);
         
-        newConfiguration.subcomponents[index] = editDialogState.subcomponentToEdit;
+        newConfiguration.subComponents[index] = editDialogState.subcomponentToEdit;
         handleConfigurationUpdate(newConfiguration);
 
         setEditDialogState({isOpen:false, error: "", subcomponentToEdit: emptySubComponent});
@@ -78,7 +78,7 @@ interface ShadowModeGranularityChangeState {
         setCreateDialogState({isOpen: true, error: "", subcomponentToEdit: emptySubComponent});
     };
 
-    const handleSubComponentChangedInCreateDialog = (subcomponent: ISubcomponent) => {
+    const handleSubComponentChangedInCreateDialog = (subcomponent: ISubComponent) => {
         setCreateDialogState({isOpen: createDialogState.isOpen, error: "", subcomponentToEdit: subcomponent});
     }
 
@@ -94,10 +94,10 @@ interface ShadowModeGranularityChangeState {
         }else{
             const newConfiguration: IConfiguration = JSON.parse(JSON.stringify(configuration));  
 
-            const index = newConfiguration.subcomponents.findIndex(subcomponent => subcomponent.id === createDialogState.subcomponentToEdit.id);
+            const index = newConfiguration.subComponents.findIndex(subcomponent => subcomponent.id === createDialogState.subcomponentToEdit.id);
             
             if(index === -1){
-                newConfiguration.subcomponents.push(createDialogState.subcomponentToEdit);
+                newConfiguration.subComponents.push(createDialogState.subcomponentToEdit);
                 handleConfigurationUpdate(newConfiguration);
                 setCreateDialogState({isOpen: false, error: "", subcomponentToEdit: emptySubComponent});
             }else{
@@ -109,7 +109,7 @@ interface ShadowModeGranularityChangeState {
     // Delete Dialog
     const [deleteDialogState, setDeleteDialogState] = React.useState<DeleteDialogState>({isOpen: false, subComponentsToDelete:[], resetSelection: () => {}});
 
-    const handleDeleteSubComponents = (subComponentsToDelete: ISubcomponent[], resetSelection: () => void) => {
+    const handleDeleteSubComponents = (subComponentsToDelete: ISubComponent[], resetSelection: () => void) => {
         setDeleteDialogState({isOpen: true, subComponentsToDelete: subComponentsToDelete, resetSelection: resetSelection});
     };
 
@@ -117,7 +117,7 @@ interface ShadowModeGranularityChangeState {
         const newConfiguration: IConfiguration = JSON.parse(JSON.stringify(configuration));  
 
         for(let subComponentToDelete of deleteDialogState.subComponentsToDelete){
-            newConfiguration.subcomponents = newConfiguration.subcomponents.filter(subcomponent => subcomponent.id !== subComponentToDelete.id);
+            newConfiguration.subComponents = newConfiguration.subComponents.filter(subcomponent => subcomponent.id !== subComponentToDelete.id);
         }
        
         deleteDialogState.resetSelection();
@@ -156,7 +156,7 @@ interface ShadowModeGranularityChangeState {
             </div>
             <div className="component-configurator-container">
                     <SubComponentTable
-                        subcomponents={configuration.subcomponents}
+                        subcomponents={configuration.subComponents}
                         handleCreateSubComponent={handleClickOpenCreateDialog}
                         handleDeleteSubComponents={handleDeleteSubComponents}
                         handleEditSubComponent={handleClickOpenEditDialog}
@@ -175,7 +175,7 @@ interface ShadowModeGranularityChangeState {
             <SubComponentDialog
                 type={SubComponentDialogType.Edit}
                 open={editDialogState.isOpen}
-                subcomponent={editDialogState.subcomponentToEdit}
+                subComponent={editDialogState.subcomponentToEdit}
                 error={editDialogState.error}
                 onSubComponentChange={handleSubComponentChangedInEditDialog}
                 onAbort={handleCloseEditDialog}
@@ -184,7 +184,7 @@ interface ShadowModeGranularityChangeState {
             <SubComponentDialog
                 type={SubComponentDialogType.Create}
                 open={createDialogState.isOpen}
-                subcomponent={createDialogState.subcomponentToEdit}
+                subComponent={createDialogState.subcomponentToEdit}
                 onSubComponentChange={handleSubComponentChangedInCreateDialog}
                 onAbort={handleCloseCreateDialog}
                 onSaveClose={handleSaveCloseCreateDialog}

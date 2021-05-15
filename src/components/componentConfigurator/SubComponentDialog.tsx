@@ -11,7 +11,7 @@ import TextField from '@material-ui/core/TextField';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 
 import { createStyles, Theme, withStyles, WithStyles } from '@material-ui/core/styles';
-import ISubcomponent from '../../interfaces/ISubcomponent';
+import ISubComponent from '../../interfaces/ISubComponent';
 import ChipCreator from '../chipCreator/ChipCreator';
 import IShadowmode from '../../interfaces/IShadowmode';
 import './SubComponentDialog.css';
@@ -72,31 +72,31 @@ export interface SubComponentDialogProps{
     type: SubComponentDialogType;
     open: boolean;
     error: string;
-    subcomponent: ISubcomponent;
-    onSubComponentChange: (subcomponent: ISubcomponent) => void;
+    subComponent: ISubComponent;
+    onSubComponentChange: (subComponent: ISubComponent) => void;
     onAbort: () => void;
     onSaveClose: () => void;
 }
 
 export function SubComponentDialog(props: SubComponentDialogProps){
 
-    const {type, open, error, onAbort, onSaveClose, subcomponent, onSubComponentChange} = props;
+    const {type, open, error, onAbort, onSaveClose, subComponent, onSubComponentChange} = props;
 
     const handleChipCreation = (shadowmodeToCreate: IShadowmode) => {
-        const chipExisting = subcomponent.shadowmodes.findIndex(shadowmode => shadowmode.id === shadowmodeToCreate.id);
+        const chipExisting = subComponent.shadowmodes.findIndex(shadowmode => shadowmode.id === shadowmodeToCreate.id);
         
         if(chipExisting === -1){
 
-            const newShadowModes : IShadowmode[] = subcomponent.shadowmodes.slice();
+            const newShadowModes : IShadowmode[] = subComponent.shadowmodes.slice();
             newShadowModes.push(
             {
                 id: shadowmodeToCreate.id,
                 name: shadowmodeToCreate.name
             });
 
-            const newSubComponentState : ISubcomponent = {
-                id: subcomponent.id,
-                name: subcomponent.name,
+            const newSubComponentState : ISubComponent = {
+                id: subComponent.id,
+                name: subComponent.name,
                 shadowmodes: newShadowModes 
             };
 
@@ -105,11 +105,11 @@ export function SubComponentDialog(props: SubComponentDialogProps){
     };
 
     const handleChipDeletion = (shadowmodeToDelete: IShadowmode) => {
-        const newShadowModes = subcomponent.shadowmodes.filter(shadowmode => shadowmode.id !== shadowmodeToDelete.id ).slice();
+        const newShadowModes = subComponent.shadowmodes.filter(shadowmode => shadowmode.id !== shadowmodeToDelete.id ).slice();
 
-        const newSubComponentState : ISubcomponent = {
-            id: subcomponent.id,
-            name: subcomponent.name,
+        const newSubComponentState : ISubComponent = {
+            id: subComponent.id,
+            name: subComponent.name,
             shadowmodes: newShadowModes 
         };
 
@@ -117,20 +117,20 @@ export function SubComponentDialog(props: SubComponentDialogProps){
     };
 
     const handleIDInput = (ev : React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-        const newSubComponentState : ISubcomponent = {
+        const newSubComponentState : ISubComponent = {
             id: ev.target.value,
-            name: subcomponent.name,
-            shadowmodes: subcomponent.shadowmodes 
+            name: subComponent.name,
+            shadowmodes: subComponent.shadowmodes 
         };
 
         onSubComponentChange(newSubComponentState);  
     };
 
     const handleNameInput = (ev : React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-        const newSubComponentState : ISubcomponent = {
-            id: subcomponent.id,
+        const newSubComponentState : ISubComponent = {
+            id: subComponent.id,
             name: ev.target.value,
-            shadowmodes: subcomponent.shadowmodes 
+            shadowmodes: subComponent.shadowmodes 
         };
 
         onSubComponentChange(newSubComponentState);
@@ -153,17 +153,17 @@ export function SubComponentDialog(props: SubComponentDialogProps){
                             disabled ={type === SubComponentDialogType.Edit ? true : false}
                             id="id"
                             label="ID" 
-                            value={subcomponent.id}
+                            value={subComponent.id}
                             onChange={handleIDInput}
                             className="subcomponent-dialog-content-container-item"/>
                         <TextField 
                             id="name"
                             label="Name"
-                            value={subcomponent.name}
+                            value={subComponent.name}
                             onChange={handleNameInput}
                             className="subcomponent-dialog-content-container-item"/>
                         <ChipCreator
-                            shadowmodes={subcomponent.shadowmodes}
+                            shadowmodes={subComponent.shadowmodes}
                             handleChipCreation={handleChipCreation}
                             handleChipDeletion={handleChipDeletion}
                         />

@@ -1,6 +1,6 @@
-import ISubcomponent from "./ISubcomponent";
+import ISubComponent from "./ISubComponent";
 
 export default interface IConfiguration {
-    subcomponents: ISubcomponent[];
+    subComponents: ISubComponent[];
     isShadowModeGranularityFine: boolean;
 }

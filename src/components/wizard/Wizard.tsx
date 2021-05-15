@@ -37,7 +37,7 @@ export class Wizard extends Component<{},{}>{
             activeView: AvailableViews.WelcomeView,
             configuration: {
                 isShadowModeGranularityFine: false,
-                subcomponents: [
+                subComponents: [
                 {
                     id: "Subcomponent1",
                     name: "Subcomponent1",

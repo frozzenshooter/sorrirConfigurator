@@ -1,5 +1,5 @@
 import React from 'react';
-import ISubcomponent from "../../interfaces/ISubcomponent";
+import ISubComponent from "../../interfaces/ISubComponent";
 import { createStyles, lighten, makeStyles, Theme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import clsx from 'clsx';
@@ -52,7 +52,7 @@ function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
  * @param orderBy the key the values will be sorted by
  * @returns a comparator (function) for sorting
  */
-function getComparator<Key extends keyof ISubcomponent>( order: Order, orderBy: Key)
+function getComparator<Key extends keyof ISubComponent>( order: Order, orderBy: Key)
     :(a: { [key in Key]: number | string | IShadowmode[]}, b: { [key in Key]: number | string | IShadowmode[]}) => number
 {
     return order === 'desc'
@@ -81,7 +81,7 @@ function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
  * Data for the HeadCell
  */
 interface HeadCell {
-    id: keyof ISubcomponent;
+    id: keyof ISubComponent;
     label: string;
 }
 
@@ -97,7 +97,7 @@ const headCells: HeadCell[] = [
 interface SubComponentTableHeadProps{
     classes: ReturnType<typeof useStyles>;
     numSelected: number;
-    onRequestSort: (event: React.MouseEvent<unknown>, property: keyof ISubcomponent) => void;
+    onRequestSort: (event: React.MouseEvent<unknown>, property: keyof ISubComponent) => void;
     onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
     order: Order;
     orderBy: string;
@@ -112,7 +112,7 @@ interface SubComponentTableHeadProps{
  */
 function SubComponentTableHead(props: SubComponentTableHeadProps){
     const {classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort} = props;
-    const createSortHandler = (property: keyof ISubcomponent) => (event: React.MouseEvent<unknown>) => {
+    const createSortHandler = (property: keyof ISubComponent) => (event: React.MouseEvent<unknown>) => {
       onRequestSort(event, property);
     };
 
@@ -248,10 +248,10 @@ const SubComponentTableToolbar = (props: SubComponentTableToolbarProps) => {
  * Properties for the SubComponentTable 
  */
 export interface SubComponentTableProps {
-    subcomponents: ISubcomponent[];
+    subcomponents: ISubComponent[];
     handleCreateSubComponent: () => void;
-    handleEditSubComponent: (subcomponent: ISubcomponent) => void;
-    handleDeleteSubComponents: (subcomponents: ISubcomponent[], resetSelection :()=>void) => void;
+    handleEditSubComponent: (subcomponent: ISubComponent) => void;
+    handleDeleteSubComponents: (subcomponents: ISubComponent[], resetSelection :()=>void) => void;
 }
 
 /**
@@ -296,12 +296,12 @@ export function SubComponentTable(props: SubComponentTableProps) {
 
     const classes = useStyles();
     const [order, setOrder] = React.useState<Order>('asc');
-    const [orderBy, setOrderBy] = React.useState<keyof ISubcomponent>('name');
+    const [orderBy, setOrderBy] = React.useState<keyof ISubComponent>('name');
     const [selected, setSelected] = React.useState<string[]>([]);
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-    const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof ISubcomponent) => {
+    const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof ISubComponent) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
         setOrderBy(property);
@@ -355,7 +355,7 @@ export function SubComponentTable(props: SubComponentTableProps) {
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, subcomponents.length - page * rowsPerPage);
 
     const handleSubComponentDeletion = () => {
-        const subcomponentsToDelete :ISubcomponent[] = subcomponents.filter(subcomponent => isSelected(subcomponent.id)).slice();
+        const subcomponentsToDelete :ISubComponent[] = subcomponents.filter(subcomponent => isSelected(subcomponent.id)).slice();
         handleDeleteSubComponents(subcomponentsToDelete, resetSelection);
     };
 
@@ -395,7 +395,7 @@ export function SubComponentTable(props: SubComponentTableProps) {
                 rowCount={subcomponents.length}
               />
               <TableBody>
-                {stableSort<ISubcomponent>(subcomponents, getComparator(order, orderBy))
+                {stableSort<ISubComponent>(subcomponents, getComparator(order, orderBy))
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((subcomponent, index) => {
                     const isItemSelected = isSelected(subcomponent.id);
