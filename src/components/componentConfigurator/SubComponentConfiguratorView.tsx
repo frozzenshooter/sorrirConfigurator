@@ -4,14 +4,17 @@ import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
+import Stepper from '@material-ui/core/Stepper';
+import Step from '@material-ui/core/Step';
+import StepButton from '@material-ui/core/StepButton';
 
 // Local imports
 
 import IConfiguration from '../../interfaces/IConfiguration';
 import './SubComponentConfiguratorView.css';
 import { SubComponentTable } from './SubComponentTable';
-import { AvailableViews } from '../AvailableViews';
-import { ViewProps } from '../wizard/Wizard';
+import { AvailableViews, ResolveViewLabel } from '../AvailableViews';
+import { StepperViewProps, ViewProps } from '../wizard/Wizard';
 import { SubComponentDialog , SubComponentDialogType} from './SubComponentDialog';
 import ISubComponent from '../../interfaces/ISubComponent';
 import { DecisionDialog } from '../decisionDialog/DecisionDialog';
@@ -31,7 +34,7 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
-export interface SubComponentConfigurationViewProps extends ViewProps{
+export interface SubComponentConfigurationViewProps extends StepperViewProps{
     configuration: IConfiguration;
 }
 
@@ -58,7 +61,7 @@ interface ShadowModeGranularityChangeState {
 
     const emptySubComponent : ISubComponent = {id:"", name:"", shadowmodes: []};
 
-    const {configuration, showView, handleConfigurationUpdate} = props;
+    const {configuration, showView, handleConfigurationUpdate, views} = props;
 
     const classes = useStyles();
 
@@ -157,6 +160,10 @@ interface ShadowModeGranularityChangeState {
         handleConfigurationUpdate(newConfiguration);
     }
 
+    const handleStep = (index: number) => {
+        showView(views[index]);
+    }
+
     return (
         <div>
             <div className={classes.grow}>
@@ -169,6 +176,18 @@ interface ShadowModeGranularityChangeState {
                 </AppBar>
             </div>
             <div className={classes.appBarSpacer}></div>
+            <div className="component-configurator-stepper-container">
+                <Stepper nonLinear activeStep={views.findIndex(v => v === AvailableViews.ComponentConfigurationView)}>
+                        {views.map((view, index) => (
+                            <Step key={ResolveViewLabel(view)}>
+                                <StepButton onClick={() => {handleStep(index);}}>
+                                    {ResolveViewLabel(view)}
+                                </StepButton>
+                            </Step>
+                        ))}
+                </Stepper>
+            </div>
+
             <div className="component-configurator-container">
                     <SubComponentTable
                         subcomponents={configuration.subComponents}

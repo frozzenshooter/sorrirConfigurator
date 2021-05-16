@@ -24,3 +24,8 @@
 .configuration-import-view-syntaxhighlighter-container{
     width: 100%;
 }
+
+.configuration-import-stepper-container{
+    padding-left: 2%;
+    padding-right: 2%;
+}

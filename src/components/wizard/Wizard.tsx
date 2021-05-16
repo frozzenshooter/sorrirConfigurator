@@ -16,6 +16,13 @@ export interface ViewProps {
 }
 
 /**
+ * Properties ofa view that wants to display a stepper
+ */
+export interface StepperViewProps extends ViewProps {
+    views: AvailableViews[]
+}
+
+/**
  * State of the Wizard
  */
 export interface WizardState{
@@ -182,11 +189,11 @@ export const Wizard = () => {
             case AvailableViews.WelcomeView:
                 return <WelcomeView startWizard={startWizard} showView={showView} handleConfigurationUpdate={handleConfigurationUpdate}/>
             case AvailableViews.ComponentConfigurationView:
-                return <SubComponentConfiguratorView showView={showView} configuration={wizardState.configuration} handleConfigurationUpdate={handleConfigurationUpdate}/>
+                return <SubComponentConfiguratorView showView={showView} views={wizardState.views} configuration={wizardState.configuration} handleConfigurationUpdate={handleConfigurationUpdate}/>
             case AvailableViews.ConfigurationImportView:
                 return <ConfigurationImportView showView={showView} views={wizardState.views} handleConfigurationUpdate={handleConfigurationUpdate}/>
             case AvailableViews.ConfigurationExportView:
-                return <ConfigurationExportView showView={showView} configuration={wizardState.configuration} handleConfigurationUpdate={handleConfigurationUpdate}/>
+                return <ConfigurationExportView showView={showView} views={wizardState.views} configuration={wizardState.configuration} handleConfigurationUpdate={handleConfigurationUpdate}/>
             default:
                 return <WelcomeView startWizard={startWizard} showView={showView} handleConfigurationUpdate={handleConfigurationUpdate}/>;
 

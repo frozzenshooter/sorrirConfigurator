@@ -2,7 +2,7 @@ import { Button } from '@material-ui/core';
 import React from 'react';
 import Toolbar from '@material-ui/core/Toolbar';
 import { AvailableViews, ResolveViewLabel } from '../AvailableViews';
-import {ViewProps} from '../wizard/Wizard';
+import {StepperViewProps} from '../wizard/Wizard';
 import { ConfigurationFileInput } from './ConfigurationFileInput';
 import './ConfigurationImportView.css';
 import IConfiguration from '../../interfaces/IConfiguration';
@@ -29,15 +29,10 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
-export interface ConfigurationImportViewProps extends ViewProps{
-    views: AvailableViews[]
-}
-
-
 /**
  * View for the configuration import
  */
-export const ConfigurationImportView = (props: ConfigurationImportViewProps) => {
+export const ConfigurationImportView = (props: StepperViewProps) => {
 
     const {showView, handleConfigurationUpdate, views} = props;
 
@@ -82,15 +77,17 @@ export const ConfigurationImportView = (props: ConfigurationImportViewProps) => 
                 </AppBar>
             </div>
             <div className={classes.appBarSpacer}></div>
-            <Stepper nonLinear activeStep={views.findIndex(v => v === AvailableViews.ConfigurationImportView)}>
-                {views.map((view, index) => (
-                    <Step key={ResolveViewLabel(view)}>
-                        <StepButton onClick={() => {handleStep(index);}}>
-                            {ResolveViewLabel(view)}
-                        </StepButton>
-                    </Step>
-                ))}
-            </Stepper>
+            <div className="configuration-import-stepper-container">
+                <Stepper nonLinear activeStep={views.findIndex(v => v === AvailableViews.ConfigurationImportView)}>
+                    {views.map((view, index) => (
+                        <Step key={ResolveViewLabel(view)}>
+                            <StepButton onClick={() => {handleStep(index);}}>
+                                {ResolveViewLabel(view)}
+                            </StepButton>
+                        </Step>
+                    ))}
+                </Stepper>
+            </div>
 
             <div className="configuration-import-view-button-container">
                 <Button variant="contained" color="primary" onClick={() => showView(AvailableViews.WelcomeView)}>
