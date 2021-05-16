@@ -20,8 +20,6 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import { DecisionDialog } from '../decisionDialog/DecisionDialog';
-import ArrowBackOutlinedIcon from '@material-ui/icons/ArrowBackOutlined';
-import ArrowForwardOutlinedIcon from '@material-ui/icons/ArrowForwardOutlined';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -139,26 +137,15 @@ export const ConfigurationImportView = (props: StepperViewProps) => {
             />
             <div className={classes.appBarSpacer}></div>
             <div className="configuration-import-stepper-container">
-
-               
-                <IconButton onClick={() => { showView(AvailableViews.ConfigurationImportView); }}>
-                    <ArrowBackOutlinedIcon />
-                </IconButton>
-
-                <Stepper className={classes.grow} nonLinear activeStep={views.findIndex(v => v === AvailableViews.ConfigurationImportView)}>
-                    {views.map((view, index) => (
-                        <Step key={ResolveViewLabel(view)}>
-                            <StepButton onClick={() => {handleStep(index);}}>
-                                {ResolveViewLabel(view)}
-                            </StepButton>
-                        </Step>
-                    ))}
-                </Stepper>
-
-                <IconButton onClick={() => { showView(AvailableViews.ConfigurationExportView); }}>
-                    <ArrowForwardOutlinedIcon />
-                </IconButton>
-
+                    <Stepper className={classes.grow} nonLinear activeStep={views.findIndex(v => v === AvailableViews.ConfigurationImportView)}>
+                        {views.map((view, index) => (
+                            <Step key={ResolveViewLabel(view)}>
+                                <StepButton onClick={() => {handleStep(index);}}>
+                                    {ResolveViewLabel(view)}
+                                </StepButton>
+                            </Step>
+                        ))}
+                    </Stepper>
             </div>
             <div className="configuration-import-view-import-container ">
                     <ConfigurationFileInput
