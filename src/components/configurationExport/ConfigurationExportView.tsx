@@ -1,7 +1,7 @@
 import { Button } from '@material-ui/core';
 import IConfiguration from '../../interfaces/IConfiguration';
 import { AvailableViews, ResolveViewLabel } from '../AvailableViews';
-import {StepperViewProps, ViewProps} from '../wizard/Wizard';
+import {StepperViewProps} from '../wizard/Wizard';
 import './ConfigurationExportView.css';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import lightfair from 'react-syntax-highlighter/dist/esm/styles/hljs/lightfair';
@@ -15,6 +15,11 @@ import Step from '@material-ui/core/Step';
 import StepButton from '@material-ui/core/StepButton';
 import IconButton from '@material-ui/core/IconButton';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
+import { DecisionDialog } from '../decisionDialog/DecisionDialog';
+import React from 'react';
+
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -63,6 +68,29 @@ export interface ConfigurationExportViewProps extends StepperViewProps {
     const handleStep = (index: number) => {
         showView(views[index]);
     }
+    
+    // State for the menu
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const [isConfigurationResetDialogOpen, setIsConfigurationResetDialogOpen] = React.useState<boolean>(false);
+
+    const handleMoreButtonClicked = (event: React.MouseEvent<HTMLButtonElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+    
+    const handleCloseMoreMenu = () => {
+        setAnchorEl(null);
+    };
+
+    const handleResetConfiguration = () => {
+        setAnchorEl(null);
+        setIsConfigurationResetDialogOpen(true);
+    };
+
+    const resetConfiguration = () => {
+        // This will reset the configuration when the user starts a new configuration on the WelcomeView
+        showView(AvailableViews.WelcomeView);
+    };
+    
 
     return (<div className="configuration-export-view">
                 <div className={classes.grow}>
@@ -71,12 +99,40 @@ export interface ConfigurationExportViewProps extends StepperViewProps {
                             <Typography className={classes.title} variant="h6" noWrap>
                                 Configuration export
                             </Typography>
-                            <IconButton edge="end" color="inherit">
+                            <IconButton edge="end" color="inherit" onClick={handleMoreButtonClicked}>
                                 <MoreIcon />
                             </IconButton>
+                            <Menu
+                                anchorEl={anchorEl}
+                                anchorOrigin={
+                                    {
+                                        vertical: 'top',
+                                        horizontal: 'right',
+                                    }
+                                }
+                                keepMounted
+                                transformOrigin={
+                                    {
+                                        vertical: 'top',
+                                        horizontal: 'right',
+                                    }
+                                }
+                                open={Boolean(anchorEl)}
+                                onClose={handleCloseMoreMenu}
+                            >
+                                <MenuItem onClick={handleResetConfiguration}>Reset configuration</MenuItem>
+                            </Menu>
+
                         </Toolbar>
                     </AppBar>
                 </div>
+                <DecisionDialog
+                    handleAccept={resetConfiguration}
+                    handleCancel={() => {setIsConfigurationResetDialogOpen(false);}}
+                    isOpen={isConfigurationResetDialogOpen}
+                    title={"Reset configuration"}
+                    text={"Confirm the reset of the current configuration. All unsaved data will be deleted!"}
+                />
                 <div className={classes.appBarSpacer}></div>
                 <div className="configuration-export-stepper-container">
                     <Stepper nonLinear activeStep={views.findIndex(v => v === AvailableViews.ConfigurationExportView)}>
@@ -107,16 +163,6 @@ export interface ConfigurationExportViewProps extends StepperViewProps {
                         :
                             ""
                         }
-                </div>
-                <div className="configuration-export-view-button-container">
-
-                    <Button variant="contained" color="primary" onClick={() => showView(AvailableViews.ComponentConfigurationView)}>
-                        Go back
-                    </Button><br/>
-                    <Button variant="contained" color="primary" onClick={() => showView(AvailableViews.WelcomeView)}>
-                        Go back to welcome
-                    </Button>
-
                 </div>
             </div>
         );

@@ -4,13 +4,6 @@
     padding-top: 16px;
 }
 
-.component-configurator-button-container{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 2%;
-}
-
 .component-configurator-shadowmode-list{
     display: flex;
     flex-direction: row;

@@ -1,3 +1,6 @@
+import IConfiguration from "../interfaces/IConfiguration";
+import { WizardState } from "./wizard/Wizard";
+
 export enum AvailableViews {
 
     'WelcomeView' = 0,
@@ -37,4 +40,235 @@ export const GetImportConfigurationViews = () => {
         AvailableViews.ConfigurationExportView,
     ];
     return views;
+}
+
+export const getInitalConfiguration = () => {
+    const initConfig: IConfiguration = {
+        isShadowModeGranularityFine : false,
+        subComponents: []
+    };
+    return initConfig;
+}
+
+export const getInitalDevelopmentConfiguration = () => {
+    const initConfig: IConfiguration = {
+        isShadowModeGranularityFine : false,
+        subComponents: [
+            {
+                id: "Subcomponent1",
+                name: "Subcomponent1",
+                shadowmodes: [
+                    {
+                        id: "1",
+                        name:"ON"
+
+                    },
+                    {
+                        id: "2",
+                        name: "OFF"
+                    },
+                    {
+                        id: "3",
+                        name: "DC"
+                    }
+                ]
+            },
+            {
+                id: "Subcomponent2",
+                name: "Subcomponent2",
+                shadowmodes: [
+                    {
+                        id: "1",
+                        name:"ON"
+
+                    },
+                    {
+                        id: "2",
+                        name: "OFF"
+                    }
+                ]
+            },
+            {
+                id: "Subcomponent3",
+                name: "Subcomponent3",
+                shadowmodes: [
+                    {
+                        id: "1",
+                        name:"ON"
+
+                    },
+                    {
+                        id: "2",
+                        name: "OFF"
+                    },
+                    {
+                        id: "3",
+                        name: "DC"
+                    }
+                ]
+            },
+            {
+                id: "Subcomponent4",
+                name: "Subcomponent4",
+                shadowmodes: [
+                    {
+                        id: "1",
+                        name:"ON"
+
+                    },
+                    {
+                        id: "2",
+                        name: "OFF"
+                    }
+                ]
+            },
+            {
+                id: "Subcomponent5",
+                name: "Subcomponent5",
+                shadowmodes: [
+                    {
+                        id: "1",
+                        name:"ON"
+
+                    },
+                    {
+                        id: "2",
+                        name: "OFF"
+                    },
+                    {
+                        id: "3",
+                        name: "DC"
+                    }
+                ]
+            },
+            {
+                id: "Subcomponent6",
+                name: "Subcomponent6",
+                shadowmodes: [
+                    {
+                        id: "1",
+                        name:"ON"
+
+                    },
+                    {
+                        id: "2",
+                        name: "OFF"
+                    }
+                ]
+            }]
+    };
+    return initConfig;
+}
+
+export const getDevelopmentInitalConfiguration = (): WizardState => {
+    return  {
+        activeView: AvailableViews.WelcomeView,
+        views: GetNewConfigurationViews(),
+        configuration: {
+            isShadowModeGranularityFine: false,
+            subComponents: [
+            {
+                id: "Subcomponent1",
+                name: "Subcomponent1",
+                shadowmodes: [
+                    {
+                        id: "1",
+                        name:"ON"
+
+                    },
+                    {
+                        id: "2",
+                        name: "OFF"
+                    },
+                    {
+                        id: "3",
+                        name: "DC"
+                    }
+                ]
+            },
+            {
+                id: "Subcomponent2",
+                name: "Subcomponent2",
+                shadowmodes: [
+                    {
+                        id: "1",
+                        name:"ON"
+
+                    },
+                    {
+                        id: "2",
+                        name: "OFF"
+                    }
+                ]
+            },
+            {
+                id: "Subcomponent3",
+                name: "Subcomponent3",
+                shadowmodes: [
+                    {
+                        id: "1",
+                        name:"ON"
+
+                    },
+                    {
+                        id: "2",
+                        name: "OFF"
+                    },
+                    {
+                        id: "3",
+                        name: "DC"
+                    }
+                ]
+            },
+            {
+                id: "Subcomponent4",
+                name: "Subcomponent4",
+                shadowmodes: [
+                    {
+                        id: "1",
+                        name:"ON"
+
+                    },
+                    {
+                        id: "2",
+                        name: "OFF"
+                    }
+                ]
+            },
+            {
+                id: "Subcomponent5",
+                name: "Subcomponent5",
+                shadowmodes: [
+                    {
+                        id: "1",
+                        name:"ON"
+
+                    },
+                    {
+                        id: "2",
+                        name: "OFF"
+                    },
+                    {
+                        id: "3",
+                        name: "DC"
+                    }
+                ]
+            },
+            {
+                id: "Subcomponent6",
+                name: "Subcomponent6",
+                shadowmodes: [
+                    {
+                        id: "1",
+                        name:"ON"
+
+                    },
+                    {
+                        id: "2",
+                        name: "OFF"
+                    }
+                ]
+            }
+        ]}          
+    };
 }

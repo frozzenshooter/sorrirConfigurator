@@ -1,5 +1,4 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
 import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
@@ -9,6 +8,9 @@ import Step from '@material-ui/core/Step';
 import StepButton from '@material-ui/core/StepButton';
 import IconButton from '@material-ui/core/IconButton';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
+import { DecisionDialog } from '../decisionDialog/DecisionDialog';
 
 // Local imports
 
@@ -16,10 +18,9 @@ import IConfiguration from '../../interfaces/IConfiguration';
 import './SubComponentConfiguratorView.css';
 import { SubComponentTable } from './SubComponentTable';
 import { AvailableViews, ResolveViewLabel } from '../AvailableViews';
-import { StepperViewProps, ViewProps } from '../wizard/Wizard';
+import { StepperViewProps } from '../wizard/Wizard';
 import { SubComponentDialog , SubComponentDialogType} from './SubComponentDialog';
 import ISubComponent from '../../interfaces/ISubComponent';
-import { DecisionDialog } from '../decisionDialog/DecisionDialog';
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
@@ -166,20 +167,71 @@ interface ShadowModeGranularityChangeState {
         showView(views[index]);
     }
 
+    // State for the menu
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const [isConfigurationResetDialogOpen, setIsConfigurationResetDialogOpen] = React.useState<boolean>(false);
+
+    const handleMoreButtonClicked = (event: React.MouseEvent<HTMLButtonElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+    
+    const handleCloseMoreMenu = () => {
+        setAnchorEl(null);
+    };
+
+    const handleResetConfiguration = () => {
+        setAnchorEl(null);
+        setIsConfigurationResetDialogOpen(true);
+    };
+
+    const resetConfiguration = () => {
+        // This will reset the configuration when the user starts a new configuration on the WelcomeView
+        showView(AvailableViews.WelcomeView);
+    };
+    
+
     return (
         <div>
             <div className={classes.grow}>
                 <AppBar position="fixed">
                     <Toolbar>
                         <Typography className={classes.title} variant="h6" noWrap>
-                            Configuration import
+                            {ResolveViewLabel(AvailableViews.ComponentConfigurationView)}
                         </Typography>
-                        <IconButton edge="end" color="inherit">
+                        <IconButton edge="end" color="inherit" onClick={handleMoreButtonClicked}>
                             <MoreIcon />
                         </IconButton>
+                        <Menu
+                            anchorEl={anchorEl}
+                            anchorOrigin={
+                                {
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }
+                            }
+                            keepMounted
+                            transformOrigin={
+                                {
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }
+                            }
+                            open={Boolean(anchorEl)}
+                            onClose={handleCloseMoreMenu}
+                        >
+                            <MenuItem onClick={handleResetConfiguration}>Reset configuration</MenuItem>
+                        </Menu>
+
                     </Toolbar>
                 </AppBar>
             </div>
+            <DecisionDialog
+                handleAccept={resetConfiguration}
+                handleCancel={() => {setIsConfigurationResetDialogOpen(false);}}
+                isOpen={isConfigurationResetDialogOpen}
+                title={"Reset configuration"}
+                text={"Confirm the reset of the current configuration. All unsaved data will be deleted!"}
+            />
             <div className={classes.appBarSpacer}></div>
             <div className="component-configurator-stepper-container">
                 <Stepper nonLinear activeStep={views.findIndex(v => v === AvailableViews.ComponentConfigurationView)}>
@@ -213,14 +265,6 @@ interface ShadowModeGranularityChangeState {
                             inputProps={{ 'aria-label': 'primary checkbox' }}
                         />}
                 />
-            </div>
-            <div className="component-configurator-button-container">
-                <Button variant="contained" color="primary" onClick={() => showView(AvailableViews.WelcomeView)}>
-                    Go back
-                </Button>
-                <Button variant="contained" color="primary" onClick={() => showView(AvailableViews.ConfigurationExportView)}>
-                    Export
-                </Button>
             </div>
 
             <SubComponentDialog

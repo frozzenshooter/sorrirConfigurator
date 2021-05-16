@@ -13,14 +13,6 @@
     align-items: center;
 }
 
-.configuration-import-view-button-container{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding-left: 2%;
-    padding-right: 2%;
-}
-
 .configuration-import-view-syntaxhighlighter-container{
     width: 100%;
 }

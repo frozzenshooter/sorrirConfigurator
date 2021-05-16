@@ -1,7 +1,6 @@
 import React from 'react';
-import {Component} from 'react';
 import IConfiguration from '../../interfaces/IConfiguration';
-import { AvailableViews, GetNewConfigurationViews } from '../AvailableViews';
+import { AvailableViews, getDevelopmentInitalConfiguration, getInitalConfiguration, getInitalDevelopmentConfiguration, GetNewConfigurationViews } from '../AvailableViews';
 import { SubComponentConfiguratorView } from '../componentConfigurator/SubComponentConfiguratorView';
 import { ConfigurationExportView } from '../configurationExport/ConfigurationExportView';
 import { ConfigurationImportView } from '../configurationImport/ConfigurationImportView';
@@ -37,118 +36,7 @@ export interface WizardState{
  */
 export const Wizard = () => {
 
-    const [wizardState, setWizardState] = React.useState<WizardState>(
-        {
-            activeView: AvailableViews.WelcomeView,
-            views: GetNewConfigurationViews(),
-            configuration: {
-                isShadowModeGranularityFine: false,
-                subComponents: [
-                {
-                    id: "Subcomponent1",
-                    name: "Subcomponent1",
-                    shadowmodes: [
-                        {
-                            id: "1",
-                            name:"ON"
-
-                        },
-                        {
-                            id: "2",
-                            name: "OFF"
-                        },
-                        {
-                            id: "3",
-                            name: "DC"
-                        }
-                    ]
-                },
-                {
-                    id: "Subcomponent2",
-                    name: "Subcomponent2",
-                    shadowmodes: [
-                        {
-                            id: "1",
-                            name:"ON"
-
-                        },
-                        {
-                            id: "2",
-                            name: "OFF"
-                        }
-                    ]
-                },
-                {
-                    id: "Subcomponent3",
-                    name: "Subcomponent3",
-                    shadowmodes: [
-                        {
-                            id: "1",
-                            name:"ON"
-
-                        },
-                        {
-                            id: "2",
-                            name: "OFF"
-                        },
-                        {
-                            id: "3",
-                            name: "DC"
-                        }
-                    ]
-                },
-                {
-                    id: "Subcomponent4",
-                    name: "Subcomponent4",
-                    shadowmodes: [
-                        {
-                            id: "1",
-                            name:"ON"
-
-                        },
-                        {
-                            id: "2",
-                            name: "OFF"
-                        }
-                    ]
-                },
-                {
-                    id: "Subcomponent5",
-                    name: "Subcomponent5",
-                    shadowmodes: [
-                        {
-                            id: "1",
-                            name:"ON"
-
-                        },
-                        {
-                            id: "2",
-                            name: "OFF"
-                        },
-                        {
-                            id: "3",
-                            name: "DC"
-                        }
-                    ]
-                },
-                {
-                    id: "Subcomponent6",
-                    name: "Subcomponent6",
-                    shadowmodes: [
-                        {
-                            id: "1",
-                            name:"ON"
-
-                        },
-                        {
-                            id: "2",
-                            name: "OFF"
-                        }
-                    ]
-                }
-            ]}          
-        }
-    );
+    const [wizardState, setWizardState] = React.useState<WizardState>(getDevelopmentInitalConfiguration());
 
     /**
      * Show a selected view
@@ -165,19 +53,24 @@ export const Wizard = () => {
      * @param configuration 
      */
     const handleConfigurationUpdate = (configuration: IConfiguration) => {
+        console.log(configuration);
         const newState: WizardState = JSON.parse(JSON.stringify(wizardState));
         newState.configuration = configuration;
+        console.log(newState);
         setWizardState(newState);  
     }
 
     /**
-     * Handle the update of the views the wizard will use
+     * Handle the update of the views the wizard will use (This will reset previous configurations!)
      * 
      * @param views 
      */
     const startWizard = (views: AvailableViews[]) => {
-        console.log(views);
         const newState: WizardState = JSON.parse(JSON.stringify(wizardState));
+        //TODO: replace with getInitalConfiguration when its not in development anymore
+        
+        // This resets the configuration from previous configurations
+        newState.configuration = getInitalDevelopmentConfiguration();
         newState.views = views;
         newState.activeView = views[0];
         setWizardState(newState);  
