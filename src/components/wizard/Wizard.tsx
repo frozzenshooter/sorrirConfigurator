@@ -1,6 +1,7 @@
+import React from 'react';
 import {Component} from 'react';
 import IConfiguration from '../../interfaces/IConfiguration';
-import { AvailableViews } from '../AvailableViews';
+import { AvailableViews, GetNewConfigurationViews } from '../AvailableViews';
 import { SubComponentConfiguratorView } from '../componentConfigurator/SubComponentConfiguratorView';
 import { ConfigurationExportView } from '../configurationExport/ConfigurationExportView';
 import { ConfigurationImportView } from '../configurationImport/ConfigurationImportView';
@@ -12,29 +13,27 @@ import { WelcomeView } from '../welcome/WelcomeView';
 export interface ViewProps {
     showView: (availableView: AvailableViews) => void;
     handleConfigurationUpdate: (configuration: IConfiguration) => void;
- }
+}
 
 /**
  * State of the Wizard
  */
 export interface WizardState{
     activeView: AvailableViews;
+    views: AvailableViews[];
     configuration: IConfiguration;
 }
 
 
 /**
- * Wizard to navigate through Views forward and backwards 
+ * Wizard to navigate through Views
  */
-export class Wizard extends Component<{},{}>{
+export const Wizard = () => {
 
-    state: WizardState;
-
-    constructor(props: {}){ 
-        super(props);    
-
-        this.state  = {
+    const [wizardState, setWizardState] = React.useState<WizardState>(
+        {
             activeView: AvailableViews.WelcomeView,
+            views: GetNewConfigurationViews(),
             configuration: {
                 isShadowModeGranularityFine: false,
                 subComponents: [
@@ -141,47 +140,60 @@ export class Wizard extends Component<{},{}>{
                     ]
                 }
             ]}          
-        };
-    }
+        }
+    );
 
     /**
      * Show a selected view
      */
-    private showView(view: AvailableViews){
-
-        //TODO: does this run into a problem when managing the confguration? - do you need to pass the complete state into it?
-        this.setState({
-            activeView: view
-        });        
+    const showView = (view: AvailableViews) => {
+        const newState: WizardState = JSON.parse(JSON.stringify(wizardState));
+        newState.activeView = view;
+        setWizardState(newState);     
     }
 
-    private handleConfigurationUpdate(configuration: IConfiguration){
-        const newState = JSON.parse(JSON.stringify(this.state));
+    /**
+     * Handle the update of the global configuration
+     * 
+     * @param configuration 
+     */
+    const handleConfigurationUpdate = (configuration: IConfiguration) => {
+        const newState: WizardState = JSON.parse(JSON.stringify(wizardState));
         newState.configuration = configuration;
-        this.setState(newState);
+        setWizardState(newState);  
     }
 
-    private GetView(availableView: AvailableViews): JSX.Element{
-        switch(this.state.activeView){
+    /**
+     * Handle the update of the views the wizard will use
+     * 
+     * @param views 
+     */
+    const handleViewsUpdate = (views: AvailableViews[]) => {
+        const newState: WizardState = JSON.parse(JSON.stringify(wizardState));
+        newState.views = views;
+        setWizardState(newState);  
+    }
+
+    const getView = (availableView: AvailableViews): JSX.Element => {
+        
+        switch(availableView){
             case AvailableViews.WelcomeView:
-                return <WelcomeView showView={(availableView) => {this.showView(availableView);}} handleConfigurationUpdate={(configuration) => {this.handleConfigurationUpdate(configuration);}} />
+                return <WelcomeView handleViewsUpdate={handleViewsUpdate} showView={showView} handleConfigurationUpdate={handleConfigurationUpdate}/>
             case AvailableViews.ComponentConfigurationView:
-                return <SubComponentConfiguratorView showView={(availableView) => {this.showView(availableView);}} configuration={this.state.configuration} handleConfigurationUpdate={(configuration) => {this.handleConfigurationUpdate(configuration);}}/>
+                return <SubComponentConfiguratorView showView={showView} configuration={wizardState.configuration} handleConfigurationUpdate={handleConfigurationUpdate}/>
             case AvailableViews.ConfigurationImportView:
-                return <ConfigurationImportView showView={(availableView) => {this.showView(availableView);}} handleConfigurationUpdate={(configuration) => {this.handleConfigurationUpdate(configuration);}}/>
+                return <ConfigurationImportView showView={showView} views={wizardState.views} handleConfigurationUpdate={handleConfigurationUpdate}/>
             case AvailableViews.ConfigurationExportView:
-                return <ConfigurationExportView showView={(availableView) => {this.showView(availableView);}} configuration={this.state.configuration} handleConfigurationUpdate={(configuration) => {this.handleConfigurationUpdate(configuration);}}/>
+                return <ConfigurationExportView showView={showView} configuration={wizardState.configuration} handleConfigurationUpdate={handleConfigurationUpdate}/>
             default:
-                return <WelcomeView showView={(availableView) => {this.showView(availableView);}} handleConfigurationUpdate={(configuration) => {this.handleConfigurationUpdate(configuration);}}/>;
+                return <WelcomeView handleViewsUpdate={handleViewsUpdate} showView={showView} handleConfigurationUpdate={handleConfigurationUpdate}/>;
 
-        };
+        }
     }
 
-    render() {
-        return  (
-            <div>     
-                {this.GetView(this.state.activeView)}
-            </div>
-        ); 
-    }
+    return  (
+        <div>     
+            {getView(wizardState.activeView)}
+        </div>
+    ); 
 }

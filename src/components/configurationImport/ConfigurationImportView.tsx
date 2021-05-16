@@ -1,7 +1,7 @@
 import { Button } from '@material-ui/core';
 import React from 'react';
 import Toolbar from '@material-ui/core/Toolbar';
-import { AvailableViews } from '../AvailableViews';
+import { AvailableViews, ResolveViewLabel } from '../AvailableViews';
 import {ViewProps} from '../wizard/Wizard';
 import { ConfigurationFileInput } from './ConfigurationFileInput';
 import './ConfigurationImportView.css';
@@ -13,6 +13,9 @@ import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 
+import Stepper from '@material-ui/core/Stepper';
+import Step from '@material-ui/core/Step';
+import StepButton from '@material-ui/core/StepButton';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -26,12 +29,17 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
+export interface ConfigurationImportViewProps extends ViewProps{
+    views: AvailableViews[]
+}
+
+
 /**
  * View for the configuration import
  */
-export const ConfigurationImportView = (props: ViewProps) => {
+export const ConfigurationImportView = (props: ConfigurationImportViewProps) => {
 
-    const {showView, handleConfigurationUpdate} = props;
+    const {showView, handleConfigurationUpdate, views} = props;
 
     const classes = useStyles();
 
@@ -54,6 +62,10 @@ export const ConfigurationImportView = (props: ViewProps) => {
     const [jsonData, setJsonData] = React.useState<string>("");
     const [parserError, setParserError] = React.useState<string>("");
 
+    const handleStep = (index: number) => {
+        showView(views[index])
+    }
+
     /*
     
         SYNTAX ONLY HIGHLIGHTED - YOU CANT EDIT IT 
@@ -71,6 +83,29 @@ export const ConfigurationImportView = (props: ViewProps) => {
                 </AppBar>
             </div>
             <div className={classes.appBarSpacer}></div>
+            <Stepper nonLinear activeStep={views.findIndex(v => v === AvailableViews.ConfigurationImportView)}>
+                {views.map((view, index) => (
+                <Step key={index}>
+                    <StepButton onClick={() => {handleStep(index);}}>
+                        {ResolveViewLabel(view)}
+                    </StepButton>
+                </Step>
+                ))}
+            </Stepper>
+
+            <div className="configuration-import-view-button-container">
+                <Button variant="contained" color="primary" onClick={() => showView(AvailableViews.WelcomeView)}>
+                    Go back
+                </Button>
+
+                <Button 
+                    variant="contained" 
+                    color="primary" 
+                    onClick={() => showView(AvailableViews.ComponentConfigurationView)}
+                    disabled={parserError !== ""}>
+                    Edit subcomponents
+                </Button>
+            </div>
             <div className="configuration-import-view-import-container ">
                     <ConfigurationFileInput
                         handleChange={handleFileChange}
@@ -98,19 +133,6 @@ export const ConfigurationImportView = (props: ViewProps) => {
                     }
                 </div>
             </div>
-            <div className="configuration-import-view-button-container">
-                <Button variant="contained" color="primary" onClick={() => showView(AvailableViews.WelcomeView)}>
-                    Go back
-                </Button><br/>
-                <Button 
-                    variant="contained" 
-                    color="primary" 
-                    onClick={() => showView(AvailableViews.ComponentConfigurationView)}
-                    disabled={parserError !== ""}>
-                    Edit subcomponents
-                </Button>
-            </div>
-
         </div>
     );
 }
