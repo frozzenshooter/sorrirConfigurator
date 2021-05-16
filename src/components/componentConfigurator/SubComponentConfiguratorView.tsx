@@ -7,6 +7,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepButton from '@material-ui/core/StepButton';
+import IconButton from '@material-ui/core/IconButton';
+import MoreIcon from '@material-ui/icons/MoreVert';
 
 // Local imports
 
@@ -25,10 +27,10 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
         grow: {
-        flexGrow: 1,
+            flexGrow: 1,
         },
         title: {
-            display: 'block'
+            flexGrow: 1,
         },
         appBarSpacer: theme.mixins.toolbar
     })
@@ -172,6 +174,9 @@ interface ShadowModeGranularityChangeState {
                         <Typography className={classes.title} variant="h6" noWrap>
                             Configuration import
                         </Typography>
+                        <IconButton edge="end" color="inherit">
+                            <MoreIcon />
+                        </IconButton>
                     </Toolbar>
                 </AppBar>
             </div>

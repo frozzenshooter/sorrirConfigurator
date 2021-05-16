@@ -16,14 +16,16 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepButton from '@material-ui/core/StepButton';
+import IconButton from '@material-ui/core/IconButton';
+import MoreIcon from '@material-ui/icons/MoreVert';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
         grow: {
             flexGrow: 1,
         },
-        title: {
-            display: 'block'
+        title: {            
+            flexGrow: 1,
         },
         appBarSpacer: theme.mixins.toolbar
     })
@@ -73,6 +75,9 @@ export const ConfigurationImportView = (props: StepperViewProps) => {
                         <Typography className={classes.title} variant="h6" noWrap>
                             {ResolveViewLabel(AvailableViews.ConfigurationImportView)}
                         </Typography>
+                        <IconButton edge="end" color="inherit">
+                            <MoreIcon />
+                        </IconButton>
                     </Toolbar>
                 </AppBar>
             </div>
