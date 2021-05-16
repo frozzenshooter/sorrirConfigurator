@@ -24,7 +24,7 @@ import React from 'react';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
         grow: {
-        flexGrow: 1,
+            flexGrow: 1,
         },
         title: {
             flexGrow: 1,
@@ -135,7 +135,7 @@ export interface ConfigurationExportViewProps extends StepperViewProps {
                 />
                 <div className={classes.appBarSpacer}></div>
                 <div className="configuration-export-stepper-container">
-                    <Stepper nonLinear activeStep={views.findIndex(v => v === AvailableViews.ConfigurationExportView)}>
+                    <Stepper nonLinear elevation={1} square={false} activeStep={views.findIndex(v => v === AvailableViews.ConfigurationExportView)}>
                         {views.map((view, index) => (
                             <Step key={ResolveViewLabel(view)}>
                                 <StepButton onClick={() => {handleStep(index);}}>

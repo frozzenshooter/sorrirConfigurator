@@ -137,7 +137,7 @@ export const ConfigurationImportView = (props: StepperViewProps) => {
             />
             <div className={classes.appBarSpacer}></div>
             <div className="configuration-import-stepper-container">
-                    <Stepper className={classes.grow} nonLinear activeStep={views.findIndex(v => v === AvailableViews.ConfigurationImportView)}>
+                    <Stepper elevation={1} square={false} className={classes.grow} nonLinear activeStep={views.findIndex(v => v === AvailableViews.ConfigurationImportView)}>
                         {views.map((view, index) => (
                             <Step key={ResolveViewLabel(view)}>
                                 <StepButton onClick={() => {handleStep(index);}}>

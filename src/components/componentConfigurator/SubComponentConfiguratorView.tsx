@@ -234,7 +234,7 @@ interface ShadowModeGranularityChangeState {
             />
             <div className={classes.appBarSpacer}></div>
             <div className="component-configurator-stepper-container">
-                <Stepper nonLinear activeStep={views.findIndex(v => v === AvailableViews.ComponentConfigurationView)}>
+                <Stepper elevation={1} square={false} nonLinear activeStep={views.findIndex(v => v === AvailableViews.ComponentConfigurationView)}>
                         {views.map((view, index) => (
                             <Step key={ResolveViewLabel(view)}>
                                 <StepButton onClick={() => {handleStep(index);}}>
