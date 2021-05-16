@@ -44,7 +44,6 @@ export const ConfigurationImportView = (props: ConfigurationImportViewProps) => 
     const classes = useStyles();
 
     const handleFileChange = (filename: string, jsonData: string) => {
-        console.log(filename, jsonData);
         try{
             const loadedConfig : IConfiguration = JSON.parse(jsonData);
             const text : string = JSON.stringify(loadedConfig, undefined, 4);
@@ -63,7 +62,7 @@ export const ConfigurationImportView = (props: ConfigurationImportViewProps) => 
     const [parserError, setParserError] = React.useState<string>("");
 
     const handleStep = (index: number) => {
-        showView(views[index])
+        showView(views[index]);
     }
 
     /*
@@ -77,7 +76,7 @@ export const ConfigurationImportView = (props: ConfigurationImportViewProps) => 
                 <AppBar position="fixed">
                     <Toolbar>
                         <Typography className={classes.title} variant="h6" noWrap>
-                            Configuration import
+                            {ResolveViewLabel(AvailableViews.ConfigurationImportView)}
                         </Typography>
                     </Toolbar>
                 </AppBar>
@@ -85,11 +84,11 @@ export const ConfigurationImportView = (props: ConfigurationImportViewProps) => 
             <div className={classes.appBarSpacer}></div>
             <Stepper nonLinear activeStep={views.findIndex(v => v === AvailableViews.ConfigurationImportView)}>
                 {views.map((view, index) => (
-                <Step key={index}>
-                    <StepButton onClick={() => {handleStep(index);}}>
-                        {ResolveViewLabel(view)}
-                    </StepButton>
-                </Step>
+                    <Step key={ResolveViewLabel(view)}>
+                        <StepButton onClick={() => {handleStep(index);}}>
+                            {ResolveViewLabel(view)}
+                        </StepButton>
+                    </Step>
                 ))}
             </Stepper>
 

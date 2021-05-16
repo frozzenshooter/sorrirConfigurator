@@ -5,7 +5,7 @@ import './WelcomeView.css';
 
 
 export interface WelcomeViewProps extends ViewProps{
-    handleViewsUpdate: (views: AvailableViews[]) => void;
+    startWizard: (views: AvailableViews[]) => void;
 }
 
 /**
@@ -13,22 +13,18 @@ export interface WelcomeViewProps extends ViewProps{
  */
 export const WelcomeView = (props: WelcomeViewProps) => {
 
-    const {handleViewsUpdate, showView} = props;
+    const {startWizard} = props;
 
     const handleNewConfigurationClick = () => {
 
         const views: AvailableViews[] = GetNewConfigurationViews();
-        handleViewsUpdate(views);
-
-        showView(AvailableViews.ComponentConfigurationView)
+        startWizard(views);
     }
 
     const handleImportConfigurationClick = () => {
 
         const views: AvailableViews[] = GetImportConfigurationViews();
-        handleViewsUpdate(views);
-
-        showView(AvailableViews.ConfigurationImportView)
+        startWizard(views);
     }
 
     return (

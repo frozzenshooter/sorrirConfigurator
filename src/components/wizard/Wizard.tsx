@@ -168,9 +168,11 @@ export const Wizard = () => {
      * 
      * @param views 
      */
-    const handleViewsUpdate = (views: AvailableViews[]) => {
+    const startWizard = (views: AvailableViews[]) => {
+        console.log(views);
         const newState: WizardState = JSON.parse(JSON.stringify(wizardState));
         newState.views = views;
+        newState.activeView = views[0];
         setWizardState(newState);  
     }
 
@@ -178,7 +180,7 @@ export const Wizard = () => {
         
         switch(availableView){
             case AvailableViews.WelcomeView:
-                return <WelcomeView handleViewsUpdate={handleViewsUpdate} showView={showView} handleConfigurationUpdate={handleConfigurationUpdate}/>
+                return <WelcomeView startWizard={startWizard} showView={showView} handleConfigurationUpdate={handleConfigurationUpdate}/>
             case AvailableViews.ComponentConfigurationView:
                 return <SubComponentConfiguratorView showView={showView} configuration={wizardState.configuration} handleConfigurationUpdate={handleConfigurationUpdate}/>
             case AvailableViews.ConfigurationImportView:
@@ -186,7 +188,7 @@ export const Wizard = () => {
             case AvailableViews.ConfigurationExportView:
                 return <ConfigurationExportView showView={showView} configuration={wizardState.configuration} handleConfigurationUpdate={handleConfigurationUpdate}/>
             default:
-                return <WelcomeView handleViewsUpdate={handleViewsUpdate} showView={showView} handleConfigurationUpdate={handleConfigurationUpdate}/>;
+                return <WelcomeView startWizard={startWizard} showView={showView} handleConfigurationUpdate={handleConfigurationUpdate}/>;
 
         }
     }
