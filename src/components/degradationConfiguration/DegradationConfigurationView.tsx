@@ -19,6 +19,7 @@ import Paper from '@material-ui/core/Paper';
 
 import './DegradationConfigurationView.css';
 import { DegradationGraph } from './DegradationGraph';
+import { DegradationLevelDialog, DegradationLevelDialogType } from './DegradationLevelDialog';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -68,6 +69,30 @@ export const DegradationConfigurationView = (props: IStepperViewProps) => {
         showView(AvailableViews.WelcomeView);
     };
 
+    // State for DegradationLevelDialog
+    const [degradationLevelDialogOpen, setDegradationLevelDialogOpen] = React.useState<boolean>(false);
+
+    const handleDegradationLevelDialogCancel = () => {
+        setDegradationLevelDialogOpen(false);
+    }
+
+    const handleDegradationLevelDialogSave = () => {
+        setDegradationLevelDialogOpen(false);
+    }
+
+    // Logic for DegradationLevel creation, updated and deletion
+
+    const handleCreateDegradationLevel = () => {
+        setDegradationLevelDialogOpen(true);
+    }
+
+    const handleEditDegradationLevel = () => {
+        setDegradationLevelDialogOpen(true);
+    }
+
+    const handleDeleteDegradationLevel = () => {
+        setDegradationLevelDialogOpen(true);
+    }
 
     return (
         <div id="degradation-configuration-container">
@@ -123,9 +148,20 @@ export const DegradationConfigurationView = (props: IStepperViewProps) => {
             </div>
             <div id="degradation-configuration-flow-graph">
                 <Paper id="degradation-configuration-flow-graph-paper">
-                    <DegradationGraph />
+                    <DegradationGraph 
+                        createDegradationLevel={handleCreateDegradationLevel}
+                        deleteDegradationLevel={handleDeleteDegradationLevel}
+                        editDegradationLevel={handleEditDegradationLevel}
+                        />
                 </Paper>
             </div>
+            <DegradationLevelDialog
+                isOpen={degradationLevelDialogOpen}
+                handleCancel={handleDegradationLevelDialogCancel}
+                handleSave={handleDegradationLevelDialogSave}
+                type={DegradationLevelDialogType.Create}
+                degradationLevelName={"Level Name"}
+            />
 
         </div>
 

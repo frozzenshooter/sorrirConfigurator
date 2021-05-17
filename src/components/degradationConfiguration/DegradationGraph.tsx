@@ -42,7 +42,9 @@ const useStyles = makeStyles((theme: Theme) =>
  * Properties for the @DegradationGraph
  */
 export interface IDegradationGraphProps{
-
+    createDegradationLevel: () => void;
+    editDegradationLevel: () => void;
+    deleteDegradationLevel: () => void;
 }
 
 /**
@@ -52,23 +54,25 @@ export interface IDegradationGraphProps{
  */
 export const DegradationGraph = (props: IDegradationGraphProps) => {
 
+    const {createDegradationLevel, editDegradationLevel, deleteDegradationLevel} = props;
+
     const classes = useStyles();
 
     return (
         <div id="degradation-graph-container">
             <div id="degradation-graph-menu" className={classes.menu}>    
                 <Tooltip title="Create">
-                    <IconButton aria-label="Create" onClick={()=>{console.log("Create clicked!");}}>
+                    <IconButton aria-label="Create" onClick={()=>{createDegradationLevel();}}>
                         <AddIcon />
                     </IconButton>
                 </Tooltip>  
                 <Tooltip title="Edit">
-                    <IconButton aria-label="Edit" onClick={()=>{console.log("Edit clicked!");}}>
+                    <IconButton aria-label="Edit" onClick={()=>{editDegradationLevel();}}>
                         <EditIcon />
                     </IconButton>
                 </Tooltip>            
                 <Tooltip title="Delete">
-                    <IconButton aria-label="Delete" onClick={()=>{console.log("Delete clicked!");}}>
+                    <IconButton aria-label="Delete" onClick={()=>{deleteDegradationLevel();}}>
                         <DeleteIcon />
                     </IconButton>
                 </Tooltip>    
