@@ -1,4 +1,14 @@
-import ReactFlow, { Background }  from 'react-flow-renderer';
+import ReactFlow, { Controls, Background }  from 'react-flow-renderer';
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import Divider from '@material-ui/core/Divider';
+import AddIcon from '@material-ui/icons/Add';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
+import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
+
+import './DegradationGraph.css';
 
 const elements = [
     { id: '1', data: { label: 'Node 1' }, position: { x: 250, y: 5 } },
@@ -9,8 +19,23 @@ const elements = [
   
 const BasicFlow = () => 
 <ReactFlow elements={elements}>
+    <Controls />
     <Background color="#aaa" gap={16} />
 </ReactFlow>;
+
+/**
+ * Styles for the @DegradationGraph
+ */
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    menu: {
+        width: 'fit-content',
+        backgroundColor: theme.palette.background.paper,
+        color: theme.palette.text.secondary, 
+        padding: theme.spacing(1),
+    },
+  }),
+);
 
 
 /**
@@ -27,7 +52,36 @@ export interface IDegradationGraphProps{
  */
 export const DegradationGraph = (props: IDegradationGraphProps) => {
 
+    const classes = useStyles();
+
     return (
-        <BasicFlow/>
+        <div id="degradation-graph-container">
+            <div id="degradation-graph-menu" className={classes.menu}>    
+                <Tooltip title="Create">
+                    <IconButton aria-label="Create" onClick={()=>{console.log("Create clicked!");}}>
+                        <AddIcon />
+                    </IconButton>
+                </Tooltip>  
+                <Tooltip title="Edit">
+                    <IconButton aria-label="Edit" onClick={()=>{console.log("Edit clicked!");}}>
+                        <EditIcon />
+                    </IconButton>
+                </Tooltip>            
+                <Tooltip title="Delete">
+                    <IconButton aria-label="Delete" onClick={()=>{console.log("Delete clicked!");}}>
+                        <DeleteIcon />
+                    </IconButton>
+                </Tooltip>    
+                <Tooltip title="Help">
+                    <IconButton aria-label="Help" onClick={()=>{console.log("Help clicked!");}}>
+                        <HelpOutlineIcon />
+                    </IconButton>
+                </Tooltip>  
+            </div>
+            <Divider></Divider>
+            <div id="degradation-graph-content">
+                <BasicFlow/>
+            </div>
+        </div>
     );
 }
