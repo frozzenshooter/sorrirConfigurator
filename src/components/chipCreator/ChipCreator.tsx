@@ -14,6 +14,9 @@ export interface ChipCreatorState{
     shadowmodeInput: string
 }
 
+/**
+ * Component to create chips based on a string input
+ */
 export default class ChipCreator extends React.Component<ChipCreatorProps, {}> {
 
     state: ChipCreatorState;
@@ -27,7 +30,7 @@ export default class ChipCreator extends React.Component<ChipCreatorProps, {}> {
 
     render() {
         return (
-            <div className="chip-creator-container">
+            <div id="chip-creator-container">
                 <TextField label="Shadowmode" 
 
                     value={this.state.shadowmodeInput}
@@ -44,7 +47,7 @@ export default class ChipCreator extends React.Component<ChipCreatorProps, {}> {
                         }
                     }
                 }/>
-                <ul className="chip-creator-list">
+                <ul id="chip-creator-list">
                     {this.props.shadowmodes.map((shadowmode) => {
                         return (
                             <li key={shadowmode.id} className="chip-creator-list-item">

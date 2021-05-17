@@ -22,6 +22,8 @@ import IShadowmode from '../../interfaces/IShadowmode';
 import Chip from '@material-ui/core/Chip';
 import AddIcon from '@material-ui/icons/Add';
 
+import './SubComponentTable.css';
+
 /**
  * Order of the sorting
  */
@@ -422,11 +424,11 @@ export function SubComponentTable(props: SubComponentTableProps) {
                         </TableCell>
                         <TableCell>{subcomponent.name}</TableCell>
                         <TableCell>
-                            <ul className="component-configurator-shadowmode-list">
+                            <ul className="subcomponent-configurator-table-shadowmode-list">
                                 {subcomponent.shadowmodes.map((shadowmode)=> {
 
                                         return (
-                                        <li key={shadowmode.id} className="component-configurator-shadowmode-list-item">
+                                        <li key={shadowmode.id} className="subcomponent-configurator-table-shadowmode-list-item">
                                             <Chip label={shadowmode.name} />
                                         </li>);
                                     })

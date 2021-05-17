@@ -94,40 +94,38 @@ export const ConfigurationImportView = (props: StepperViewProps) => {
 
      */
     return (
-        <div className="configuration-import-view">
-            <div className={classes.grow}>
-                <AppBar position="fixed">
-                    <Toolbar>
-                        <Typography className={classes.title} variant="h6" noWrap>
-                            {ResolveViewLabel(AvailableViews.ConfigurationImportView)}
-                        </Typography>
-                        <IconButton edge="end" color="inherit" onClick={handleMoreButtonClicked}>
-                            <MoreIcon />
-                        </IconButton>
-                        <Menu
-                            anchorEl={anchorEl}
-                            anchorOrigin={
-                                {
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }
+        <div id="configuration-import-container">
+            <AppBar position="fixed">
+                <Toolbar>
+                    <Typography className={classes.title} variant="h6" noWrap>
+                        {ResolveViewLabel(AvailableViews.ConfigurationImportView)}
+                    </Typography>
+                    <IconButton edge="end" color="inherit" onClick={handleMoreButtonClicked}>
+                        <MoreIcon />
+                    </IconButton>
+                    <Menu
+                        anchorEl={anchorEl}
+                        anchorOrigin={
+                            {
+                                vertical: 'top',
+                                horizontal: 'right',
                             }
-                            keepMounted
-                            transformOrigin={
-                                {
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }
+                        }
+                        keepMounted
+                        transformOrigin={
+                            {
+                                vertical: 'top',
+                                horizontal: 'right',
                             }
-                            open={Boolean(anchorEl)}
-                            onClose={handleCloseMoreMenu}
-                        >
-                            <MenuItem onClick={handleResetConfiguration}>Reset configuration</MenuItem>
-                        </Menu>
+                        }
+                        open={Boolean(anchorEl)}
+                        onClose={handleCloseMoreMenu}
+                    >
+                        <MenuItem onClick={handleResetConfiguration}>Reset configuration</MenuItem>
+                    </Menu>
 
-                    </Toolbar>
-                </AppBar>
-            </div>
+                </Toolbar>
+            </AppBar>
             <DecisionDialog
                 handleAccept={resetConfiguration}
                 handleCancel={() => {setIsConfigurationResetDialogOpen(false);}}
@@ -136,7 +134,7 @@ export const ConfigurationImportView = (props: StepperViewProps) => {
                 text={"Confirm the reset of the current configuration. All unsaved data will be deleted!"}
             />
             <div className={classes.appBarSpacer}></div>
-            <div className="configuration-import-stepper-container">
+            <div id="configuration-import-view-stepper-container">
                     <Stepper elevation={1} square={false} className={classes.grow} nonLinear activeStep={views.findIndex(v => v === AvailableViews.ConfigurationImportView)}>
                         {views.map((view, index) => (
                             <Step key={ResolveViewLabel(view)}>
@@ -147,12 +145,12 @@ export const ConfigurationImportView = (props: StepperViewProps) => {
                         ))}
                     </Stepper>
             </div>
-            <div className="configuration-import-view-import-container ">
+            <div id="configuration-import-view-import-container">
                     <ConfigurationFileInput
                         handleChange={handleFileChange}
                         value={""}
                     />
-                <div className="configuration-import-view-syntaxhighlighter-container">
+                <div id="configuration-import-view-syntaxhighlighter-container">
                     {parserError !== ""?
                             <Alert severity="error">
                                 <AlertTitle>Error</AlertTitle>

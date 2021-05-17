@@ -191,8 +191,7 @@ interface ShadowModeGranularityChangeState {
     
 
     return (
-        <div>
-            <div className={classes.grow}>
+        <div id="subcomponent-configuration-container">
                 <AppBar position="fixed">
                     <Toolbar>
                         <Typography className={classes.title} variant="h6" noWrap>
@@ -224,7 +223,6 @@ interface ShadowModeGranularityChangeState {
 
                     </Toolbar>
                 </AppBar>
-            </div>
             <DecisionDialog
                 handleAccept={resetConfiguration}
                 handleCancel={() => {setIsConfigurationResetDialogOpen(false);}}
@@ -233,7 +231,7 @@ interface ShadowModeGranularityChangeState {
                 text={"Confirm the reset of the current configuration. All unsaved data will be deleted!"}
             />
             <div className={classes.appBarSpacer}></div>
-            <div className="component-configurator-stepper-container">
+            <div id="subcomponent-configurator-stepper-container">
                 <Stepper elevation={1} square={false} nonLinear activeStep={views.findIndex(v => v === AvailableViews.ComponentConfigurationView)}>
                         {views.map((view, index) => (
                             <Step key={ResolveViewLabel(view)}>
@@ -245,7 +243,7 @@ interface ShadowModeGranularityChangeState {
                 </Stepper>
             </div>
 
-            <div className="component-configurator-container">
+            <div id="subcomponent-configurator-table-container">
                     <SubComponentTable
                         subcomponents={configuration.subComponents}
                         handleCreateSubComponent={handleClickOpenCreateDialog}
@@ -253,19 +251,17 @@ interface ShadowModeGranularityChangeState {
                         handleEditSubComponent={handleClickOpenEditDialog}
                     />
             </div>
-            <div className="component-configurator-button-container">
-                <FormControlLabel
-                    label={"Shadowmode Granularity: " + (configuration.isShadowModeGranularityFine ? "Fine" : "Normal")}
-                    control={        
-                        <Switch
-                            checked={configuration.isShadowModeGranularityFine}
-                            onChange={handleShadowModeGranularityChange}
-                            color="primary"
-                            name="checkedB"
-                            inputProps={{ 'aria-label': 'primary checkbox' }}
-                        />}
-                />
-            </div>
+            <FormControlLabel
+                label={"Shadowmode Granularity: " + (configuration.isShadowModeGranularityFine ? "Fine" : "Normal")}
+                control={        
+                    <Switch
+                        checked={configuration.isShadowModeGranularityFine}
+                        onChange={handleShadowModeGranularityChange}
+                        color="primary"
+                        name="checkedB"
+                        inputProps={{ 'aria-label': 'primary checkbox' }}
+                    />}
+            />
 
             <SubComponentDialog
                 type={SubComponentDialogType.Edit}

@@ -1,16 +1,16 @@
-.degradation-configuration-view{
+#degradation-configuration-container{
     display: flex;
     flex-flow: column;
     height: 100%;
 }
 
-.degradation-configuration-stepper-container{
+#degradation-configuration-stepper-container{
     padding-left: 2%;
     padding-right: 2%;
     display: inline-flex;
 }
 
-.degradation-configuration-flow-graph{
+#degradation-configuration-flow-graph{
     padding-left: 2%;
     padding-right: 2%;
     width: 96%;

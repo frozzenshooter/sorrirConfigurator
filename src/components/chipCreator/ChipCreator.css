@@ -1,10 +1,10 @@
-.chip-creator-container{
+#chip-creator-container{
     display: inline-flex;
     flex-wrap: nowrap;
     flex-direction: row;
 }
 
-.chip-creator-list{
+#chip-creator-list{
     display: inline-flex;
     flex-wrap: wrap;
     flex-direction: row;

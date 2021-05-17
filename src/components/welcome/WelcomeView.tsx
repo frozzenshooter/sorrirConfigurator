@@ -28,8 +28,8 @@ export const WelcomeView = (props: WelcomeViewProps) => {
     }
 
     return (
-        <div>
-            <h1 id="welcome-title">{ResolveViewLabel(AvailableViews.WelcomeView)}</h1>
+        <div id="welcome-container">
+            <h1>{ResolveViewLabel(AvailableViews.WelcomeView)}</h1>
             <div id="welcome-button-container">
                 <Button variant="outlined" color="primary" onClick={handleNewConfigurationClick}>
                     New Configuration

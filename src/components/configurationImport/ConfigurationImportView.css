@@ -1,9 +1,10 @@
-.configuration-import-view{
+#configuration-import-container{
+    height: 100%;
     display: flex;
     flex-flow: column;
 }
 
-.configuration-import-view-import-container{
+#configuration-import-view-import-container{
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -13,12 +14,12 @@
     align-items: center;
 }
 
-.configuration-import-view-syntaxhighlighter-container{
-    width: 100%;
-}
-
-.configuration-import-stepper-container{
+#configuration-import-view-stepper-container{
     padding-left: 2%;
     padding-right: 2%;
     display: inline-flex;
+}
+
+#configuration-import-view-syntaxhighlighter-container{
+    width: 100%;
 }

@@ -92,40 +92,38 @@ export interface ConfigurationExportViewProps extends StepperViewProps {
     };
     
 
-    return (<div className="configuration-export-view">
-                <div className={classes.grow}>
-                    <AppBar position="fixed">
-                        <Toolbar>
-                            <Typography className={classes.title} variant="h6" noWrap>
-                                Configuration export
-                            </Typography>
-                            <IconButton edge="end" color="inherit" onClick={handleMoreButtonClicked}>
-                                <MoreIcon />
-                            </IconButton>
-                            <Menu
-                                anchorEl={anchorEl}
-                                anchorOrigin={
-                                    {
-                                        vertical: 'top',
-                                        horizontal: 'right',
-                                    }
+    return (<div id="configuration-export-container">
+                <AppBar position="fixed">
+                    <Toolbar>
+                        <Typography className={classes.title} variant="h6" noWrap>
+                            Configuration export
+                        </Typography>
+                        <IconButton edge="end" color="inherit" onClick={handleMoreButtonClicked}>
+                            <MoreIcon />
+                        </IconButton>
+                        <Menu
+                            anchorEl={anchorEl}
+                            anchorOrigin={
+                                {
+                                    vertical: 'top',
+                                    horizontal: 'right',
                                 }
-                                keepMounted
-                                transformOrigin={
-                                    {
-                                        vertical: 'top',
-                                        horizontal: 'right',
-                                    }
+                            }
+                            keepMounted
+                            transformOrigin={
+                                {
+                                    vertical: 'top',
+                                    horizontal: 'right',
                                 }
-                                open={Boolean(anchorEl)}
-                                onClose={handleCloseMoreMenu}
-                            >
-                                <MenuItem onClick={handleResetConfiguration}>Reset configuration</MenuItem>
-                            </Menu>
+                            }
+                            open={Boolean(anchorEl)}
+                            onClose={handleCloseMoreMenu}
+                        >
+                            <MenuItem onClick={handleResetConfiguration}>Reset configuration</MenuItem>
+                        </Menu>
 
-                        </Toolbar>
-                    </AppBar>
-                </div>
+                    </Toolbar>
+                </AppBar>
                 <DecisionDialog
                     handleAccept={resetConfiguration}
                     handleCancel={() => {setIsConfigurationResetDialogOpen(false);}}
@@ -134,7 +132,7 @@ export interface ConfigurationExportViewProps extends StepperViewProps {
                     text={"Confirm the reset of the current configuration. All unsaved data will be deleted!"}
                 />
                 <div className={classes.appBarSpacer}></div>
-                <div className="configuration-export-stepper-container">
+                <div id="configuration-export-view-stepper-container">
                     <Stepper nonLinear elevation={1} square={false} activeStep={views.findIndex(v => v === AvailableViews.ConfigurationExportView)}>
                         {views.map((view, index) => (
                             <Step key={ResolveViewLabel(view)}>
@@ -146,8 +144,7 @@ export interface ConfigurationExportViewProps extends StepperViewProps {
                     </Stepper>
                 </div>
 
-
-                <div  className="configuration-export-view-export-container">
+                <div  id="configuration-export-export-container">
                         <ExportFile 
                                 configuration={configuration}
                             />

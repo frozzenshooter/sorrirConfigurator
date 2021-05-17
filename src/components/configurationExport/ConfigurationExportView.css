@@ -1,9 +1,10 @@
-.configuration-export-view{
+#configuration-export-container{
     display: flex;
     flex-flow: column;
+    height: 100%;
 }
 
-.configuration-export-view-export-container{
+#configuration-export-export-container{
     display: flex;
     justify-content: center;
     padding-right: 2%;
@@ -13,7 +14,7 @@
     padding-top: 16px;
 }
 
-.configuration-export-stepper-container{
+#configuration-export-view-stepper-container{
     padding-left: 2%;
     padding-right: 2%;
 }

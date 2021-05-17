@@ -98,7 +98,7 @@ export const Wizard = () => {
     }
 
     return  (
-        <div className="wizard-container">     
+        <div id="wizard-container">     
             {getView(wizardState.activeView)}
         </div>
     ); 

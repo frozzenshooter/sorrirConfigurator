@@ -1,4 +1,4 @@
-.subcomponent-dialog-content-container{
+#subcomponent-dialog-content-container{
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -8,10 +8,10 @@
     padding-bottom: 16px;
 }
 
-.subcomponent-dialog-error-container{
+#subcomponent-dialog-error-container{
     display: inline-flex;
 }
 
-.subcomponent-dialog-error-icon{
+#subcomponent-dialog-error-icon{
     padding-right: 4px;
 }

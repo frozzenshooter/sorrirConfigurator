@@ -147,8 +147,8 @@ export function SubComponentDialog(props: SubComponentDialogProps){
                     {type === SubComponentDialogType.Create ? "Create new subcomponent" : "Edit subcomponent"}
                 </SubComponentDialogTitle>
                 <SubComponentDialogContent dividers>  
-                    {error !== ""? <div className="subcomponent-dialog-error-container"><ErrorOutlineIcon className="subcomponent-dialog-error-icon"/> {error} </div> : ""}
-                    <div className="subcomponent-dialog-content-container">            
+                    {error !== ""? <div id="subcomponent-dialog-error-container"><ErrorOutlineIcon id="subcomponent-dialog-error-icon"/> {error} </div> : ""}
+                    <div id="subcomponent-dialog-content-container">            
                         <TextField 
                             disabled ={type === SubComponentDialogType.Edit ? true : false}
                             id="id"
