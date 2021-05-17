@@ -96,7 +96,7 @@ export const Wizard = () => {
             case AvailableViews.ConfigurationExportView:
                 return <ConfigurationExportView showView={showView} views={wizardState.views} configuration={wizardState.configuration} handleConfigurationUpdate={handleConfigurationUpdate}/>
             case AvailableViews.DegradationConfigurationView:
-                return <DegradationConfigurationView showView={showView} views={wizardState.views} handleConfigurationUpdate={handleConfigurationUpdate}/>;
+                return <DegradationConfigurationView showView={showView} views={wizardState.views} configuration={wizardState.configuration} handleConfigurationUpdate={handleConfigurationUpdate}/>;
             default:
                 return <WelcomeView startWizard={startWizard} showView={showView} handleConfigurationUpdate={handleConfigurationUpdate}/>;
 

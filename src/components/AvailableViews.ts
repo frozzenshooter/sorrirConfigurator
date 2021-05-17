@@ -71,7 +71,8 @@ export const GetImportConfigurationViews = () => {
 export const getInitalConfiguration = () => {
     const initConfig: IConfiguration = {
         isShadowModeGranularityFine : false,
-        subComponents: []
+        subComponents: [],
+        degradationLevels: []        
     };
     return initConfig;
 }
@@ -82,6 +83,7 @@ export const getInitalConfiguration = () => {
 export const getInitalDevelopmentConfiguration = () => {
     const initConfig: IConfiguration = {
         isShadowModeGranularityFine : false,
+        degradationLevels: [],     
         subComponents: [
             {
                 id: "Subcomponent1",
@@ -192,9 +194,10 @@ export const getInitalDevelopmentConfiguration = () => {
 export const getDevelopmentInitalConfiguration = (): IWizardState => {
     return  {
         activeView: AvailableViews.WelcomeView,
-        views: GetNewConfigurationViews(),
+        views: GetNewConfigurationViews(),        
         configuration: {
             isShadowModeGranularityFine: false,
+            degradationLevels: [],
             subComponents: [
             {
                 id: "Subcomponent1",

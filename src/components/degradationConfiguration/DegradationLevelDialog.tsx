@@ -11,6 +11,7 @@ import { TransitionProps } from '@material-ui/core/transitions';
 import React from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { DecisionDialog } from '../decisionDialog/DecisionDialog';
+import IConfiguration from '../../interfaces/IConfiguration';
 
 export enum DegradationLevelDialogType {
     Create = 0,
@@ -36,6 +37,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export interface IDegradationLevelDialogProps{
     degradationLevelName?: string,
     type: DegradationLevelDialogType,
+    configuration: IConfiguration,
     isOpen: boolean;
     handleSave: () => void;
     handleCancel: () => void;
@@ -55,7 +57,7 @@ const Transition = React.forwardRef(function Transition(
 
 export const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
 
-    const { isOpen, handleSave, handleCancel, degradationLevelName, type} = props;
+    const {configuration, degradationLevelName, type, isOpen, handleSave, handleCancel } = props;
 
     const classes = useStyles();
 
@@ -106,13 +108,15 @@ export const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
                         <SaveIcon />
                     </IconButton>
 
-
                     </Toolbar>
                 </AppBar>
                 <div className={classes.appBarSpacer}></div>
                 <div>
                     CONTENT
                 </div>
+                 {configuration.subComponents.map(subComponent => {
+                     return (<div className="test"> <div>{subComponent.id}</div> <div>{subComponent.name}</div> </div>);
+                 })}
                 <DecisionDialog
                     isOpen={cancelConfirmationDialogOpen}
                     handleAccept={handleCancelConfirmationDialogAccept}

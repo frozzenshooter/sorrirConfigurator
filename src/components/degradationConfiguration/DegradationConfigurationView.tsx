@@ -20,6 +20,7 @@ import Paper from '@material-ui/core/Paper';
 import './DegradationConfigurationView.css';
 import { DegradationGraph } from './DegradationGraph';
 import { DegradationLevelDialog, DegradationLevelDialogType } from './DegradationLevelDialog';
+import IConfiguration from '../../interfaces/IConfiguration';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -33,13 +34,18 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
+export interface IDegradationConfigurationViewProps extends IStepperViewProps {
+    configuration: IConfiguration;
+}
+
+
 /**
  * View for configuration of the degraadation levels 
  *
  */
-export const DegradationConfigurationView = (props: IStepperViewProps) => {
+export const DegradationConfigurationView = (props: IDegradationConfigurationViewProps) => {
 
-    const {showView, handleConfigurationUpdate, views} = props;
+    const {showView, handleConfigurationUpdate, views, configuration} = props;
 
     const classes = useStyles();
 
@@ -70,28 +76,30 @@ export const DegradationConfigurationView = (props: IStepperViewProps) => {
     };
 
     // State for DegradationLevelDialog
-    const [degradationLevelDialogOpen, setDegradationLevelDialogOpen] = React.useState<boolean>(false);
+    const [degradationLevelCreateDialogOpen, setdegradationLevelCreateDialogOpen] = React.useState<boolean>(false);
 
-    const handleDegradationLevelDialogCancel = () => {
-        setDegradationLevelDialogOpen(false);
+    const handleDegradationLevelCreateDialogCancel = () => {
+        setdegradationLevelCreateDialogOpen(false);
     }
 
-    const handleDegradationLevelDialogSave = () => {
-        setDegradationLevelDialogOpen(false);
+    const handleDegradationLevelCreateDialogSave = () => {
+        setdegradationLevelCreateDialogOpen(false);
     }
 
     // Logic for DegradationLevel creation, updated and deletion
 
     const handleCreateDegradationLevel = () => {
-        setDegradationLevelDialogOpen(true);
+        setdegradationLevelCreateDialogOpen(true);
     }
 
     const handleEditDegradationLevel = () => {
-        setDegradationLevelDialogOpen(true);
+        //TODO: implement own dialog
+        setdegradationLevelCreateDialogOpen(true);
     }
 
     const handleDeleteDegradationLevel = () => {
-        setDegradationLevelDialogOpen(true);
+        //TODO implement own dialog
+        setdegradationLevelCreateDialogOpen(true);
     }
 
     return (
@@ -156,11 +164,11 @@ export const DegradationConfigurationView = (props: IStepperViewProps) => {
                 </Paper>
             </div>
             <DegradationLevelDialog
-                isOpen={degradationLevelDialogOpen}
-                handleCancel={handleDegradationLevelDialogCancel}
-                handleSave={handleDegradationLevelDialogSave}
                 type={DegradationLevelDialogType.Create}
-                degradationLevelName={"Level Name"}
+                configuration={configuration}
+                isOpen={degradationLevelCreateDialogOpen}
+                handleCancel={handleDegradationLevelCreateDialogCancel}
+                handleSave={handleDegradationLevelCreateDialogSave}
             />
 
         </div>
