@@ -1,7 +1,7 @@
 import React from 'react';
 import IConfiguration from '../../interfaces/IConfiguration';
 import { AvailableViews, getDevelopmentInitalConfiguration, getInitalConfiguration, getInitalDevelopmentConfiguration, GetNewConfigurationViews } from '../AvailableViews';
-import { SubComponentConfiguratorView } from '../componentConfigurator/SubComponentConfiguratorView';
+import { SubComponentConfiguratorView } from '../subComponentConfigurator/SubComponentConfiguratorView';
 import { ConfigurationExportView } from '../configurationExport/ConfigurationExportView';
 import { ConfigurationImportView } from '../configurationImport/ConfigurationImportView';
 import { DegradationConfigurationView } from '../degradationConfiguration/DegradationConfigurationView';
