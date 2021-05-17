@@ -1,7 +1,7 @@
 import { Button } from '@material-ui/core';
 import IConfiguration from '../../interfaces/IConfiguration';
 import { AvailableViews, ResolveViewLabel } from '../AvailableViews';
-import {StepperViewProps} from '../wizard/Wizard';
+import {IStepperViewProps} from '../wizard/Wizard';
 import './ConfigurationExportView.css';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import lightfair from 'react-syntax-highlighter/dist/esm/styles/hljs/lightfair';
@@ -51,7 +51,7 @@ export const ExportFile = (props: ExportFileProps) => {
     );
 }
 
-export interface ConfigurationExportViewProps extends StepperViewProps {
+export interface ConfigurationExportViewProps extends IStepperViewProps {
     configuration: IConfiguration;
 }
 

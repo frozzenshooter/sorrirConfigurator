@@ -1,7 +1,7 @@
 import React from 'react';
 import Toolbar from '@material-ui/core/Toolbar';
 import { AvailableViews, getInitalConfiguration, ResolveViewLabel } from '../AvailableViews';
-import {StepperViewProps} from '../wizard/Wizard';
+import {IStepperViewProps} from '../wizard/Wizard';
 import { ConfigurationFileInput } from './ConfigurationFileInput';
 import './ConfigurationImportView.css';
 import IConfiguration from '../../interfaces/IConfiguration';
@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme: Theme) =>
 /**
  * View for the configuration import
  */
-export const ConfigurationImportView = (props: StepperViewProps) => {
+export const ConfigurationImportView = (props: IStepperViewProps) => {
 
     const {showView, handleConfigurationUpdate, views} = props;
 

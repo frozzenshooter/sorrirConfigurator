@@ -9,24 +9,24 @@ import { WelcomeView } from '../welcome/WelcomeView';
 import './Wizard.css'
 
 /**
- * Properties of a View
+ * Properties of a simple view
  */
-export interface ViewProps {
+export interface IViewProps {
     showView: (availableView: AvailableViews) => void;
     handleConfigurationUpdate: (configuration: IConfiguration) => void;
 }
 
 /**
- * Properties ofa view that wants to display a stepper
+ * Properties of a view that wants to display a stepper
  */
-export interface StepperViewProps extends ViewProps {
+export interface IStepperViewProps extends IViewProps {
     views: AvailableViews[]
 }
 
 /**
- * State of the Wizard
+ * State of the @Wizard
  */
-export interface WizardState{
+export interface IWizardState{
     activeView: AvailableViews;
     views: AvailableViews[];
     configuration: IConfiguration;
@@ -34,17 +34,17 @@ export interface WizardState{
 
 
 /**
- * Wizard to navigate through Views
+ * Wizard to navigate through views
  */
 export const Wizard = () => {
 
-    const [wizardState, setWizardState] = React.useState<WizardState>(getDevelopmentInitalConfiguration());
+    const [wizardState, setWizardState] = React.useState<IWizardState>(getDevelopmentInitalConfiguration());
 
     /**
      * Show a selected view
      */
     const showView = (view: AvailableViews) => {
-        const newState: WizardState = JSON.parse(JSON.stringify(wizardState));
+        const newState: IWizardState = JSON.parse(JSON.stringify(wizardState));
         newState.activeView = view;
         setWizardState(newState);     
     }
@@ -56,7 +56,7 @@ export const Wizard = () => {
      */
     const handleConfigurationUpdate = (configuration: IConfiguration) => {
         console.log(configuration);
-        const newState: WizardState = JSON.parse(JSON.stringify(wizardState));
+        const newState: IWizardState = JSON.parse(JSON.stringify(wizardState));
         newState.configuration = configuration;
         console.log(newState);
         setWizardState(newState);  
@@ -68,7 +68,7 @@ export const Wizard = () => {
      * @param views 
      */
     const startWizard = (views: AvailableViews[]) => {
-        const newState: WizardState = JSON.parse(JSON.stringify(wizardState));
+        const newState: IWizardState = JSON.parse(JSON.stringify(wizardState));
         //TODO: replace with getInitalConfiguration when its not in development anymore
         
         // This resets the configuration from previous configurations
@@ -78,6 +78,12 @@ export const Wizard = () => {
         setWizardState(newState);  
     }
 
+    /**
+     * Resolves the view to display
+     * 
+     * @param availableView 
+     * @returns 
+     */
     const getView = (availableView: AvailableViews): JSX.Element => {
         
         switch(availableView){

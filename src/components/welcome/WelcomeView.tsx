@@ -1,17 +1,19 @@
 import { Button } from '@material-ui/core';
 import { AvailableViews, GetNewConfigurationViews, GetImportConfigurationViews, ResolveViewLabel } from '../AvailableViews';
-import {ViewProps} from '../wizard/Wizard';
+import {IViewProps} from '../wizard/Wizard';
 import './WelcomeView.css';
 
-
-export interface WelcomeViewProps extends ViewProps{
+/**
+ * Properties for the @WelcomeView
+ */
+export interface IWelcomeViewProps extends IViewProps{
     startWizard: (views: AvailableViews[]) => void;
 }
 
 /**
  * Welcome page for the application
  */
-export const WelcomeView = (props: WelcomeViewProps) => {
+export const WelcomeView = (props: IWelcomeViewProps) => {
 
     const {startWizard} = props;
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StepperViewProps, ViewProps } from '../wizard/Wizard';
+import { IStepperViewProps, IViewProps } from '../wizard/Wizard';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepButton from '@material-ui/core/StepButton';
@@ -43,7 +43,7 @@ const BasicFlow = () => <ReactFlow elements={elements} />;
  * View for configuration of the degraadation levels 
  *
  */
-export const DegradationConfigurationView = (props: StepperViewProps) => {
+export const DegradationConfigurationView = (props: IStepperViewProps) => {
 
     const {showView, handleConfigurationUpdate, views} = props;
 

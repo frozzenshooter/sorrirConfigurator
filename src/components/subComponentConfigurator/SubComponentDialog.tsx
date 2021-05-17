@@ -16,7 +16,12 @@ import ChipCreator from '../chipCreator/ChipCreator';
 import IShadowmode from '../../interfaces/IShadowmode';
 import './SubComponentDialog.css';
 
-
+/**
+ * Styles for the subcomponent dialog
+ * 
+ * @param theme 
+ * @returns 
+ */
 const styles = (theme: Theme) => createStyles({
   root: {
     margin: 0,
@@ -30,13 +35,19 @@ const styles = (theme: Theme) => createStyles({
   },
 });
 
-interface SubComponentDialogTitleProps extends WithStyles<typeof styles> {
+/**
+ * Properties for the @SubComponentDialog
+ */
+interface ISubComponentDialogTitleProps extends WithStyles<typeof styles> {
     id: string;
     children: React.ReactNode;
     onClose: () => void;
 }
 
-const SubComponentDialogTitle = withStyles(styles)((props: SubComponentDialogTitleProps) => {
+/**
+ * Title for the @SubComponentDialog
+ */
+const SubComponentDialogTitle = withStyles(styles)((props: ISubComponentDialogTitleProps) => {
     const { children, classes, onClose, ...other } = props;
     return (
     <MuiDialogTitle disableTypography className={classes.root} {...other}>
@@ -50,25 +61,37 @@ const SubComponentDialogTitle = withStyles(styles)((props: SubComponentDialogTit
     );
 });
 
+/**
+ * Content of the @SubComponentDialog
+ */
 const SubComponentDialogContent = withStyles((theme: Theme) => ({
     root: {
     padding: theme.spacing(2),
     },
 }))(MuiDialogContent);
 
+/**
+ * Styles for the dialog actions
+ */
 const SubComponentDialogActions = withStyles((theme: Theme) => ({
-root: {
-  margin: 0,
-  padding: theme.spacing(1),
-},
+    root: {
+        margin: 0,
+        padding: theme.spacing(1),
+    },
 }))(MuiDialogActions);
 
+/**
+ * The different SubComponentDialog-Types
+ */
 export enum SubComponentDialogType {    
     Create = 0,
     Edit = 1
 }
 
-export interface SubComponentDialogProps{
+/**
+ * Properties for the @SubComponentDialog
+ */
+export interface ISubComponentDialogProps{
     type: SubComponentDialogType;
     open: boolean;
     error: string;
@@ -78,7 +101,13 @@ export interface SubComponentDialogProps{
     onSaveClose: () => void;
 }
 
-export function SubComponentDialog(props: SubComponentDialogProps){
+/**
+ * The subcomponent dialog allows to create and edit a subcomponent
+ * 
+ * @param props 
+ * @returns 
+ */
+export function SubComponentDialog(props: ISubComponentDialogProps){
 
     const {type, open, error, onAbort, onSaveClose, subComponent, onSubComponentChange} = props;
 

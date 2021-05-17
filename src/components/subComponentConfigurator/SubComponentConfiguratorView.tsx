@@ -18,13 +18,15 @@ import IConfiguration from '../../interfaces/IConfiguration';
 import './SubComponentConfiguratorView.css';
 import { SubComponentTable } from './SubComponentTable';
 import { AvailableViews, ResolveViewLabel } from '../AvailableViews';
-import { StepperViewProps } from '../wizard/Wizard';
+import { IStepperViewProps } from '../wizard/Wizard';
 import { SubComponentDialog , SubComponentDialogType} from './SubComponentDialog';
 import ISubComponent from '../../interfaces/ISubComponent';
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
-
+/**
+ * Material-ui styles for the subComponentConfigurationView
+ */
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
         grow: {
@@ -37,22 +39,34 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
-export interface SubComponentConfigurationViewProps extends StepperViewProps{
+/**
+ * Properties for the @SubComponentConfigurationView
+ */
+export interface ISubComponentConfigurationViewProps extends IStepperViewProps{
     configuration: IConfiguration;
 }
 
-interface DialogState{
+/**
+ * State of a dialog
+ */
+interface IDialogState{
     isOpen: boolean;
     error: string;
     subcomponentToEdit: ISubComponent;
 }
 
-interface DeleteDialogState{
+/**
+ * State of the delete dialog
+ */
+interface IDeleteDialogState{
     isOpen: boolean;
     subComponentsToDelete: ISubComponent[];
     resetSelection: () => void;
 }
 
+/**
+ * TODO: CREATE THE DIFFERENT GRANULARITIES FOR THE SHADOWMODES
+ */
 interface ShadowModeGranularityChangeState {
     isOpen: boolean;
 }
@@ -60,7 +74,7 @@ interface ShadowModeGranularityChangeState {
 /**
  * View for the configuration of subcomponents 
  */
- export function SubComponentConfiguratorView (props: SubComponentConfigurationViewProps) {
+ export function SubComponentConfiguratorView (props: ISubComponentConfigurationViewProps) {
 
     const emptySubComponent : ISubComponent = {id:"", name:"", shadowmodes: []};
 
@@ -69,7 +83,7 @@ interface ShadowModeGranularityChangeState {
     const classes = useStyles();
 
     // Edit Dialog
-    const [editDialogState, setEditDialogState] = React.useState<DialogState>({ isOpen:false, error:"", subcomponentToEdit: emptySubComponent});
+    const [editDialogState, setEditDialogState] = React.useState<IDialogState>({ isOpen:false, error:"", subcomponentToEdit: emptySubComponent});
 
     const handleSubComponentChangedInEditDialog = (subcomponent: ISubComponent) => {
         setEditDialogState({isOpen: editDialogState.isOpen, error: "", subcomponentToEdit: subcomponent});
@@ -97,7 +111,7 @@ interface ShadowModeGranularityChangeState {
     };
 
     // Open Dialog
-    const [createDialogState, setCreateDialogState] = React.useState<DialogState>({ isOpen:false, error: "", subcomponentToEdit: emptySubComponent});
+    const [createDialogState, setCreateDialogState] = React.useState<IDialogState>({ isOpen:false, error: "", subcomponentToEdit: emptySubComponent});
 
     const handleClickOpenCreateDialog = () => {
         setCreateDialogState({isOpen: true, error: "", subcomponentToEdit: emptySubComponent});
@@ -132,7 +146,7 @@ interface ShadowModeGranularityChangeState {
     };
 
     // Delete Dialog
-    const [deleteDialogState, setDeleteDialogState] = React.useState<DeleteDialogState>({isOpen: false, subComponentsToDelete:[], resetSelection: () => {}});
+    const [deleteDialogState, setDeleteDialogState] = React.useState<IDeleteDialogState>({isOpen: false, subComponentsToDelete:[], resetSelection: () => {}});
 
     const handleDeleteSubComponents = (subComponentsToDelete: ISubComponent[], resetSelection: () => void) => {
         setDeleteDialogState({isOpen: true, subComponentsToDelete: subComponentsToDelete, resetSelection: resetSelection});

@@ -1,5 +1,5 @@
 import IConfiguration from "../interfaces/IConfiguration";
-import { WizardState } from "./wizard/Wizard";
+import { IWizardState } from "./wizard/Wizard";
 
 export enum AvailableViews {
 
@@ -10,6 +10,12 @@ export enum AvailableViews {
     'DegradationConfigurationView' = 4
 }
 
+/**
+ * Resolves the label of a view
+ * 
+ * @param view 
+ * @returns 
+ */
 export const ResolveViewLabel = (view: AvailableViews) => {
 
     switch(view){
@@ -28,6 +34,11 @@ export const ResolveViewLabel = (view: AvailableViews) => {
     }
 }
 
+/**
+ * Returns an array with all views for a new configuration (index as the order of the steps)
+ * 
+ * @returns 
+ */
 export const GetNewConfigurationViews = () => {
     const views: AvailableViews[] = [
         AvailableViews.ComponentConfigurationView,
@@ -37,6 +48,11 @@ export const GetNewConfigurationViews = () => {
     return views;
 }
 
+/**
+ * Returns an array with all views for a loaded configuration (index as the order of the steps)
+ * 
+ * @returns 
+ */
 export const GetImportConfigurationViews = () => {
     const views: AvailableViews[] = [
         AvailableViews.ConfigurationImportView,
@@ -47,6 +63,11 @@ export const GetImportConfigurationViews = () => {
     return views;
 }
 
+/**
+ * Returns an inital (empty) configuration
+ * 
+ * @returns 
+ */
 export const getInitalConfiguration = () => {
     const initConfig: IConfiguration = {
         isShadowModeGranularityFine : false,
@@ -168,7 +189,7 @@ export const getInitalDevelopmentConfiguration = () => {
     return initConfig;
 }
 
-export const getDevelopmentInitalConfiguration = (): WizardState => {
+export const getDevelopmentInitalConfiguration = (): IWizardState => {
     return  {
         activeView: AvailableViews.WelcomeView,
         views: GetNewConfigurationViews(),

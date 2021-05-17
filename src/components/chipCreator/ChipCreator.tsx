@@ -4,24 +4,30 @@ import Chip from '@material-ui/core/Chip';
 import IShadowmode from '../../interfaces/IShadowmode';
 import './ChipCreator.css';
 
-export interface ChipCreatorProps{
+/**
+ * Properties of the @ChipCreator
+ */
+export interface IChipCreatorProps{
     shadowmodes: IShadowmode[];
     handleChipCreation: (shadowmode: IShadowmode) => void;
     handleChipDeletion: (shadowmode: IShadowmode)=> void;
 }
 
-export interface ChipCreatorState{
+/**
+ * State of the @ChipCreator
+ */
+export interface IChipCreatorState{
     shadowmodeInput: string
 }
 
 /**
  * Component to create chips based on a string input
  */
-export default class ChipCreator extends React.Component<ChipCreatorProps, {}> {
+export default class ChipCreator extends React.Component<IChipCreatorProps, {}> {
 
-    state: ChipCreatorState;
+    state: IChipCreatorState;
 
-    constructor(props: ChipCreatorProps){
+    constructor(props: IChipCreatorProps){
         super(props);
         this.state = {
             shadowmodeInput: ""

@@ -6,7 +6,10 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-export interface DecisionDialogProps{
+/**
+ * Properties for the @DecisionDialog
+ */
+export interface IDecisionDialogProps{
     isOpen: boolean;
     title: string;
     text: string;
@@ -14,7 +17,13 @@ export interface DecisionDialogProps{
     handleCancel: () => void;
 }
 
-export const DecisionDialog = (props: DecisionDialogProps) => {
+/**
+ * Fexible decision dialog to display a title, a text and a confirm/abort button
+ * 
+ * @param props 
+ * @returns 
+ */
+export const DecisionDialog = (props: IDecisionDialogProps) => {
 
     const { isOpen, title, text, handleAccept, handleCancel} = props;
 
