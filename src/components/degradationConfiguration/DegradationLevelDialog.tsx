@@ -10,6 +10,7 @@ import Slide from '@material-ui/core/Slide';
 import { TransitionProps } from '@material-ui/core/transitions';
 import React from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { DecisionDialog } from '../decisionDialog/DecisionDialog';
 
 export enum DegradationLevelDialogType {
     Create = 0,
@@ -70,6 +71,22 @@ export const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
         }
     }
 
+    // Cancel confirmation dialog
+    const [cancelConfirmationDialogOpen, setCancelConfirmationDialogOpen] = React.useState<boolean>(false);
+
+    const handleCloseIconClicked = () => {
+        setCancelConfirmationDialogOpen(true);
+    }
+
+    const handleCancelConfirmationDialogAccept = () => {
+        setCancelConfirmationDialogOpen(false);
+        handleCancel();
+    }
+
+    const handleCancelConfirmationDialogCancel = () => {
+        setCancelConfirmationDialogOpen(false);
+    }
+
     return (
         <Dialog
             fullScreen={true}
@@ -79,7 +96,7 @@ export const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
             >
                 <AppBar position="fixed">
                     <Toolbar>
-                    <IconButton edge="start" color="inherit" onClick={handleCancel}>
+                    <IconButton edge="start" color="inherit" onClick={handleCloseIconClicked}>
                         <CloseIcon />
                     </IconButton>
                     <Typography variant="h6" className={classes.title}>
@@ -96,6 +113,13 @@ export const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
                 <div>
                     CONTENT
                 </div>
+                <DecisionDialog
+                    isOpen={cancelConfirmationDialogOpen}
+                    handleAccept={handleCancelConfirmationDialogAccept}
+                    handleCancel={handleCancelConfirmationDialogCancel}
+                    text={"All changes will be discarded!"}
+                    title={"Discard changes?"}
+                />
         </Dialog>
     );    
 }
