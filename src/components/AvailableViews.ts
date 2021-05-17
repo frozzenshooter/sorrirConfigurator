@@ -6,7 +6,8 @@ export enum AvailableViews {
     'WelcomeView' = 0,
     'ComponentConfigurationView' = 1,
     'ConfigurationImportView' = 2,
-    'ConfigurationExportView' = 3
+    'ConfigurationExportView' = 3,
+    'DegradationConfigurationView' = 4
 }
 
 export const ResolveViewLabel = (view: AvailableViews) => {
@@ -20,6 +21,8 @@ export const ResolveViewLabel = (view: AvailableViews) => {
             return "SubComponent Configuration";
         case AvailableViews.ConfigurationExportView:
             return "Configuration Export";
+        case AvailableViews.DegradationConfigurationView:
+            return "Degradation Configuration";
         default:
             return "Label for view not specified";
     }
@@ -28,6 +31,7 @@ export const ResolveViewLabel = (view: AvailableViews) => {
 export const GetNewConfigurationViews = () => {
     const views: AvailableViews[] = [
         AvailableViews.ComponentConfigurationView,
+        AvailableViews.DegradationConfigurationView,
         AvailableViews.ConfigurationExportView,
     ];
     return views;
@@ -36,7 +40,8 @@ export const GetNewConfigurationViews = () => {
 export const GetImportConfigurationViews = () => {
     const views: AvailableViews[] = [
         AvailableViews.ConfigurationImportView,
-        AvailableViews.ComponentConfigurationView,
+        AvailableViews.ComponentConfigurationView,        
+        AvailableViews.DegradationConfigurationView,
         AvailableViews.ConfigurationExportView,
     ];
     return views;
@@ -50,6 +55,9 @@ export const getInitalConfiguration = () => {
     return initConfig;
 }
 
+/*
+ * TODO: REMOVE THESE FUNCTIONS
+ */
 export const getInitalDevelopmentConfiguration = () => {
     const initConfig: IConfiguration = {
         isShadowModeGranularityFine : false,

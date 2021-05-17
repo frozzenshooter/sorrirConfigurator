@@ -1,0 +1,139 @@
+import React from 'react';
+import { StepperViewProps, ViewProps } from '../wizard/Wizard';
+import Stepper from '@material-ui/core/Stepper';
+import Step from '@material-ui/core/Step';
+import StepButton from '@material-ui/core/StepButton';
+import Toolbar from '@material-ui/core/Toolbar';
+import IconButton from '@material-ui/core/IconButton';
+import MoreIcon from '@material-ui/icons/MoreVert';
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
+import { DecisionDialog } from '../decisionDialog/DecisionDialog';
+import AppBar from '@material-ui/core/AppBar';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import { AvailableViews, ResolveViewLabel } from '../AvailableViews';
+
+import ReactFlow from 'react-flow-renderer';
+
+import './DegradationConfigurationView.css';
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+        grow: {
+            flexGrow: 1,
+        },
+        title: {            
+            flexGrow: 1,
+        },
+        appBarSpacer: theme.mixins.toolbar
+    })
+);
+
+const elements = [
+    { id: '1', data: { label: 'Node 1' }, position: { x: 250, y: 5 } },
+    // you can also pass a React component as a label
+    { id: '2', data: { label: <div>Node 2</div> }, position: { x: 100, y: 100 } },
+    { id: 'e1-2', source: '1', target: '2', animated: true },
+  ];
+  
+const BasicFlow = () => <ReactFlow elements={elements} />;
+
+/**
+ * View for configuration of the degraadation levels 
+ *
+ */
+export const DegradationConfigurationView = (props: StepperViewProps) => {
+
+    const {showView, handleConfigurationUpdate, views} = props;
+
+    const classes = useStyles();
+
+    const handleStep = (index: number) => {
+        showView(views[index]);
+    }
+
+    // State for the menu
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const [isConfigurationResetDialogOpen, setIsConfigurationResetDialogOpen] = React.useState<boolean>(false);
+
+    const handleMoreButtonClicked = (event: React.MouseEvent<HTMLButtonElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+  
+    const handleCloseMoreMenu = () => {
+        setAnchorEl(null);
+    };
+
+    const handleResetConfiguration = () => {
+        setAnchorEl(null);
+        setIsConfigurationResetDialogOpen(true);
+    };
+
+    const resetConfiguration = () => {
+        // This will reset the configuration when the user starts a new configuration on the WelcomeView
+        showView(AvailableViews.WelcomeView);
+    };
+
+
+    return (
+        <div className="degradation-configuration-view">
+            <div className={classes.grow}>
+                <AppBar position="fixed">
+                    <Toolbar>
+                        <Typography className={classes.title} variant="h6" noWrap>
+                            {ResolveViewLabel(AvailableViews.DegradationConfigurationView)}
+                        </Typography>
+                        <IconButton edge="end" color="inherit" onClick={handleMoreButtonClicked}>
+                            <MoreIcon />
+                        </IconButton>
+                        <Menu
+                            anchorEl={anchorEl}
+                            anchorOrigin={
+                                {
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }
+                            }
+                            keepMounted
+                            transformOrigin={
+                                {
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }
+                            }
+                            open={Boolean(anchorEl)}
+                            onClose={handleCloseMoreMenu}
+                        >
+                            <MenuItem onClick={handleResetConfiguration}>Reset configuration</MenuItem>
+                        </Menu>
+
+                    </Toolbar>
+                </AppBar>
+            </div>
+            <DecisionDialog
+                handleAccept={resetConfiguration}
+                handleCancel={() => {setIsConfigurationResetDialogOpen(false);}}
+                isOpen={isConfigurationResetDialogOpen}
+                title={"Reset configuration"}
+                text={"Confirm the reset of the current configuration. All unsaved data will be deleted!"}
+            />
+            <div className={classes.appBarSpacer}></div>
+            <div className="degradation-configuration-stepper-container">
+                    <Stepper elevation={1} square={false} className={classes.grow} nonLinear activeStep={views.findIndex(v => v === AvailableViews.DegradationConfigurationView)}>
+                        {views.map((view, index) => (
+                            <Step key={ResolveViewLabel(view)}>
+                                <StepButton onClick={() => {handleStep(index);}}>
+                                    {ResolveViewLabel(view)}
+                                </StepButton>
+                            </Step>
+                        ))}
+                    </Stepper>
+            </div>
+            <div className="degradation-configuration-flow-graph">
+                <BasicFlow />
+            </div>
+        </div>
+
+    );
+ }

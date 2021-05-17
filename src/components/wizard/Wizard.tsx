@@ -4,7 +4,9 @@ import { AvailableViews, getDevelopmentInitalConfiguration, getInitalConfigurati
 import { SubComponentConfiguratorView } from '../componentConfigurator/SubComponentConfiguratorView';
 import { ConfigurationExportView } from '../configurationExport/ConfigurationExportView';
 import { ConfigurationImportView } from '../configurationImport/ConfigurationImportView';
+import { DegradationConfigurationView } from '../degradationConfiguration/DegradationConfigurationView';
 import { WelcomeView } from '../welcome/WelcomeView';
+import './Wizard.css'
 
 /**
  * Properties of a View
@@ -87,6 +89,8 @@ export const Wizard = () => {
                 return <ConfigurationImportView showView={showView} views={wizardState.views} handleConfigurationUpdate={handleConfigurationUpdate}/>
             case AvailableViews.ConfigurationExportView:
                 return <ConfigurationExportView showView={showView} views={wizardState.views} configuration={wizardState.configuration} handleConfigurationUpdate={handleConfigurationUpdate}/>
+            case AvailableViews.DegradationConfigurationView:
+                return <DegradationConfigurationView showView={showView} views={wizardState.views} handleConfigurationUpdate={handleConfigurationUpdate}/>;
             default:
                 return <WelcomeView startWizard={startWizard} showView={showView} handleConfigurationUpdate={handleConfigurationUpdate}/>;
 
@@ -94,7 +98,7 @@ export const Wizard = () => {
     }
 
     return  (
-        <div>     
+        <div className="wizard-container">     
             {getView(wizardState.activeView)}
         </div>
     ); 
