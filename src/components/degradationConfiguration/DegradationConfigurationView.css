@@ -11,8 +11,14 @@
 }
 
 #degradation-configuration-flow-graph{
+    padding-top: 16px;
+    padding-bottom: 16px;
     padding-left: 2%;
     padding-right: 2%;
     width: 96%;
+    height: 100%;
+}
+
+#degradation-configuration-flow-graph-paper{
     height: 100%;
 }

@@ -13,10 +13,12 @@ import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { AvailableViews, ResolveViewLabel } from '../AvailableViews';
+import Paper from '@material-ui/core/Paper';
 
-import ReactFlow from 'react-flow-renderer';
+// Local imports 
 
 import './DegradationConfigurationView.css';
+import { DegradationGraph } from './DegradationGraph';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -29,15 +31,6 @@ const useStyles = makeStyles((theme: Theme) =>
         appBarSpacer: theme.mixins.toolbar
     })
 );
-
-const elements = [
-    { id: '1', data: { label: 'Node 1' }, position: { x: 250, y: 5 } },
-    // you can also pass a React component as a label
-    { id: '2', data: { label: <div>Node 2</div> }, position: { x: 100, y: 100 } },
-    { id: 'e1-2', source: '1', target: '2', animated: true },
-  ];
-  
-const BasicFlow = () => <ReactFlow elements={elements} />;
 
 /**
  * View for configuration of the degraadation levels 
@@ -129,8 +122,11 @@ export const DegradationConfigurationView = (props: IStepperViewProps) => {
                     </Stepper>
             </div>
             <div id="degradation-configuration-flow-graph">
-                <BasicFlow />
+                <Paper id="degradation-configuration-flow-graph-paper">
+                    <DegradationGraph />
+                </Paper>
             </div>
+
         </div>
 
     );
