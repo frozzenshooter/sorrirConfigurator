@@ -79,7 +79,7 @@ export const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
 
     const classes = useStyles();
 
-    // Title generation
+    //#region Title generation
     let title = "";
 
     if(type === DegradationLevelDialogType.Create){
@@ -90,8 +90,9 @@ export const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
             title = title + " - " + degradationLevel?.label;
         }
     }
+    //#endregion
 
-    // Cancel confirmation dialog
+    //#region Cancel confirmation dialog
     const [cancelConfirmationDialogOpen, setCancelConfirmationDialogOpen] = React.useState<boolean>(false);
 
     const handleCloseIconClicked = () => {
@@ -106,33 +107,34 @@ export const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
     const handleCancelConfirmationDialogCancel = () => {
         setCancelConfirmationDialogOpen(false);
     }
+    //#endregion
 
     // Internal state
-    const getInitalInternalState = () : IDegradationLevel => {
-        const initalDegradationLevel : IDegradationLevel = {...degradationLevel};
+    const addDontCareDependencies = () : IDegradationLevel => {
+        const updatedDegradationLevel : IDegradationLevel = {...degradationLevel};
 
         if(type === DegradationLevelDialogType.Create){
             // Create inital state of the dependencies
             configuration.subComponents.forEach(s => {
-                initalDegradationLevel.dependencies.push({shadowmodeId: "", subComponentId: s.id});            
+                updatedDegradationLevel.dependencies.push({shadowmodeId: "", subComponentId: s.id});            
             });
 
         }else if(type === DegradationLevelDialogType.Edit){
             // Add the DC (don't care) dependencies - they won't be saved
             configuration.subComponents.forEach(s => {
 
-                const id = initalDegradationLevel.dependencies.findIndex(d => d.subComponentId === s.id);
+                const id = updatedDegradationLevel.dependencies.findIndex(d => d.subComponentId === s.id);
                 if(id === -1){
                     // No index found means that in the shadowmode was on DC before and an empty dependecy has to be added
-                    initalDegradationLevel.dependencies.push({shadowmodeId: "", subComponentId: s.id}); 
+                    updatedDegradationLevel.dependencies.push({shadowmodeId: "", subComponentId: s.id}); 
                 }
             });
         }
         
-        return initalDegradationLevel;
+        return updatedDegradationLevel;
     };
 
-    const degradationLevelState = getInitalInternalState();
+    const completeDegradationLevel = addDontCareDependencies();
     /**
      * Update the degradationLevel with the new dependency
      * 
@@ -140,7 +142,7 @@ export const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
      * @param dependencyIndex 
      */
     const updateDegradationLevelDependency = (shadowmodeId: string, dependencyIndex: number) => {
-        let newDegradationLevel: IDegradationLevel = JSON.parse(JSON.stringify(degradationLevelState)); 
+        let newDegradationLevel: IDegradationLevel = JSON.parse(JSON.stringify(completeDegradationLevel)); 
         newDegradationLevel.dependencies[dependencyIndex].shadowmodeId = shadowmodeId;
         onDegradationLevelChange(newDegradationLevel); 
     }
@@ -153,7 +155,7 @@ export const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
      */
     const getDependencySelector = (subComponent: ISubComponent) => {
 
-        const dependencyIndex = degradationLevelState.dependencies.findIndex(d => d.subComponentId === subComponent.id);
+        const dependencyIndex = completeDegradationLevel.dependencies.findIndex(d => d.subComponentId === subComponent.id);
         
         if(dependencyIndex === -1){
             console.error("Not able to find dependency for subcomponent!");
@@ -167,7 +169,7 @@ export const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
                 variant="outlined"
                 labelId="shadowmode-select-label"
                 id="shadowmode-select"
-                value={degradationLevelState.dependencies[dependencyIndex].shadowmodeId}
+                value={completeDegradationLevel.dependencies[dependencyIndex].shadowmodeId}
                 onChange={(ev)=> {
                     updateDegradationLevelDependency((ev.target.value as string), dependencyIndex);
                 }}
@@ -190,13 +192,13 @@ export const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
 
     const handleIdChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const id: number = +event.target.value;
-        let newDegradationLevel: IDegradationLevel = JSON.parse(JSON.stringify(degradationLevelState));
+        let newDegradationLevel: IDegradationLevel = JSON.parse(JSON.stringify(completeDegradationLevel));
         newDegradationLevel.id = id;
         onDegradationLevelChange(newDegradationLevel); 
     }
     
     const handleLabelChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        let newDegradationLevel: IDegradationLevel = JSON.parse(JSON.stringify(degradationLevelState));  
+        let newDegradationLevel: IDegradationLevel = JSON.parse(JSON.stringify(completeDegradationLevel));  
         newDegradationLevel.label = event.target.value;
         onDegradationLevelChange(newDegradationLevel); 
     }
@@ -230,14 +232,14 @@ export const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
                             label="Id"
                             type="number"
                             variant="outlined"
-                            value={degradationLevelState.id}
+                            value={completeDegradationLevel.id}
                             onChange={handleIdChange}
                             InputLabelProps={{ shrink: true }}
                             /> 
                     </FormControl> 
                     <FormControl className={classes.formControl}>
                         <TextField
-                            value={degradationLevelState.label}
+                            value={completeDegradationLevel.label}
                             onChange={handleLabelChange}
                             variant="outlined"
                             label="Label"/> 
