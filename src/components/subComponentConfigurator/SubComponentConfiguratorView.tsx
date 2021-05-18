@@ -82,7 +82,7 @@ interface ShadowModeGranularityChangeState {
 
     const classes = useStyles();
 
-    // Edit Dialog
+    //#region Edit Dialog
     const [editDialogState, setEditDialogState] = React.useState<IDialogState>({ isOpen:false, error:"", subcomponentToEdit: emptySubComponent});
 
     const handleSubComponentChangedInEditDialog = (subcomponent: ISubComponent) => {
@@ -110,7 +110,9 @@ interface ShadowModeGranularityChangeState {
         setEditDialogState({isOpen:false, error: "", subcomponentToEdit: emptySubComponent});
     };
 
-    // Open Dialog
+    //#endregion
+
+    //#region Open Dialog
     const [createDialogState, setCreateDialogState] = React.useState<IDialogState>({ isOpen:false, error: "", subcomponentToEdit: emptySubComponent});
 
     const handleClickOpenCreateDialog = () => {
@@ -145,7 +147,9 @@ interface ShadowModeGranularityChangeState {
         }
     };
 
-    // Delete Dialog
+    //#endregion
+
+    //#region Delete Dialog
     const [deleteDialogState, setDeleteDialogState] = React.useState<IDeleteDialogState>({isOpen: false, subComponentsToDelete:[], resetSelection: () => {}});
 
     const handleDeleteSubComponents = (subComponentsToDelete: ISubComponent[], resetSelection: () => void) => {
@@ -167,7 +171,7 @@ interface ShadowModeGranularityChangeState {
     const handleDeleteAborted = () => {
         setDeleteDialogState({isOpen: false, subComponentsToDelete:[], resetSelection: () => {}});
     }
-
+    //#endregion
 
     // ShadowModeGranularity
     const handleShadowModeGranularityChange = (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
