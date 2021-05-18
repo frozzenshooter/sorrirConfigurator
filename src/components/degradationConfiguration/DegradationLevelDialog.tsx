@@ -12,11 +12,25 @@ import React from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { DecisionDialog } from '../decisionDialog/DecisionDialog';
 import IConfiguration from '../../interfaces/IConfiguration';
+import IDegradationLevel from '../../interfaces/IDegradationLevel';
+import ISubComponent from '../../interfaces/ISubComponent';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import { IDegradationLevelDependency } from '../../interfaces/IDegradationLevelDependency';
+
+import './DegradationLevelDialog.css';
 
 export enum DegradationLevelDialogType {
     Create = 0,
     Edit = 1
 }
+
+
+
+
 
 /**
  * Styles for the @DecisionDialog
@@ -26,7 +40,15 @@ const useStyles = makeStyles((theme: Theme) =>
         title: {            
             flexGrow: 1,
         },
-        appBarSpacer: theme.mixins.toolbar
+        appBarSpacer: theme.mixins.toolbar,
+        formControl: {
+            margin: theme.spacing(1),
+            minWidth: 200,
+            maxWidth: 200,
+        },
+        selectEmpty: {
+            marginTop: theme.spacing(2),
+        },
     })
 );
 
@@ -35,11 +57,11 @@ const useStyles = makeStyles((theme: Theme) =>
  * Properties for the @DecisionDialog
  */
 export interface IDegradationLevelDialogProps{
-    degradationLevelName?: string,
+    degradationLevel: IDegradationLevel,
     type: DegradationLevelDialogType,
     configuration: IConfiguration,
     isOpen: boolean;
-    handleSave: () => void;
+    handleSave: (degradationLevel: IDegradationLevel) => void;
     handleCancel: () => void;
 }
 
@@ -57,7 +79,7 @@ const Transition = React.forwardRef(function Transition(
 
 export const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
 
-    const {configuration, degradationLevelName, type, isOpen, handleSave, handleCancel } = props;
+    const {configuration, degradationLevel, type, isOpen, handleSave, handleCancel } = props;
 
     const classes = useStyles();
 
@@ -68,8 +90,8 @@ export const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
         title += "Create";
     }else if(type === DegradationLevelDialogType.Edit){
         title += "Edit";
-        if(degradationLevelName !== null){
-            title = title + " - " + degradationLevelName;
+        if(degradationLevel?.label !== null){
+            title = title + " - " + degradationLevel?.label;
         }
     }
 
@@ -89,6 +111,89 @@ export const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
         setCancelConfirmationDialogOpen(false);
     }
 
+
+    // Internal state
+    const getInitalInternalState = () : IDegradationLevel => {
+        const initalDegradationLevel : IDegradationLevel = {...degradationLevel};
+
+        if(type === DegradationLevelDialogType.Create){
+            // Create inital state of the dependencies
+            configuration.subComponents.map(s => {
+                initalDegradationLevel.dependencies.push({shadowmodeId: "", subComponentId: s.id});            
+            });
+
+        }else if(type === DegradationLevelDialogType.Edit){
+            // Add the DC (don't care) dependencies - they won't be saved
+            configuration.subComponents.map(s => {
+
+                const id = initalDegradationLevel.dependencies.findIndex(d => d.subComponentId == s.id);
+                if(id === -1){
+                    // No index found means that in the shadowmode was on DC before and an empty dependecy has to be added
+                    initalDegradationLevel.dependencies.push({shadowmodeId: "", subComponentId: s.id}); 
+                }
+            });
+        }
+        
+        return initalDegradationLevel;
+    };
+
+    const [degradationLevelState, setDegradationLevelState] =  React.useState<IDegradationLevel>(getInitalInternalState());
+
+    /**
+     * Update the degradationLevelState with the new dependency
+     * 
+     * @param shadowmodeId 
+     * @param dependencyIndex 
+     */
+    const updateDegradationLevelStateDependency = (shadowmodeId: string, dependencyIndex: number) => {
+        let newDegradationLevelState = {... degradationLevelState};   
+        newDegradationLevelState.dependencies[dependencyIndex].shadowmodeId = shadowmodeId;
+        setDegradationLevelState(newDegradationLevelState); 
+    }
+
+    /**
+     * Creates the selector for the shadowode based on a subcomponent
+     * 
+     * @param subComponent 
+     * @returns 
+     */
+    const getDependencySelector = (subComponent: ISubComponent) => {
+
+        let dependencyIndex = degradationLevelState.dependencies.findIndex(d => d.subComponentId === subComponent.id);
+        
+        if(dependencyIndex === -1){
+            console.error("Not able to find dependency for subcomponent!");
+            return ;
+        }
+
+        return (
+        <FormControl className={classes.formControl}>
+            <InputLabel shrink id="shadowmode-select-label">{subComponent.name}</InputLabel>
+            <Select
+                labelId="shadowmode-select-label"
+                id="shadowmode-select"
+                value={degradationLevelState.dependencies[dependencyIndex].shadowmodeId}
+                onChange={(ev)=> {
+                    updateDegradationLevelStateDependency((ev.target.value as string), dependencyIndex);
+                }}
+                displayEmpty
+                className={classes.selectEmpty}
+                >
+                <MenuItem value="">
+                    <em>DC</em>
+                </MenuItem>
+                {subComponent.shadowmodes.map(sm => {
+                        return (
+                            <MenuItem value={sm.id}>{sm.name}</MenuItem>
+                        );
+                    })
+                }                
+            </Select>
+        </FormControl>
+      );
+    }
+
+
     return (
         <Dialog
             fullScreen={true}
@@ -104,19 +209,18 @@ export const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
                     <Typography variant="h6" className={classes.title}>
                         {title}
                     </Typography>
-                    <IconButton edge="end" color="inherit" onClick={handleSave}>
+                    <IconButton edge="end" color="inherit" onClick={() => { handleSave(degradationLevelState)}}>
                         <SaveIcon />
                     </IconButton>
 
                     </Toolbar>
                 </AppBar>
                 <div className={classes.appBarSpacer}></div>
-                <div>
-                    CONTENT
+                <div id="degradation-level-dialog-dependency-container">
+                    {configuration.subComponents.map(subComponent => {
+                        return (getDependencySelector(subComponent));
+                    })}
                 </div>
-                 {configuration.subComponents.map(subComponent => {
-                     return (<div className="test"> <div>{subComponent.id}</div> <div>{subComponent.name}</div> </div>);
-                 })}
                 <DecisionDialog
                     isOpen={cancelConfirmationDialogOpen}
                     handleAccept={handleCancelConfirmationDialogAccept}

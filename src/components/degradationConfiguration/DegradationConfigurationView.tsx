@@ -21,6 +21,7 @@ import './DegradationConfigurationView.css';
 import { DegradationGraph } from './DegradationGraph';
 import { DegradationLevelDialog, DegradationLevelDialogType } from './DegradationLevelDialog';
 import IConfiguration from '../../interfaces/IConfiguration';
+import IDegradationLevel from '../../interfaces/IDegradationLevel';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -38,6 +39,10 @@ export interface IDegradationConfigurationViewProps extends IStepperViewProps {
     configuration: IConfiguration;
 }
 
+interface IDegradationLevelDialogState {
+    isOpen: boolean,
+    degradationLevel: IDegradationLevel
+}
 
 /**
  * View for configuration of the degraadation levels 
@@ -75,31 +80,43 @@ export const DegradationConfigurationView = (props: IDegradationConfigurationVie
         showView(AvailableViews.WelcomeView);
     };
 
-    // State for DegradationLevelDialog
-    const [degradationLevelCreateDialogOpen, setdegradationLevelCreateDialogOpen] = React.useState<boolean>(false);
-
-    const handleDegradationLevelCreateDialogCancel = () => {
-        setdegradationLevelCreateDialogOpen(false);
+    // Creation of empty objects
+    const getEmptyDegradationLevelDialogState = () : IDegradationLevelDialogState => {
+        return {isOpen: false, degradationLevel: getEmptyDegradationLevel()}
     }
 
-    const handleDegradationLevelCreateDialogSave = () => {
-        setdegradationLevelCreateDialogOpen(false);
+    const getEmptyDegradationLevel = () : IDegradationLevel => {
+        return { id:-1, label:"", dependencies:[] };
+    }
+
+    // State for DegradationLevelCreateDialog
+    const [degradationLevelCreateDialogState, setdegradationLevelCreateDialogState] = React.useState<IDegradationLevelDialogState>(getEmptyDegradationLevelDialogState());
+
+    const handleDegradationLevelCreateDialogCancel = () => {
+        setdegradationLevelCreateDialogState({isOpen: false, degradationLevel: getEmptyDegradationLevel()});
+    }
+
+    const handleDegradationLevelCreateDialogSave = (newDegradationLevel :IDegradationLevel) => {
+        //TODO: Update configuration - should result in a GUI update!
+        // remove all DC dependencies -> with the shadomodeid ""
+        console.log("Create degradationLevel: ", newDegradationLevel);
+        setdegradationLevelCreateDialogState({isOpen: false, degradationLevel: degradationLevelCreateDialogState.degradationLevel});
     }
 
     // Logic for DegradationLevel creation, updated and deletion
 
     const handleCreateDegradationLevel = () => {
-        setdegradationLevelCreateDialogOpen(true);
+        setdegradationLevelCreateDialogState({isOpen: true, degradationLevel: degradationLevelCreateDialogState.degradationLevel});
     }
 
     const handleEditDegradationLevel = () => {
         //TODO: implement own dialog
-        setdegradationLevelCreateDialogOpen(true);
+        setdegradationLevelCreateDialogState({isOpen: true, degradationLevel: degradationLevelCreateDialogState.degradationLevel});
     }
 
     const handleDeleteDegradationLevel = () => {
         //TODO implement own dialog
-        setdegradationLevelCreateDialogOpen(true);
+        setdegradationLevelCreateDialogState({isOpen: true, degradationLevel: degradationLevelCreateDialogState.degradationLevel});
     }
 
     return (
@@ -165,8 +182,9 @@ export const DegradationConfigurationView = (props: IDegradationConfigurationVie
             </div>
             <DegradationLevelDialog
                 type={DegradationLevelDialogType.Create}
+                degradationLevel={degradationLevelCreateDialogState.degradationLevel}
                 configuration={configuration}
-                isOpen={degradationLevelCreateDialogOpen}
+                isOpen={degradationLevelCreateDialogState.isOpen}
                 handleCancel={handleDegradationLevelCreateDialogCancel}
                 handleSave={handleDegradationLevelCreateDialogSave}
             />
