@@ -11,7 +11,7 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { DecisionDialog } from '../decisionDialog/DecisionDialog';
 
 export interface IMenuBarProps {
-    availableView: AvailableViews;
+    currentView: AvailableViews;
     showView: (availableView: AvailableViews) => void;
 }
 
@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) =>
  */
 export const MenuBar = (props: IMenuBarProps) => {
 
-    const {availableView, showView} = props;
+    const {currentView, showView} = props;
     const classes = useStyles();
 
     //#region State for the menu
@@ -61,12 +61,10 @@ export const MenuBar = (props: IMenuBarProps) => {
 
     return (
         <React.Fragment>
-
-
             <AppBar position="fixed">
                 <Toolbar>
                     <Typography className={classes.title} variant="h6" noWrap>
-                        {ResolveViewLabel(availableView)}
+                        {ResolveViewLabel(currentView)}
                     </Typography>
                     <IconButton edge="end" color="inherit" onClick={handleMoreButtonClicked}>
                         <MoreIcon />
@@ -102,7 +100,6 @@ export const MenuBar = (props: IMenuBarProps) => {
                 text={"Confirm the reset of the current configuration. All unsaved data will be deleted!"}
             />
             <div className={classes.appBarSpacer}></div>
-            </React.Fragment>
-
+        </React.Fragment>
     );
 }

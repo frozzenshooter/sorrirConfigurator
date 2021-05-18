@@ -14,12 +14,6 @@
     align-items: center;
 }
 
-#configuration-import-view-stepper-container{
-    padding-left: 2%;
-    padding-right: 2%;
-    display: inline-flex;
-}
-
 #configuration-import-view-syntaxhighlighter-container{
     width: 100%;
 }

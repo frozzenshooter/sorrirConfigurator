@@ -1,7 +1,4 @@
 import React from 'react';
-import Stepper from '@material-ui/core/Stepper';
-import Step from '@material-ui/core/Step';
-import StepButton from '@material-ui/core/StepButton';
 import { DecisionDialog } from '../decisionDialog/DecisionDialog';
 
 // Local imports
@@ -9,13 +6,14 @@ import { DecisionDialog } from '../decisionDialog/DecisionDialog';
 import IConfiguration from '../../interfaces/IConfiguration';
 import './SubComponentConfiguratorView.css';
 import { SubComponentTable } from './SubComponentTable';
-import { AvailableViews, ResolveViewLabel } from '../AvailableViews';
+import { AvailableViews } from '../AvailableViews';
 import { IStepperViewProps } from '../wizard/Wizard';
 import { SubComponentDialog , SubComponentDialogType} from './SubComponentDialog';
 import ISubComponent from '../../interfaces/ISubComponent';
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { MenuBar } from '../menuBar/MenuBar';
+import { WizardStepper } from '../wizardStepper/WizardStepper';
 
 /**
  * Properties for the @SubComponentConfigurationView
@@ -156,29 +154,18 @@ interface ShadowModeGranularityChangeState {
 
         handleConfigurationUpdate(newConfiguration);
     }
-
-    const handleStep = (index: number) => {
-        showView(views[index]);
-    }
   
     return (
         <div id="subcomponent-configuration-container">
             <MenuBar 
-                availableView={AvailableViews.ComponentConfigurationView}
+                currentView={AvailableViews.ComponentConfigurationView}
                 showView={showView}
             />
-            <div id="subcomponent-configurator-stepper-container">
-                <Stepper elevation={1} square={false} nonLinear activeStep={views.findIndex(v => v === AvailableViews.ComponentConfigurationView)}>
-                        {views.map((view, index) => (
-                            <Step key={ResolveViewLabel(view)}>
-                                <StepButton onClick={() => {handleStep(index);}}>
-                                    {ResolveViewLabel(view)}
-                                </StepButton>
-                            </Step>
-                        ))}
-                </Stepper>
-            </div>
-
+            <WizardStepper 
+                currentView={AvailableViews.ComponentConfigurationView}
+                views={views}
+                showView={showView}
+            />
             <div id="subcomponent-configurator-table-container">
                     <SubComponentTable
                         subcomponents={configuration.subComponents}

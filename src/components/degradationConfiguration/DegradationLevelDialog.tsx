@@ -1,4 +1,3 @@
-import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -19,7 +18,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
-import Paper from '@material-ui/core/Paper';
 
 import './DegradationLevelDialog.css';
 import { Divider } from '@material-ui/core';
@@ -115,15 +113,15 @@ export const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
 
         if(type === DegradationLevelDialogType.Create){
             // Create inital state of the dependencies
-            configuration.subComponents.map(s => {
+            configuration.subComponents.forEach(s => {
                 initalDegradationLevel.dependencies.push({shadowmodeId: "", subComponentId: s.id});            
             });
 
         }else if(type === DegradationLevelDialogType.Edit){
             // Add the DC (don't care) dependencies - they won't be saved
-            configuration.subComponents.map(s => {
+            configuration.subComponents.forEach(s => {
 
-                const id = initalDegradationLevel.dependencies.findIndex(d => d.subComponentId == s.id);
+                const id = initalDegradationLevel.dependencies.findIndex(d => d.subComponentId === s.id);
                 if(id === -1){
                     // No index found means that in the shadowmode was on DC before and an empty dependecy has to be added
                     initalDegradationLevel.dependencies.push({shadowmodeId: "", subComponentId: s.id}); 
@@ -163,7 +161,7 @@ export const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
         }
 
         return (
-        <FormControl className={classes.formControl}>
+        <FormControl className={classes.formControl} key={subComponent.id}>
             <InputLabel shrink id="shadowmode-select-label">{subComponent.name}</InputLabel>
             <Select
                 variant="outlined"

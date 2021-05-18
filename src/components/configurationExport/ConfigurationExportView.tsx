@@ -1,14 +1,12 @@
 import { Button } from '@material-ui/core';
 import IConfiguration from '../../interfaces/IConfiguration';
-import { AvailableViews, ResolveViewLabel } from '../AvailableViews';
+import { AvailableViews } from '../AvailableViews';
 import {IStepperViewProps} from '../wizard/Wizard';
 import './ConfigurationExportView.css';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import lightfair from 'react-syntax-highlighter/dist/esm/styles/hljs/lightfair';
-import Stepper from '@material-ui/core/Stepper';
-import Step from '@material-ui/core/Step';
-import StepButton from '@material-ui/core/StepButton';
 import { MenuBar } from '../menuBar/MenuBar';
+import { WizardStepper } from '../wizardStepper/WizardStepper';
 
 
 interface ExportFileProps {
@@ -40,26 +38,16 @@ export interface ConfigurationExportViewProps extends IStepperViewProps {
     const {configuration, showView, views} = props;
     const configurationString = JSON.stringify(configuration, undefined, 4)
     
-    const handleStep = (index: number) => {
-        showView(views[index]);
-    }
-    
     return (<div id="configuration-export-container">
                 <MenuBar 
-                    availableView={AvailableViews.ConfigurationExportView}
+                    currentView={AvailableViews.ConfigurationExportView}
                     showView={showView}
                 />
-                <div id="configuration-export-view-stepper-container">
-                    <Stepper nonLinear elevation={1} square={false} activeStep={views.findIndex(v => v === AvailableViews.ConfigurationExportView)}>
-                        {views.map((view, index) => (
-                            <Step key={ResolveViewLabel(view)}>
-                                <StepButton onClick={() => {handleStep(index);}}>
-                                    {ResolveViewLabel(view)}
-                                </StepButton>
-                            </Step>
-                        ))}
-                    </Stepper>
-                </div>
+                <WizardStepper 
+                    currentView={AvailableViews.ConfigurationExportView}
+                    views={views}
+                    showView={showView}
+                />
 
                 <div  id="configuration-export-export-container">
                         <ExportFile 

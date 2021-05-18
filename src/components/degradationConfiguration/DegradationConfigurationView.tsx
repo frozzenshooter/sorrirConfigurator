@@ -1,29 +1,15 @@
 import React from 'react';
-import { IStepperViewProps, IViewProps } from '../wizard/Wizard';
-import Stepper from '@material-ui/core/Stepper';
-import Step from '@material-ui/core/Step';
-import StepButton from '@material-ui/core/StepButton';
+import { IStepperViewProps } from '../wizard/Wizard';
 import { DecisionDialog } from '../decisionDialog/DecisionDialog';
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import { AvailableViews, ResolveViewLabel } from '../AvailableViews';
+import { AvailableViews } from '../AvailableViews';
 import Paper from '@material-ui/core/Paper';
-
-// Local imports 
-
 import './DegradationConfigurationView.css';
 import { DegradationGraph } from './DegradationGraph';
 import { DegradationLevelDialog, DegradationLevelDialogType } from './DegradationLevelDialog';
 import IConfiguration from '../../interfaces/IConfiguration';
 import IDegradationLevel from '../../interfaces/IDegradationLevel';
 import { MenuBar } from '../menuBar/MenuBar';
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-        grow: {
-            flexGrow: 1,
-        }
-    })
-);
+import { WizardStepper } from '../wizardStepper/WizardStepper';
 
 export interface IDegradationConfigurationViewProps extends IStepperViewProps {
     configuration: IConfiguration;
@@ -46,13 +32,6 @@ interface IDeleteDialogState {
 export const DegradationConfigurationView = (props: IDegradationConfigurationViewProps) => {
 
     const {showView, handleConfigurationUpdate, views, configuration} = props;
-
-    const classes = useStyles();
-
-    const handleStep = (index: number) => {
-        showView(views[index]);
-    }
-
 
     // Creation of empty objects
     const getEmptyDegradationLevelDialogState = () : IDegradationLevelDialogState => {
@@ -175,20 +154,14 @@ export const DegradationConfigurationView = (props: IDegradationConfigurationVie
     return (
         <div id="degradation-configuration-container">            
             <MenuBar 
-                availableView={AvailableViews.DegradationConfigurationView}
+                currentView={AvailableViews.DegradationConfigurationView}
                 showView={showView}
             />
-            <div id="degradation-configuration-stepper-container">
-                    <Stepper elevation={1} square={false} className={classes.grow} nonLinear activeStep={views.findIndex(v => v === AvailableViews.DegradationConfigurationView)}>
-                        {views.map((view, index) => (
-                            <Step key={ResolveViewLabel(view)}>
-                                <StepButton onClick={() => {handleStep(index);}}>
-                                    {ResolveViewLabel(view)}
-                                </StepButton>
-                            </Step>
-                        ))}
-                    </Stepper>
-            </div>
+            <WizardStepper 
+                currentView={AvailableViews.DegradationConfigurationView}
+                views={views}
+                showView={showView}
+            />
             <div id="degradation-configuration-flow-graph">
                 <Paper id="degradation-configuration-flow-graph-paper">
                     <DegradationGraph 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { AvailableViews, getInitalConfiguration, ResolveViewLabel } from '../AvailableViews';
+import { AvailableViews } from '../AvailableViews';
 import {IStepperViewProps} from '../wizard/Wizard';
 import { ConfigurationFileInput } from './ConfigurationFileInput';
 import './ConfigurationImportView.css';
@@ -7,19 +7,9 @@ import IConfiguration from '../../interfaces/IConfiguration';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import lightfair from 'react-syntax-highlighter/dist/esm/styles/hljs/lightfair';
 import { Alert, AlertTitle } from '@material-ui/lab';
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import Stepper from '@material-ui/core/Stepper';
-import Step from '@material-ui/core/Step';
-import StepButton from '@material-ui/core/StepButton';
 import { MenuBar } from '../menuBar/MenuBar';
+import { WizardStepper } from '../wizardStepper/WizardStepper';
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-        grow: {
-            flexGrow: 1,
-        },
-    })
-);
 
 /**
  * View for the configuration import
@@ -27,8 +17,6 @@ const useStyles = makeStyles((theme: Theme) =>
 export const ConfigurationImportView = (props: IStepperViewProps) => {
 
     const {showView, handleConfigurationUpdate, views} = props;
-
-    const classes = useStyles();
 
     const handleFileChange = (filename: string, jsonData: string) => {
         try{
@@ -48,10 +36,6 @@ export const ConfigurationImportView = (props: IStepperViewProps) => {
     const [jsonData, setJsonData] = React.useState<string>("");
     const [parserError, setParserError] = React.useState<string>("");
 
-    const handleStep = (index: number) => {
-        showView(views[index]);
-    }
-
     /*
     
         SYNTAX ONLY HIGHLIGHTED - YOU CANT EDIT IT 
@@ -62,20 +46,14 @@ export const ConfigurationImportView = (props: IStepperViewProps) => {
     return (
         <div id="configuration-import-container">
             <MenuBar 
-                availableView={AvailableViews.ConfigurationImportView}
+                currentView={AvailableViews.ConfigurationImportView}
                 showView={showView}
             />
-            <div id="configuration-import-view-stepper-container">
-                    <Stepper elevation={1} square={false} className={classes.grow} nonLinear activeStep={views.findIndex(v => v === AvailableViews.ConfigurationImportView)}>
-                        {views.map((view, index) => (
-                            <Step key={ResolveViewLabel(view)}>
-                                <StepButton onClick={() => {handleStep(index);}}>
-                                    {ResolveViewLabel(view)}
-                                </StepButton>
-                            </Step>
-                        ))}
-                    </Stepper>
-            </div>
+            <WizardStepper 
+                currentView={AvailableViews.ConfigurationImportView}
+                views={views}
+                showView={showView}
+            />
             <div id="configuration-import-view-import-container">
                     <ConfigurationFileInput
                         handleChange={handleFileChange}
