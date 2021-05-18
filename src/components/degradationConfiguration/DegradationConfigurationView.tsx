@@ -96,15 +96,16 @@ export const DegradationConfigurationView = (props: IDegradationConfigurationVie
         setdegradationLevelCreateDialogState({isOpen: false, degradationLevel: getEmptyDegradationLevel()});
     }
 
-    const handleDegradationLevelCreateDialogSave = (newDegradationLevel :IDegradationLevel) => {
+    const handleDegradationLevelCreateDialogSave = () => {
 
         // deep copy
         const newConfiguration = JSON.parse(JSON.stringify(configuration));
 
+        // remove the dc dependencies when saving
         const simplifiedDegradationLevel : IDegradationLevel = {
-             id: newDegradationLevel.id, 
-             label: newDegradationLevel.label, 
-             dependencies: newDegradationLevel.dependencies.filter(d => d.shadowmodeId !== "").slice() 
+             id: degradationLevelCreateDialogState.degradationLevel.id, 
+             label: degradationLevelCreateDialogState.degradationLevel.label, 
+             dependencies: degradationLevelCreateDialogState.degradationLevel.dependencies.filter(d => d.shadowmodeId !== "").slice() 
         };
 
         newConfiguration.degradationLevels.push(simplifiedDegradationLevel);
@@ -113,6 +114,11 @@ export const DegradationConfigurationView = (props: IDegradationConfigurationVie
 
         handleConfigurationUpdate(newConfiguration);
     }
+
+    const handleChangeDegradationLevelCreateDialog = (newDegradationLevel : IDegradationLevel) => {
+        setdegradationLevelCreateDialogState({isOpen: true, degradationLevel: newDegradationLevel});
+    }
+
 
     // Logic for DegradationLevel creation, updated and deletion
 
@@ -198,6 +204,7 @@ export const DegradationConfigurationView = (props: IDegradationConfigurationVie
                 isOpen={degradationLevelCreateDialogState.isOpen}
                 handleCancel={handleDegradationLevelCreateDialogCancel}
                 handleSave={handleDegradationLevelCreateDialogSave}
+                onDegradationLevelChange={handleChangeDegradationLevelCreateDialog}
             />
 
         </div>
