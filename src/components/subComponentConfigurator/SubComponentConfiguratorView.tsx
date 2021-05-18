@@ -1,15 +1,7 @@
 import React from 'react';
-import AppBar from '@material-ui/core/AppBar';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import Toolbar from '@material-ui/core/Toolbar';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepButton from '@material-ui/core/StepButton';
-import IconButton from '@material-ui/core/IconButton';
-import MoreIcon from '@material-ui/icons/MoreVert';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
 import { DecisionDialog } from '../decisionDialog/DecisionDialog';
 
 // Local imports
@@ -23,21 +15,7 @@ import { SubComponentDialog , SubComponentDialogType} from './SubComponentDialog
 import ISubComponent from '../../interfaces/ISubComponent';
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-
-/**
- * Material-ui styles for the subComponentConfigurationView
- */
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-        grow: {
-            flexGrow: 1,
-        },
-        title: {
-            flexGrow: 1,
-        },
-        appBarSpacer: theme.mixins.toolbar
-    })
-);
+import { MenuBar } from '../menuBar/MenuBar';
 
 /**
  * Properties for the @SubComponentConfigurationView
@@ -79,8 +57,6 @@ interface ShadowModeGranularityChangeState {
     const emptySubComponent : ISubComponent = {id:"", name:"", shadowmodes: []};
 
     const {configuration, showView, handleConfigurationUpdate, views} = props;
-
-    const classes = useStyles();
 
     //#region Edit Dialog
     const [editDialogState, setEditDialogState] = React.useState<IDialogState>({ isOpen:false, error:"", subcomponentToEdit: emptySubComponent});
@@ -184,71 +160,13 @@ interface ShadowModeGranularityChangeState {
     const handleStep = (index: number) => {
         showView(views[index]);
     }
-
-    // State for the menu
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const [isConfigurationResetDialogOpen, setIsConfigurationResetDialogOpen] = React.useState<boolean>(false);
-
-    const handleMoreButtonClicked = (event: React.MouseEvent<HTMLButtonElement>) => {
-        setAnchorEl(event.currentTarget);
-    };
-    
-    const handleCloseMoreMenu = () => {
-        setAnchorEl(null);
-    };
-
-    const handleResetConfiguration = () => {
-        setAnchorEl(null);
-        setIsConfigurationResetDialogOpen(true);
-    };
-
-    const resetConfiguration = () => {
-        // This will reset the configuration when the user starts a new configuration on the WelcomeView
-        showView(AvailableViews.WelcomeView);
-    };
-    
-
+  
     return (
         <div id="subcomponent-configuration-container">
-                <AppBar position="fixed">
-                    <Toolbar>
-                        <Typography className={classes.title} variant="h6" noWrap>
-                            {ResolveViewLabel(AvailableViews.ComponentConfigurationView)}
-                        </Typography>
-                        <IconButton edge="end" color="inherit" onClick={handleMoreButtonClicked}>
-                            <MoreIcon />
-                        </IconButton>
-                        <Menu
-                            anchorEl={anchorEl}
-                            anchorOrigin={
-                                {
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }
-                            }
-                            keepMounted
-                            transformOrigin={
-                                {
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }
-                            }
-                            open={Boolean(anchorEl)}
-                            onClose={handleCloseMoreMenu}
-                        >
-                            <MenuItem onClick={handleResetConfiguration}>Reset configuration</MenuItem>
-                        </Menu>
-
-                    </Toolbar>
-                </AppBar>
-            <DecisionDialog
-                handleAccept={resetConfiguration}
-                handleCancel={() => {setIsConfigurationResetDialogOpen(false);}}
-                isOpen={isConfigurationResetDialogOpen}
-                title={"Reset configuration"}
-                text={"Confirm the reset of the current configuration. All unsaved data will be deleted!"}
+            <MenuBar 
+                availableView={AvailableViews.ComponentConfigurationView}
+                showView={showView}
             />
-            <div className={classes.appBarSpacer}></div>
             <div id="subcomponent-configurator-stepper-container">
                 <Stepper elevation={1} square={false} nonLinear activeStep={views.findIndex(v => v === AvailableViews.ComponentConfigurationView)}>
                         {views.map((view, index) => (

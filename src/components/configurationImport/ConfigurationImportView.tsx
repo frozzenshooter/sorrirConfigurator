@@ -1,5 +1,4 @@
 import React from 'react';
-import Toolbar from '@material-ui/core/Toolbar';
 import { AvailableViews, getInitalConfiguration, ResolveViewLabel } from '../AvailableViews';
 import {IStepperViewProps} from '../wizard/Wizard';
 import { ConfigurationFileInput } from './ConfigurationFileInput';
@@ -8,28 +7,17 @@ import IConfiguration from '../../interfaces/IConfiguration';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import lightfair from 'react-syntax-highlighter/dist/esm/styles/hljs/lightfair';
 import { Alert, AlertTitle } from '@material-ui/lab';
-import AppBar from '@material-ui/core/AppBar';
-import Typography from '@material-ui/core/Typography';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepButton from '@material-ui/core/StepButton';
-import IconButton from '@material-ui/core/IconButton';
-import MoreIcon from '@material-ui/icons/MoreVert';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
-import { DecisionDialog } from '../decisionDialog/DecisionDialog';
+import { MenuBar } from '../menuBar/MenuBar';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
         grow: {
             flexGrow: 1,
         },
-        title: {            
-            flexGrow: 1,
-        },
-        appBarSpacer: theme.mixins.toolbar
     })
 );
 
@@ -64,28 +52,6 @@ export const ConfigurationImportView = (props: IStepperViewProps) => {
         showView(views[index]);
     }
 
-    // State for the menu
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const [isConfigurationResetDialogOpen, setIsConfigurationResetDialogOpen] = React.useState<boolean>(false);
-
-    const handleMoreButtonClicked = (event: React.MouseEvent<HTMLButtonElement>) => {
-        setAnchorEl(event.currentTarget);
-    };
-  
-    const handleCloseMoreMenu = () => {
-        setAnchorEl(null);
-    };
-
-    const handleResetConfiguration = () => {
-        setAnchorEl(null);
-        setIsConfigurationResetDialogOpen(true);
-    };
-
-    const resetConfiguration = () => {
-        // This will reset the configuration when the user starts a new configuration on the WelcomeView
-        showView(AvailableViews.WelcomeView);
-    };
-
     /*
     
         SYNTAX ONLY HIGHLIGHTED - YOU CANT EDIT IT 
@@ -95,45 +61,10 @@ export const ConfigurationImportView = (props: IStepperViewProps) => {
      */
     return (
         <div id="configuration-import-container">
-            <AppBar position="fixed">
-                <Toolbar>
-                    <Typography className={classes.title} variant="h6" noWrap>
-                        {ResolveViewLabel(AvailableViews.ConfigurationImportView)}
-                    </Typography>
-                    <IconButton edge="end" color="inherit" onClick={handleMoreButtonClicked}>
-                        <MoreIcon />
-                    </IconButton>
-                    <Menu
-                        anchorEl={anchorEl}
-                        anchorOrigin={
-                            {
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }
-                        }
-                        keepMounted
-                        transformOrigin={
-                            {
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }
-                        }
-                        open={Boolean(anchorEl)}
-                        onClose={handleCloseMoreMenu}
-                    >
-                        <MenuItem onClick={handleResetConfiguration}>Reset configuration</MenuItem>
-                    </Menu>
-
-                </Toolbar>
-            </AppBar>
-            <DecisionDialog
-                handleAccept={resetConfiguration}
-                handleCancel={() => {setIsConfigurationResetDialogOpen(false);}}
-                isOpen={isConfigurationResetDialogOpen}
-                title={"Reset configuration"}
-                text={"Confirm the reset of the current configuration. All unsaved data will be deleted!"}
+            <MenuBar 
+                availableView={AvailableViews.ConfigurationImportView}
+                showView={showView}
             />
-            <div className={classes.appBarSpacer}></div>
             <div id="configuration-import-view-stepper-container">
                     <Stepper elevation={1} square={false} className={classes.grow} nonLinear activeStep={views.findIndex(v => v === AvailableViews.ConfigurationImportView)}>
                         {views.map((view, index) => (
