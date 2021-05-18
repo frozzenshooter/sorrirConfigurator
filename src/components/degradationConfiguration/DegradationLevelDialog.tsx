@@ -19,9 +19,10 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import { IDegradationLevelDependency } from '../../interfaces/IDegradationLevelDependency';
+import TextField from '@material-ui/core/TextField';
 
 import './DegradationLevelDialog.css';
+import { Divider, FormGroup } from '@material-ui/core';
 
 export enum DegradationLevelDialogType {
     Create = 0,
@@ -170,6 +171,7 @@ export const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
         <FormControl className={classes.formControl}>
             <InputLabel shrink id="shadowmode-select-label">{subComponent.name}</InputLabel>
             <Select
+                variant="outlined"
                 labelId="shadowmode-select-label"
                 id="shadowmode-select"
                 value={degradationLevelState.dependencies[dependencyIndex].shadowmodeId}
@@ -193,6 +195,18 @@ export const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
       );
     }
 
+    const handleIdChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const id: number = +event.target.value;
+        let newDegradationLevelState = {... degradationLevelState};   
+        newDegradationLevelState.id = id;
+        setDegradationLevelState(newDegradationLevelState); 
+    }
+    
+    const handleLabelChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        let newDegradationLevelState = {... degradationLevelState};   
+        newDegradationLevelState.label = event.target.value;
+        setDegradationLevelState(newDegradationLevelState); 
+    }
 
     return (
         <Dialog
@@ -216,6 +230,25 @@ export const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
                     </Toolbar>
                 </AppBar>
                 <div className={classes.appBarSpacer}></div>
+                <div id="degradation-level-dialog-properties-container">
+                    <FormControl className={classes.formControl}>
+                        <TextField
+                            label="Id"
+                            type="number"
+                            variant="outlined"
+                            value={degradationLevelState.id}
+                            onChange={handleIdChange}
+                            InputLabelProps={{ shrink: true }}
+                            /> 
+                    </FormControl> 
+                    <FormControl className={classes.formControl}>
+                        <TextField
+                            value={degradationLevelState.label}
+                            onChange={handleLabelChange}
+                            variant="outlined"
+                            label="Label"/> 
+                    </FormControl> 
+                </div>
                 <div id="degradation-level-dialog-dependency-container">
                     {configuration.subComponents.map(subComponent => {
                         return (getDependencySelector(subComponent));

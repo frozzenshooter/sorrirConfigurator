@@ -38,7 +38,6 @@ export default class ChipCreator extends React.Component<IChipCreatorProps, {}> 
         return (
             <div id="chip-creator-container">
                 <TextField label="Shadowmode" 
-
                     value={this.state.shadowmodeInput}
                     onChange={(ev)=>{
                         this.setState({shadowmodeInput: ev.target.value});
