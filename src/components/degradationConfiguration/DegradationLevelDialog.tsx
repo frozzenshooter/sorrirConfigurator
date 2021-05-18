@@ -16,22 +16,18 @@ import IDegradationLevel from '../../interfaces/IDegradationLevel';
 import ISubComponent from '../../interfaces/ISubComponent';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
+import Paper from '@material-ui/core/Paper';
 
 import './DegradationLevelDialog.css';
-import { Divider, FormGroup } from '@material-ui/core';
+import { Divider } from '@material-ui/core';
 
 export enum DegradationLevelDialogType {
     Create = 0,
     Edit = 1
 }
-
-
-
-
 
 /**
  * Styles for the @DecisionDialog
@@ -147,7 +143,7 @@ export const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
      * @param dependencyIndex 
      */
     const updateDegradationLevelStateDependency = (shadowmodeId: string, dependencyIndex: number) => {
-        let newDegradationLevelState = {... degradationLevelState};   
+        let newDegradationLevelState: IDegradationLevel = JSON.parse(JSON.stringify(degradationLevelState)); 
         newDegradationLevelState.dependencies[dependencyIndex].shadowmodeId = shadowmodeId;
         setDegradationLevelState(newDegradationLevelState); 
     }
@@ -197,13 +193,13 @@ export const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
 
     const handleIdChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const id: number = +event.target.value;
-        let newDegradationLevelState = {... degradationLevelState};   
+        let newDegradationLevelState: IDegradationLevel = JSON.parse(JSON.stringify(degradationLevelState));
         newDegradationLevelState.id = id;
         setDegradationLevelState(newDegradationLevelState); 
     }
     
     const handleLabelChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        let newDegradationLevelState = {... degradationLevelState};   
+        let newDegradationLevelState: IDegradationLevel = JSON.parse(JSON.stringify(degradationLevelState));  
         newDegradationLevelState.label = event.target.value;
         setDegradationLevelState(newDegradationLevelState); 
     }
@@ -231,6 +227,7 @@ export const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
                 </AppBar>
                 <div className={classes.appBarSpacer}></div>
                 <div id="degradation-level-dialog-properties-container">
+                    <h3 className="degradation-level-dialog-properties-section-caption">Details</h3>
                     <FormControl className={classes.formControl}>
                         <TextField
                             label="Id"
@@ -249,11 +246,17 @@ export const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
                             label="Label"/> 
                     </FormControl> 
                 </div>
+                <Divider className="degradation-level-dialog-properties-divider"/>
                 <div id="degradation-level-dialog-dependency-container">
-                    {configuration.subComponents.map(subComponent => {
-                        return (getDependencySelector(subComponent));
-                    })}
+                    <h3 className="degradation-level-dialog-properties-section-caption">Shadowmode dependencies</h3>
+                    <div id="degradation-level-dialog-dependency-container-items">
+                        
+                        {configuration.subComponents.map(subComponent => {
+                            return (getDependencySelector(subComponent));
+                        })}
+                    </div>
                 </div>
+                <Divider className="degradation-level-dialog-properties-divider"/>
                 <DecisionDialog
                     isOpen={cancelConfirmationDialogOpen}
                     handleAccept={handleCancelConfirmationDialogAccept}

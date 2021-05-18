@@ -55,10 +55,10 @@ export const Wizard = () => {
      * @param configuration 
      */
     const handleConfigurationUpdate = (configuration: IConfiguration) => {
-        console.log(configuration);
+        //console.log(configuration);
         const newState: IWizardState = JSON.parse(JSON.stringify(wizardState));
         newState.configuration = configuration;
-        console.log(newState);
+        //console.log(newState);
         setWizardState(newState);  
     }
 

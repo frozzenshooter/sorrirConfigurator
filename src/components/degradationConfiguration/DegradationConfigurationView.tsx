@@ -97,10 +97,21 @@ export const DegradationConfigurationView = (props: IDegradationConfigurationVie
     }
 
     const handleDegradationLevelCreateDialogSave = (newDegradationLevel :IDegradationLevel) => {
-        //TODO: Update configuration - should result in a GUI update!
-        // remove all DC dependencies -> with the shadomodeid ""
-        console.log("Create degradationLevel: ", newDegradationLevel);
-        setdegradationLevelCreateDialogState({isOpen: false, degradationLevel: degradationLevelCreateDialogState.degradationLevel});
+
+        // deep copy
+        const newConfiguration = JSON.parse(JSON.stringify(configuration));
+
+        const simplifiedDegradationLevel : IDegradationLevel = {
+             id: newDegradationLevel.id, 
+             label: newDegradationLevel.label, 
+             dependencies: newDegradationLevel.dependencies.filter(d => d.shadowmodeId !== "").slice() 
+        };
+
+        newConfiguration.degradationLevels.push(simplifiedDegradationLevel);
+
+        setdegradationLevelCreateDialogState({isOpen: false, degradationLevel: getEmptyDegradationLevel()});
+
+        handleConfigurationUpdate(newConfiguration);
     }
 
     // Logic for DegradationLevel creation, updated and deletion
