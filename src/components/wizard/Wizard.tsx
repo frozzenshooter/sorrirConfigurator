@@ -1,4 +1,6 @@
+import { Button } from "@material-ui/core";
 import React from "react";
+import { useConfigurationContext } from "../../context/ConfigurationContext";
 import ViewLabelResolver from "../../util/ViewLabelResolver";
 import View from "../../util/Views";
 import MenuBar from "./MenuBar/MenuBar";

@@ -89,7 +89,7 @@ const MenuBar = (props: IMenuBarProps) => {
                         open={Boolean(anchorEl)}
                         onClose={handleCloseMoreMenu}
                     >
-                        <MenuItem onClick={handleResetClicked}>Reset configuration</MenuItem>
+                        <MenuItem onClick={handleResetClicked}>Restart configuration</MenuItem>
                     </Menu>
 
                 </Toolbar>
