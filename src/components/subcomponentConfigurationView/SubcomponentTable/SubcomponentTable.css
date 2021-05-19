@@ -1,0 +1,11 @@
+.subcomponent-table-shadowmode-list{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    padding-left: 0;
+}
+
+.subcomponent-table-shadowmode-list-item{
+    list-style: none;
+}

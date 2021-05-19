@@ -2,9 +2,10 @@ import React from "react";
 import { createContext } from "react";
 import ConfigurationContextType from "../models/ConfigurationContextType";
 import IConfiguration from "../models/IConfiguration";
+import EmptyConfigurationFactory from "../util/EmptyConfigurationFactory";
 
 const configurationContextDefaultValues: ConfigurationContextType = { 
-    configuration: { label: "" }, 
+    configuration: EmptyConfigurationFactory(), 
     updateConfiguration: (configuration: IConfiguration) => {}
 }
 

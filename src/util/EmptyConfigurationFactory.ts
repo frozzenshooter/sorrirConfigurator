@@ -2,7 +2,7 @@ import IConfiguration from "../models/IConfiguration";
 
 const EmptyConfigurationFactory = (): IConfiguration => {
 
-    return {label: "empty"};
+    return {subcomponents: []};
 };
 
 export default EmptyConfigurationFactory;

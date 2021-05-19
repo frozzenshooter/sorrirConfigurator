@@ -1,5 +1,7 @@
+import ISubcomponent from "./ISubcomponent";
+
 interface IConfiguration {
-    label: string
+    subcomponents: ISubcomponent[]
 }
 
 export default IConfiguration;
