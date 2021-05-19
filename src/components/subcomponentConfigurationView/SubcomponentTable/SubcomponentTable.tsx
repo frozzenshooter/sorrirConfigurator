@@ -27,6 +27,8 @@ const SubComponentTable = () => {
     const [order, setOrder] = React.useState<Order>('asc');
     const [orderBy, setOrderBy] = React.useState<keyof ISubcomponent>('name');
     const [selected, setSelected] = React.useState<string[]>([]);
+    //TODO CHANGE SELECTED TO ISUBCOMPONENT[]
+
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -52,7 +54,11 @@ const SubComponentTable = () => {
         setPage(newPage);
     };
 
-    const handleClick = (event: React.MouseEvent<unknown>, name: string) => {
+    const handleClick = (event: React.MouseEvent<unknown>, subcomponent: ISubcomponent) => {
+        const name: string = subcomponent.id;
+
+        //TODO: SWAP TO I SUBCOMPONENT
+
         const selectedIndex = selected.indexOf(name);
         let newSelected: string[] = [];
 
@@ -126,17 +132,80 @@ const SubComponentTable = () => {
     //#region 
 
     const [subcomponentEditId, setSubcomponentEditId] = React.useState<string>("");
+    const [editSubcomponent, setEditSubcomponent] = React.useState<ISubcomponent>({id: "Edit", name:"Edit", shadowmodes: []});
+    const [openEdit, setOpenEdit] = React.useState<boolean>(false);
 
     const handleSubcomponentEdit = () => {
             if(selected.length === 1){
                 const subComponentIndex = configuration.subcomponents.findIndex(subcomponent => isSelected(subcomponent.id));                
 
-                setSubcomponentEditId(configuration.subcomponents[subComponentIndex].id);
+                const sub = JSON.parse(JSON.stringify(configuration.subcomponents[subComponentIndex]));
+
+                setOpenEdit(true);
+                //setSubcomponentEditId(configuration.subcomponents[subComponentIndex].id);
             }
     };
     
     const handleSubcomponentEditDialogClose= () => {
-        setSubcomponentEditId("");
+        setOpenEdit(false);
+    };
+
+    const SubComponentDialogResolver = () => {
+        
+        //TODO: USE SELECTED TO SET THE SUBCOMPONENT
+
+        if(selected.length === 0){
+            return (
+                <SubcomponentDialog 
+                    open={createDialogOpen}
+                    type={SubcomponentDialogType.Create}
+                    subcomponent={{id: "Create", name:"Create", shadowmodes: []}}
+                    onClose={handleSubcomponentCreateDialogClose}
+                />   
+                );
+        }else if(selected.length === 1){
+            return (
+                <>
+                    <DecisionDialog 
+                        title={"Delete "+ selected.length + " items"}
+                        text="The selected items will be irreversibly deleted."
+                        open={deleteDialogOpen}
+                        onCancelClick={handleDeleteCancel}
+                        onConfirmClick={handleDeleteConfirm}         
+                        />
+                    <SubcomponentDialog 
+                        open={createDialogOpen}
+                        type={SubcomponentDialogType.Create}
+                        subcomponent={{id: "Create", name:"Create", shadowmodes: []}}
+                        onClose={handleSubcomponentCreateDialogClose}
+                    />                
+                    <SubcomponentDialog 
+                        open={openEdit}
+                        type={SubcomponentDialogType.Edit}
+                        subcomponent={configuration.subcomponents.filter(s => s.id == selected[0])[0]}
+                        onClose={handleSubcomponentEditDialogClose}/>
+                </>
+                );
+        }else{
+            return (
+                <>
+                    <DecisionDialog 
+                        title={"Delete "+ selected.length + " items"}
+                        text="The selected items will be irreversibly deleted."
+                        open={deleteDialogOpen}
+                        onCancelClick={handleDeleteCancel}
+                        onConfirmClick={handleDeleteConfirm}         
+                        />
+                    <SubcomponentDialog 
+                        open={createDialogOpen}
+                        type={SubcomponentDialogType.Create}
+                        subcomponent={{id: "Create", name:"Create", shadowmodes: []}}
+                        onClose={handleSubcomponentCreateDialogClose}
+                    />  
+                </> 
+                );
+        }
+        
     };
 
     //#endregion
@@ -174,7 +243,7 @@ const SubComponentTable = () => {
                     return (
                       <TableRow
                         hover
-                        onClick={(event) => handleClick(event, (subcomponent.id as string))}
+                        onClick={(event) => handleClick(event, subcomponent)}
                         role="checkbox"
                         aria-checked={isItemSelected}
                         tabIndex={-1}
@@ -224,25 +293,8 @@ const SubComponentTable = () => {
             onChangeRowsPerPage={handleChangeRowsPerPage}
           />
         </Paper>
-        <DecisionDialog 
-                title={"Delete "+ selected.length + " items"}
-                text="The selected items will be irreversibly deleted."
-                open={deleteDialogOpen}
-                onCancelClick={handleDeleteCancel}
-                onConfirmClick={handleDeleteConfirm}         
-            />
-        <SubcomponentDialog 
-            open={createDialogOpen}
-            type={SubcomponentDialogType.Create}
-            subcomponentId={""}
-            onClose={handleSubcomponentCreateDialogClose}
-        />
-        <SubcomponentDialog 
-            open={subcomponentEditId!== ""}
-            type={SubcomponentDialogType.Edit}
-            subcomponentId={subcomponentEditId}
-            onClose={handleSubcomponentEditDialogClose}
-        />
+        { SubComponentDialogResolver() }
+
       </div>
     );
 };

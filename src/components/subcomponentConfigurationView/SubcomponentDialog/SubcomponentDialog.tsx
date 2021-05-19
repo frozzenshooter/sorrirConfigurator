@@ -11,20 +11,19 @@ import './SubcomponentDialog.css';
 import ShadowmodeChipInput from "../ShadowmodeChipInput/ShadowmodeChipInput";
 import IShadowmode from "../../../models/IShadowmode";
 import { useConfigurationContext } from "../../../context/ConfigurationContext";
+import IConfiguration from "../../../models/IConfiguration";
 
 export interface ISubcomponentDialogProps {
     type: SubcomponentDialogType;
     open: boolean;
-    subcomponentId: string;
+    subcomponent: ISubcomponent;
     onClose: () => void;
 }
 
 const SubcomponentDialog = (props: ISubcomponentDialogProps) => {
-    const {subcomponentId, type, open, onClose} = props;
+    const {subcomponent, type, open, onClose} = props;
   
     const {configuration, updateConfiguration} = useConfigurationContext();
-
-    console.log("subcomponentid", subcomponentId);
 
     //#region Subcomponent init
 
@@ -34,10 +33,9 @@ const SubcomponentDialog = (props: ISubcomponentDialogProps) => {
         shadowmodes:[]        
     };
 
-    console.log("Dialog - id: ", subcomponentId);
 
     // make sure you start with an empty 
-    if(subcomponentId !== undefined && subcomponentId !== null && subcomponentId !== ""){
+   /* if(subcomponentId !== undefined && subcomponentId !== null && subcomponentId !== ""){
         const index = configuration.subcomponents.findIndex(s => s.id === subcomponentId);
 
         if(index !== -1){            
@@ -45,27 +43,16 @@ const SubcomponentDialog = (props: ISubcomponentDialogProps) => {
 
         }
         console.log("index", index, initSubcomponent);
-    }
+    }*/
 
     //#endregion
 
-    const [id, setId] = React.useState<string>(initSubcomponent.id);
-    const [name, setName] = React.useState<string>(initSubcomponent.name);
-    const [shadowmodes, setShadowmodes] = React.useState<IShadowmode[]>(initSubcomponent.shadowmodes);
-
-    React.useEffect(() => {
-        setId(initSubcomponent.id);
-        setName(initSubcomponent.name);
-        setShadowmodes(initSubcomponent.shadowmodes);
-
-    },[id, name, shadowmodes]);
+    const [id, setId] = React.useState<string>(subcomponent.id);
+    const [name, setName] = React.useState<string>(subcomponent.name);
+    const [shadowmodes, setShadowmodes] = React.useState<IShadowmode[]>(subcomponent.shadowmodes);
 
     //#region Change handler
     const handleSave = () => {
-        console.log(id, name, shadowmodes);
-        onClose();
-        //TODO: validate!
-/*
         const newConfiguration : IConfiguration = JSON.parse(JSON.stringify(configuration));
         const index = newConfiguration.subcomponents.findIndex(s => s.id === id);
 
@@ -73,7 +60,7 @@ const SubcomponentDialog = (props: ISubcomponentDialogProps) => {
 
             if(index === -1){
                 //Delete the subcomponent with previous id and add a new one with the updated data
-                newConfiguration.subcomponents = newConfiguration.subcomponents.filter(s => s.id !== subcomponentId).slice();
+                newConfiguration.subcomponents = newConfiguration.subcomponents.filter(s => s.id !== id).slice();
                 const newSubcomponent : ISubcomponent = {
                     id: id,
                     name: name,
@@ -101,7 +88,7 @@ const SubcomponentDialog = (props: ISubcomponentDialogProps) => {
         }
 
         updateConfiguration(newConfiguration);
-        onClose();*/
+        onClose();
     };
 
     const handleIdChange = (ev : React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
