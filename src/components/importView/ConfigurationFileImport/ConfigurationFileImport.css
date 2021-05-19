@@ -1,0 +1,23 @@
+#configuration-file-import-container{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex-wrap: nowrap;
+}
+
+#configuration-file-import-button-container{
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.configuration-file-import-button-container-item{
+    padding-left: 16px;
+}
+
+#configuration-file-import-alert{
+    padding-top: 16px;
+}

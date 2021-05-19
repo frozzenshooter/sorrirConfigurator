@@ -1,10 +1,8 @@
-import { Button } from "@material-ui/core";
 import React from "react";
-import { useConfigurationContext } from "../../context/ConfigurationContext";
 import ViewLabelResolver from "../../util/ViewLabelResolver";
 import View from "../../util/Views";
 import MenuBar from "./MenuBar/MenuBar";
-import ViewSelector from "./ViewSelector";
+import ViewSelector from "./ViewSelector/ViewSelector";
 import WizardStepper from "./WizardStepper/WizardStepper";
 
 export interface IWizardProps{
@@ -43,7 +41,6 @@ const Wizard = (props: IWizardProps) => {
                     view={currentView}
                 />
             </React.Fragment>
-
         );
 
     }else{

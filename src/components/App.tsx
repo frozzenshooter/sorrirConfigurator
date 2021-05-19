@@ -24,9 +24,9 @@ const App = () => {
   };
 
   const updateConfiguration = (newConfiguration: IConfiguration) => {
+    console.log("Configuration updated: ", newConfiguration);
     setConfiguration(newConfiguration);
   };
-
 
   if(wizardStart===true) {
     return (
@@ -36,7 +36,6 @@ const App = () => {
           onWizardRestart={handleWizardRestart}
           />
       </ConfigurationContext.Provider>
-
     );
   } else {
     return (
