@@ -1,4 +1,4 @@
-import { Button, Paper } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import React from "react";
 import { useConfigurationContext } from "../../../context/ConfigurationContext";
 import IConfiguration from "../../../models/IConfiguration";

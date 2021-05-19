@@ -1,5 +1,5 @@
-import React, { FC } from "react";
-import { createContext, useContext } from "react";
+import React from "react";
+import { createContext } from "react";
 import ConfigurationContextType from "../models/ConfigurationContextType";
 import IConfiguration from "../models/IConfiguration";
 
