@@ -1,4 +1,5 @@
 import View from "../../../util/Views";
+import ExportView from "../../exportView/ExportView";
 import ImportView from "../../importView/ImportView";
 
 export interface IViewSelectorProps{
@@ -17,7 +18,7 @@ const ViewSelector = (props: IViewSelectorProps): JSX.Element => {
             case View.DegradationLevelConfiguration:
                 return <div>DegradationLevelConfiguration</div>;
             case View.Export:
-                return <div>Export</div>;
+                return <ExportView />;
         default:
             return <div>Default</div>;
     }

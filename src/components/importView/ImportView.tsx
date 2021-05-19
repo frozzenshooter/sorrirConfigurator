@@ -36,7 +36,7 @@ const ImportView = () => {
                                 showLineNumbers={true}
                                 wrapLongLines={true}
                             >
-                                {configurationString}
+                        {configurationString}
                     </SyntaxHighlighter> 
                 </Paper>
             </Paper>
