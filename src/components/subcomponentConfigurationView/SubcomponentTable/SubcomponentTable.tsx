@@ -18,6 +18,8 @@ import { useConfigurationContext } from "../../../context/ConfigurationContext";
 import './SubcomponentTable.css';
 import DecisionDialog from "../../decisionDialog/DecisionDialog";
 import IConfiguration from "../../../models/IConfiguration";
+import SubcomponentDialog from "../SubcomponentDialog/SubcomponentDialog";
+import SubcomponentDialogType from "../SubcomponentDialog/SubcomonentDialogType";
 
 const SubComponentTable = () => {
 
@@ -111,22 +113,32 @@ const SubComponentTable = () => {
 
     const [createDialogOpen, setCreateDialogOpen] = React.useState<boolean>(false);
 
-    const handleSubComponentCreation = () => {
-        //handleCreateSubComponent();
+    const handleSubcomponentCreateDialogClose = () => {
+        setCreateDialogOpen(false);
+    };
+
+    const handleSubcomponentCreation = () => {
+        setCreateDialogOpen(true);
     };
 
     //#endregion
 
     //#region 
-    const handleSubComponentEdit = () => {
+
+    const [subcomponentEditId, setSubcomponentEditId] = React.useState<string>("");
+
+    const handleSubcomponentEdit = () => {
             if(selected.length === 1){
-                //TODO: SELECTION WORKS WITH THE NAME OF A SUBCOMPONENT - THERE MIGHT BE DUPLICATES
-                const subComponentIndex = configuration.subcomponents.findIndex(subcomponent => isSelected(subcomponent.id));
-                console.log("Edit", configuration.subcomponents[subComponentIndex])
-                //handleEditSubComponent(subcomponents[subComponentIndex]);
+                const subComponentIndex = configuration.subcomponents.findIndex(subcomponent => isSelected(subcomponent.id));                
+
+                setSubcomponentEditId(configuration.subcomponents[subComponentIndex].id);
             }
     };
     
+    const handleSubcomponentEditDialogClose= () => {
+        setSubcomponentEditId("");
+    };
+
     //#endregion
 
     return(  <div className={classes.root}>
@@ -134,8 +146,8 @@ const SubComponentTable = () => {
           <SubComponentTableToolbar 
             numSelected={selected.length} 
             handleSubComponentDeletion={handleSubComponentDeletion} 
-            handleSubComponentEdit={handleSubComponentEdit}
-            handleSubComponentCreation={handleSubComponentCreation}/>
+            handleSubComponentEdit={handleSubcomponentEdit}
+            handleSubComponentCreation={handleSubcomponentCreation}/>
           <TableContainer>
             <Table
               className={classes.table}
@@ -219,6 +231,18 @@ const SubComponentTable = () => {
                 onCancelClick={handleDeleteCancel}
                 onConfirmClick={handleDeleteConfirm}         
             />
+        <SubcomponentDialog 
+            open={createDialogOpen}
+            type={SubcomponentDialogType.Create}
+            subcomponentId={""}
+            onClose={handleSubcomponentCreateDialogClose}
+        />
+        <SubcomponentDialog 
+            open={subcomponentEditId!== ""}
+            type={SubcomponentDialogType.Edit}
+            subcomponentId={subcomponentEditId}
+            onClose={handleSubcomponentEditDialogClose}
+        />
       </div>
     );
 };

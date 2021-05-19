@@ -1,0 +1,16 @@
+#shadowmode-chip-input-container{
+    display: inline-flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+}
+
+#shadowmode-chip-input-shadowmode-list{
+    display: inline-flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+.shadowmode-chip-input-shadowmode-list-item{
+    list-style: none;
+    padding: 2px;
+}
