@@ -2,8 +2,7 @@ import { Button, Paper } from '@material-ui/core';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import React from 'react';
 import './DegradationLevelConfigurationView.css';
-import DegradationLevelDialog from './DegradationLevelDialog/DegradationLevelDialog';
-import DegradationLevelDialogType from './DegradationLevelDialog/DegradationLevelDialogType';
+import CreateDegradationLevelDialog from './CreateDegradationLevelDialog/CreateDegradationLevelDialog';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -31,7 +30,7 @@ const DegradationLevelConfigurationView = () => {
             </Paper>
         </div>
 
-        <DegradationLevelDialog 
+        <CreateDegradationLevelDialog 
           open={createDialogOpen}
           onClose={() => {setCreateDialogOpen(false);}}
         />
