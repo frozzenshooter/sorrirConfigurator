@@ -8,6 +8,10 @@
     padding-bottom: 16px;
 }
 
+.subcomponent-dialog-content-container-error{
+    padding-bottom: 8px;
+}
+
 #subcomponent-dialog-error-container{
     display: inline-flex;
 }

@@ -26,9 +26,7 @@ const SubComponentTable = () => {
     const classes = useStyles();
     const [order, setOrder] = React.useState<Order>('asc');
     const [orderBy, setOrderBy] = React.useState<keyof ISubcomponent>('name');
-    const [selected, setSelected] = React.useState<string[]>([]);
-    //TODO CHANGE SELECTED TO ISUBCOMPONENT[]
-
+    const [selected, setSelected] = React.useState<ISubcomponent[]>([]);
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -43,7 +41,7 @@ const SubComponentTable = () => {
 
     const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.checked) {
-            const newSelecteds = configuration.subcomponents.map((s) => s.id);
+            const newSelecteds = configuration.subcomponents.slice();
             setSelected(newSelecteds);
             return;
         }
@@ -55,15 +53,12 @@ const SubComponentTable = () => {
     };
 
     const handleClick = (event: React.MouseEvent<unknown>, subcomponent: ISubcomponent) => {
-        const name: string = subcomponent.id;
 
-        //TODO: SWAP TO I SUBCOMPONENT
-
-        const selectedIndex = selected.indexOf(name);
-        let newSelected: string[] = [];
+        const selectedIndex = selected.findIndex(s => s.id === subcomponent.id);
+        let newSelected: ISubcomponent[] = [];
 
         if (selectedIndex === -1) {
-                newSelected = newSelected.concat(selected, name);
+                newSelected = newSelected.concat(selected, subcomponent);
         } else if (selectedIndex === 0) {
                 newSelected = newSelected.concat(selected.slice(1));
         } else if (selectedIndex === selected.length - 1) {
@@ -83,11 +78,7 @@ const SubComponentTable = () => {
         setPage(0);
     };
 
-    const resetSelection = () => {
-        setSelected([]);
-    };
-
-    const isSelected = (name: string) => selected.indexOf(name) !== -1;
+    const isSelected = (subcomponentId: string) => selected.findIndex(s => s.id === subcomponentId) !== -1;
 
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, configuration.subcomponents.length - page * rowsPerPage);
 
@@ -121,6 +112,7 @@ const SubComponentTable = () => {
 
     const handleSubcomponentCreateDialogClose = () => {
         setCreateDialogOpen(false);
+        setSelected([]);
     };
 
     const handleSubcomponentCreation = () => {
@@ -129,41 +121,25 @@ const SubComponentTable = () => {
 
     //#endregion
 
-    //#region 
+    //#region Subcomponent edit
 
-    const [subcomponentEditId, setSubcomponentEditId] = React.useState<string>("");
-    const [editSubcomponent, setEditSubcomponent] = React.useState<ISubcomponent>({id: "Edit", name:"Edit", shadowmodes: []});
-    const [openEdit, setOpenEdit] = React.useState<boolean>(false);
+    const [editDialogOpen, setEditDialogOpen] = React.useState<boolean>(false);
 
     const handleSubcomponentEdit = () => {
             if(selected.length === 1){
-                const subComponentIndex = configuration.subcomponents.findIndex(subcomponent => isSelected(subcomponent.id));                
-
-                const sub = JSON.parse(JSON.stringify(configuration.subcomponents[subComponentIndex]));
-
-                setOpenEdit(true);
-                //setSubcomponentEditId(configuration.subcomponents[subComponentIndex].id);
+                setEditDialogOpen(true);
             }
     };
     
     const handleSubcomponentEditDialogClose= () => {
-        setOpenEdit(false);
+        setEditDialogOpen(false);
+        setSelected([]);
     };
 
-    const SubComponentDialogResolver = () => {
-        
-        //TODO: USE SELECTED TO SET THE SUBCOMPONENT
+    //#endregion
 
-        if(selected.length === 0){
-            return (
-                <SubcomponentDialog 
-                    open={createDialogOpen}
-                    type={SubcomponentDialogType.Create}
-                    subcomponent={{id: "Create", name:"Create", shadowmodes: []}}
-                    onClose={handleSubcomponentCreateDialogClose}
-                />   
-                );
-        }else if(selected.length === 1){
+    const SubComponentDialogResolver = () => {
+        if(selected.length === 1){
             return (
                 <>
                     <DecisionDialog 
@@ -172,21 +148,15 @@ const SubComponentTable = () => {
                         open={deleteDialogOpen}
                         onCancelClick={handleDeleteCancel}
                         onConfirmClick={handleDeleteConfirm}         
-                        />
+                        />              
                     <SubcomponentDialog 
-                        open={createDialogOpen}
-                        type={SubcomponentDialogType.Create}
-                        subcomponent={{id: "Create", name:"Create", shadowmodes: []}}
-                        onClose={handleSubcomponentCreateDialogClose}
-                    />                
-                    <SubcomponentDialog 
-                        open={openEdit}
+                        open={editDialogOpen}
                         type={SubcomponentDialogType.Edit}
-                        subcomponent={configuration.subcomponents.filter(s => s.id == selected[0])[0]}
+                        subcomponent={selected[0]}
                         onClose={handleSubcomponentEditDialogClose}/>
                 </>
                 );
-        }else{
+        }else if(selected.length > 1){
             return (
                 <>
                     <DecisionDialog 
@@ -196,12 +166,6 @@ const SubComponentTable = () => {
                         onCancelClick={handleDeleteCancel}
                         onConfirmClick={handleDeleteConfirm}         
                         />
-                    <SubcomponentDialog 
-                        open={createDialogOpen}
-                        type={SubcomponentDialogType.Create}
-                        subcomponent={{id: "Create", name:"Create", shadowmodes: []}}
-                        onClose={handleSubcomponentCreateDialogClose}
-                    />  
                 </> 
                 );
         }
@@ -263,7 +227,6 @@ const SubComponentTable = () => {
                         <TableCell>
                             <ul className="subcomponent-table-shadowmode-list">
                                 {subcomponent.shadowmodes.map((shadowmode)=> {
-
                                         return (
                                         <li key={shadowmode.id} className="subcomponent-table-shadowmode-list-item">
                                             <Chip label={shadowmode.name} />
@@ -293,6 +256,16 @@ const SubComponentTable = () => {
             onChangeRowsPerPage={handleChangeRowsPerPage}
           />
         </Paper>
+        {createDialogOpen === true ? 
+                <SubcomponentDialog 
+                    open={createDialogOpen}
+                    type={SubcomponentDialogType.Create}
+                    subcomponent={{id: "", name:"", shadowmodes: []}}
+                    onClose={handleSubcomponentCreateDialogClose}
+                />   
+                : 
+                null
+        }
         { SubComponentDialogResolver() }
 
       </div>

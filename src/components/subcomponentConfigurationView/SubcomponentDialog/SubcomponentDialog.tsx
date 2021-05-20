@@ -12,12 +12,13 @@ import ShadowmodeChipInput from "../ShadowmodeChipInput/ShadowmodeChipInput";
 import IShadowmode from "../../../models/IShadowmode";
 import { useConfigurationContext } from "../../../context/ConfigurationContext";
 import IConfiguration from "../../../models/IConfiguration";
+import Alert from '@material-ui/lab/Alert';
 
 export interface ISubcomponentDialogProps {
     type: SubcomponentDialogType;
     open: boolean;
     subcomponent: ISubcomponent;
-    onClose: () => void;
+    onClose: (newComponent?: ISubcomponent) => void;
 }
 
 const SubcomponentDialog = (props: ISubcomponentDialogProps) => {
@@ -25,42 +26,66 @@ const SubcomponentDialog = (props: ISubcomponentDialogProps) => {
   
     const {configuration, updateConfiguration} = useConfigurationContext();
 
-    //#region Subcomponent init
-
-    let initSubcomponent : ISubcomponent = {
-        id:"",
-        name:"",
-        shadowmodes:[]        
-    };
-
-
-    // make sure you start with an empty 
-   /* if(subcomponentId !== undefined && subcomponentId !== null && subcomponentId !== ""){
-        const index = configuration.subcomponents.findIndex(s => s.id === subcomponentId);
-
-        if(index !== -1){            
-            initSubcomponent= JSON.parse(JSON.stringify(configuration.subcomponents[index]));
-
-        }
-        console.log("index", index, initSubcomponent);
-    }*/
-
-    //#endregion
-
     const [id, setId] = React.useState<string>(subcomponent.id);
     const [name, setName] = React.useState<string>(subcomponent.name);
     const [shadowmodes, setShadowmodes] = React.useState<IShadowmode[]>(subcomponent.shadowmodes);
+    const [errors, setErrors] = React.useState<string[]>([]);
+
+    const isValidSubcomponent = (): boolean => {
+        let isValid = true;
+        let errorMessages = [];
+
+        if(id === "" || id === null || id === undefined){
+            errorMessages.push("Id can't be empty!");
+            isValid = false;
+        }
+
+        if(name === "" || name === null || name === undefined){
+            errorMessages.push("Name can't be empty!");
+            isValid = false;
+        }
+
+        if(type === SubcomponentDialogType.Create){
+            const index = configuration.subcomponents.findIndex(s => s.id === id);
+            if(index !== -1){
+                errorMessages.push("Id already exists!");
+                isValid = false;
+            }
+        }
+
+        if(type === SubcomponentDialogType.Edit && subcomponent.id !== id){
+            const index = configuration.subcomponents.findIndex(s => s.id === id);
+            if(index !== -1){
+                errorMessages.push("Not possible to change the Id to '"+id+"' - Id already exists!");
+                isValid = false;
+            }
+        }
+
+        if(shadowmodes.length === 0){
+            errorMessages.push("No shadowmode specified!");
+            isValid = false;
+        }
+
+        setErrors(errorMessages);
+
+        return isValid;
+    }
 
     //#region Change handler
     const handleSave = () => {
+
+        if(!isValidSubcomponent()){
+            return;
+        }
+
         const newConfiguration : IConfiguration = JSON.parse(JSON.stringify(configuration));
-        const index = newConfiguration.subcomponents.findIndex(s => s.id === id);
 
         if(type === SubcomponentDialogType.Edit){
 
+            const index = newConfiguration.subcomponents.findIndex(s => s.id === id);
             if(index === -1){
                 //Delete the subcomponent with previous id and add a new one with the updated data
-                newConfiguration.subcomponents = newConfiguration.subcomponents.filter(s => s.id !== id).slice();
+                newConfiguration.subcomponents = newConfiguration.subcomponents.filter(s => s.id !== subcomponent.id).slice();
                 const newSubcomponent : ISubcomponent = {
                     id: id,
                     name: name,
@@ -74,17 +99,13 @@ const SubcomponentDialog = (props: ISubcomponentDialogProps) => {
             }
 
         }else{
-            if(index !== -1){
-                // A subcomponent with this id exists already
-                // TODO: show error
-            }else{
-                const newSubcomponent : ISubcomponent = {
-                    id: id,
-                    name: name,
-                    shadowmodes: shadowmodes
-                };
-                newConfiguration.subcomponents.push(newSubcomponent);
-            }
+
+            const newSubcomponent : ISubcomponent = {
+                id: id,
+                name: name,
+                shadowmodes: shadowmodes
+            };
+            newConfiguration.subcomponents.push(newSubcomponent);
         }
 
         updateConfiguration(newConfiguration);
@@ -117,6 +138,20 @@ const SubcomponentDialog = (props: ISubcomponentDialogProps) => {
                 </SubcomponentDialogTitle>
                 <SubcomponentDialogContent dividers> 
                     <div id="subcomponent-dialog-content-container"> 
+                        {errors.length > 0?
+                            errors.map(e => {
+                                    return (
+                                        <div className="subcomponent-dialog-content-container-error">
+                                            <Alert severity="error">
+                                                {e}
+                                            </Alert>                                    
+                                        </div>
+                                    );
+                                }
+                            )
+                            : 
+                            null
+                        }
                         <TextField 
                             variant="outlined"
                             id="id"

@@ -1,4 +1,3 @@
-import ISubcomponent from '../../models/ISubcomponent';
 import './SubcomponentConfigurationView.css';
 import SubComponentTable from './SubcomponentTable/SubcomponentTable';
 
