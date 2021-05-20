@@ -1,0 +1,8 @@
+#degradation-level-configuration-view-container{
+    padding-top: 16px;
+    padding-left: 2%;
+    padding-right: 2%;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: auto;
+}

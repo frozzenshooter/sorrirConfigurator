@@ -1,4 +1,5 @@
 import View from "../../../util/Views";
+import DegradationLevelConfigurationView from "../../degradationLevelConfigurationView/DegradationLevelConfigurationView";
 import ExportView from "../../exportView/ExportView";
 import ImportView from "../../importView/ImportView";
 import SubcomponentConfigurationView from "../../subcomponentConfigurationView/SubComponentConfigurationView";
@@ -17,7 +18,7 @@ const ViewSelector = (props: IViewSelectorProps): JSX.Element => {
             case View.SubcomponentConfiguration:
                 return <SubcomponentConfigurationView/>;
             case View.DegradationLevelConfiguration:
-                return <div>DegradationLevelConfiguration</div>;
+                return <DegradationLevelConfigurationView />;
             case View.Export:
                 return <ExportView />;
         default:

@@ -4,6 +4,7 @@ import View from "../../util/Views";
 import MenuBar from "./MenuBar/MenuBar";
 import ViewSelector from "./ViewSelector/ViewSelector";
 import WizardStepper from "./WizardStepper/WizardStepper";
+import './Wizard.css';
 
 export interface IWizardProps{
     requiredViews: View[];
@@ -27,7 +28,7 @@ const Wizard = (props: IWizardProps) => {
     if(currentView !== null){
 
         return (
-            <React.Fragment>                
+            <div id="wizard-container">                
                 <MenuBar
                     viewLabel={ViewLabelResolver(currentView)}                
                     onWizardRestart={handleWizardRestart}            
@@ -40,7 +41,7 @@ const Wizard = (props: IWizardProps) => {
                 <ViewSelector 
                     view={currentView}
                 />
-            </React.Fragment>
+            </div>
         );
 
     }else{
