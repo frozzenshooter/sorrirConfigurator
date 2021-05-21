@@ -6,22 +6,8 @@ import DegradationLevelDialog from './DegradationLevelDialog/DegradationLevelDia
 import IDegradationLevel from '../../models/IDegradationLevel';
 import DegradationLevelDialogType from './DegradationLevelDialog/DegradationLevelDialogType';
 import SelectionMenuBar from '../selectionMenuBar/SelectionMenuBar';
-import ReactFlow, { Controls, Background }  from 'react-flow-renderer';
-
-const elements = [
-  { id: '1', data: { label: 'Node 1' }, position: { x: 250, y: 5 } },
-  // you can also pass a React component as a label
-  { id: '2', data: { label: <div>Node 2</div> }, position: { x: 100, y: 100 } },
-  { id: 'e1-2', source: '1', target: '2', animated: true },
-];
-
-const BasicFlow = () => 
-<ReactFlow elements={elements}>
-  <Controls />
-  <Background color="#aaa" gap={16} />
-</ReactFlow>;
-
-
+import DegradationGraphEditor from './DegradationGraphEditor/DegradationGraphEditor';
+import DegradationLevelDeleteDialog from './DegradationLevelDeleteDialog/DegradationLevelDeleteDialog';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -40,6 +26,7 @@ const DegradationLevelConfigurationView = () => {
 
     const [createDialogOpen, setCreateDialogOpen] = React.useState<boolean>(false);
     const [editDialogOpen, setEditDialogOpen] = React.useState<boolean>(false);
+    const [deleteDialogOpen, setDeleteDialogOpen] = React.useState<boolean>(false);
     const [selectedDegradationLevels, setSelectedDegradationLevel] = React.useState<IDegradationLevel[]>([ {
       id: 1,
       label: "d1",
@@ -51,73 +38,71 @@ const DegradationLevelConfigurationView = () => {
         <div id="degradation-level-configuration-view-container">
             <Paper className={classes.degradationLevelConfigurationViewPaper}>
               <div id="degradation-level-configuration-graph-container">
-                <SelectionMenuBar
-                  amountOfSelectedItems={selectedDegradationLevels.length}
-                  onCreateClick={() =>{setCreateDialogOpen(true);}}
-                  onEditClick={() =>{setEditDialogOpen(true);}}
-                  onDeleteClick={() =>{console.log("Delete Clicked");}}
-                  />
-                <div className={classes.height100}>
-                  <BasicFlow/>
-                  <Button
-                    onClick={() => {
-                      const d1 :IDegradationLevel = {
-                        id: 1,
-                        label: "d1",
-                        dependencies: []
-                      };
-                      const d2 :IDegradationLevel = {
+                    <SelectionMenuBar
+                        amountOfSelectedItems={selectedDegradationLevels.length}
+                        onCreateClick={() =>{setCreateDialogOpen(true);}}
+                        onEditClick={() =>{setEditDialogOpen(true);}}
+                        onDeleteClick={() =>{setDeleteDialogOpen(true);}}
+                        />
+                    <DegradationGraphEditor/>
+                    <Button onClick={() => {
+                        const d1 :IDegradationLevel = {
+                            id: 1,
+                            label: "d1",
+                            dependencies: []
+                        };
+                        const d2 :IDegradationLevel = {
+                            id: 2,
+                            label: "d2",
+                            dependencies: []
+                        };
+
+                        if(selectedDegradationLevels[0].id === 1){
+                            console.log("Swap: ", [d2]);
+                            setSelectedDegradationLevel([d2]);
+
+                        }else{
+                            console.log("Swap: ", [d1]);
+                            setSelectedDegradationLevel([d1]);
+                        }
+                        }}
+                    >
+                        Swap Edit
+                    </Button>
+                    <Button onClick={() => {
+                        const d1 :IDegradationLevel = {
+                            id: 1,
+                            label: "d1",
+                            dependencies: []
+                        };
+                        const d2 :IDegradationLevel = {
+                            id: 2,
+                            label: "d2",
+                            dependencies: []
+                        };
+                        setSelectedDegradationLevel([d1, d2]);
+                    }}>
+                        Multiple Select
+                    </Button>
+                    <Button onClick={() => {
+
+                        const d2 :IDegradationLevel = {
                         id: 2,
                         label: "d2",
                         dependencies: []
-                      };
+                        };
 
-                      if(selectedDegradationLevels[0].id === 1){
-                        console.log("Swap: ", [d2]);
                         setSelectedDegradationLevel([d2]);
-
-                      }else{
-                        console.log("Swap: ", [d1]);
-                        setSelectedDegradationLevel([d1]);
-                      }
-                    }}
-                  >
-                    Swap Edit
-                  </Button>
-                  <Button onClick={() => {
-                      const d1 :IDegradationLevel = {
-                        id: 1,
-                        label: "d1",
-                        dependencies: []
-                      };
-                      const d2 :IDegradationLevel = {
-                        id: 2,
-                        label: "d2",
-                        dependencies: []
-                      };
-                      setSelectedDegradationLevel([d1, d2]);
-                  }}>
-                    Multiple Select
-                  </Button>
-                  <Button onClick={() => {
-
-                    const d2 :IDegradationLevel = {
-                      id: 2,
-                      label: "d2",
-                      dependencies: []
-                    };
-
-                    setSelectedDegradationLevel([d2]);
-                    
-                  }}>
-                    Single select
-                  </Button>
-                  <Button onClick={() => {
+                        
+                    }}>
+                        Single select
+                    </Button>
+                    <Button onClick={() => {
                     setSelectedDegradationLevel([]);
-                  }}>
+                }}>
                     Empty Select
-                  </Button>
-                </div>
+                </Button>
+
               </div>
             </Paper>
         </div>
@@ -137,6 +122,16 @@ const DegradationLevelConfigurationView = () => {
               onClose={() => {setEditDialogOpen(false);}}
               />
           : 
+            null
+        }
+
+        {selectedDegradationLevels.length > 0 && deleteDialogOpen ?
+            <DegradationLevelDeleteDialog
+                open={deleteDialogOpen}
+                degradationLevels={selectedDegradationLevels}
+                onClose={() => {setDeleteDialogOpen(false);}}            
+            />
+            : 
             null
         }
       </>
