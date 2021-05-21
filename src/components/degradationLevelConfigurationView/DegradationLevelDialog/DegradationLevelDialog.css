@@ -1,11 +1,11 @@
-#create-degradation-level-dialog-properties-container{
+#degradation-level-dialog-properties-container{
     padding-top: 16px;    
     padding-bottom: 16px;
     padding-right: 2%;
     padding-left: 2%;
 }
 
-.create-degradation-level-dialog-properties-section-caption{
+.degradation-level-dialog-properties-section-caption{
     /* TODO: Can this be solved with an generated class from material ui? */
     font-size: 1.25rem;
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
@@ -16,19 +16,19 @@
     margin-block-start: 0.25em;
 }
 
-.create-degradation-level-dialog-properties-divider{
+.degradation-level-dialog-properties-divider{
     margin-right: 2%;
     margin-left: 2%;
 }
 
-#create-degradation-level-dialog-dependency-container{
+#degradation-level-dialog-dependency-container{
     padding-top: 16px;    
     padding-bottom: 16px;
     padding-right: 2%;
     padding-left: 2%;
 }
 
-#create-degradation-level-dialog-dependency-container-item{
+#degradation-level-dialog-dependency-container-item{
     display: inline-flex;
     flex-direction: row;
     flex-wrap: wrap;

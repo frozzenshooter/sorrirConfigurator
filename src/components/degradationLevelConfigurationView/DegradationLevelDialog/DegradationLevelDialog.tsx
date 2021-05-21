@@ -13,15 +13,22 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
 import { Divider } from '@material-ui/core';
-import './CreateDegradationLevelDialog.css';
+import './DegradationLevelDialog.css';
 import { useConfigurationContext } from '../../../context/ConfigurationContext';
 import IConfiguration from '../../../models/IConfiguration';
 import DegradationLevelDependencySelector from '../DegradationLevelDependencySelector/DegradationLevelDependencySelector';
 import IDegradationLevelDependency from '../../../models/IDegradationLevelDependency';
 import DecisionDialog from '../../decisionDialog/DecisionDialog';
 
-export interface ICreateDegradationLevelDialogProps {
+export enum DegradationLevelDialogType {
+    Create = 0,
+    Edit = 1,
+}
+
+export interface IDegradationLevelDialogProps {
     open: boolean
+    type: DegradationLevelDialogType,
+    degradationLevel?: IDegradationLevel,
     onClose: () => void;
 }
 
@@ -54,13 +61,26 @@ export interface ICreateDegradationLevelDialogProps {
   }
 );
 
-const CreateDegradationLevelDialog = (props: ICreateDegradationLevelDialogProps) => {
+const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
 
-    const {open, onClose} = props;
+    const {open, type, degradationLevel, onClose} = props;
 
-    const [id, setId] = React.useState<number>(0);
-    const [label, setLabel] = React.useState<string>("");
-    const [dependencies, setDependencies] = React.useState<IDegradationLevelDependency[]>([]);
+    // Init empty 
+    const initalDegradationLevel :IDegradationLevel = {
+        id: 0,
+        label: "",
+        dependencies: []
+    };
+
+    if(type === DegradationLevelDialogType.Edit && degradationLevel !== null && degradationLevel !== undefined){
+        initalDegradationLevel.id = degradationLevel.id;
+        initalDegradationLevel.label = degradationLevel.label;
+        initalDegradationLevel.dependencies = degradationLevel.dependencies.slice();
+    }
+
+    const [id, setId] = React.useState<number>(initalDegradationLevel.id);
+    const [label, setLabel] = React.useState<string>(initalDegradationLevel.label);
+    const [dependencies, setDependencies] = React.useState<IDegradationLevelDependency[]>(initalDegradationLevel.dependencies);
     const [openConfirmationDialog, setOpenConfirmationDialog] = React.useState<boolean>(false);
 
 
@@ -69,9 +89,13 @@ const CreateDegradationLevelDialog = (props: ICreateDegradationLevelDialogProps)
     const {configuration, updateConfiguration} = useConfigurationContext();
 
     const handleClose = () => {
-        setId(0);
-        setLabel("");
-        setDependencies([]);
+
+        if(type === DegradationLevelDialogType.Create){
+            setId(0);
+            setLabel("");
+            setDependencies([]);
+        }
+
         onClose();
     }
 
@@ -90,9 +114,11 @@ const CreateDegradationLevelDialog = (props: ICreateDegradationLevelDialogProps)
 
         newConfiguration.degradationLevels.push(newDegradationLevel);
 
-        setId(0);
-        setLabel("");
-        setDependencies([]);
+        if(type === DegradationLevelDialogType.Create){
+            setId(0);
+            setLabel("");
+            setDependencies([]);
+        }
         updateConfiguration(newConfiguration);
         onClose();
     };
@@ -130,6 +156,7 @@ const CreateDegradationLevelDialog = (props: ICreateDegradationLevelDialogProps)
     }
 
     const handleCancelConfirmationDialogAccept = () => {
+        setOpenConfirmationDialog(false);
         handleClose();
     };
 
@@ -138,6 +165,22 @@ const CreateDegradationLevelDialog = (props: ICreateDegradationLevelDialogProps)
     };
     
     //#endregion
+
+    const getTitle = () => {
+        let title = "";
+
+        if(type === DegradationLevelDialogType.Create){
+            title = "Create";
+        }else{
+            title = "Edit";
+
+            if(label !== ""){
+                title = title + " - " + label;
+            }
+        }
+
+        return title;
+    }
 
     return (
         <Dialog
@@ -152,7 +195,7 @@ const CreateDegradationLevelDialog = (props: ICreateDegradationLevelDialogProps)
                         <CloseIcon />
                     </IconButton>
                     <Typography variant="h6" className={classes.title}>
-                        Create {label !==""? "- "+label: null}
+                        {getTitle()}
                     </Typography>
                     <IconButton edge="end" color="inherit" onClick={handleSave}>
                         <SaveIcon />
@@ -161,8 +204,8 @@ const CreateDegradationLevelDialog = (props: ICreateDegradationLevelDialogProps)
                     </Toolbar>
                 </AppBar>
                 <div className={classes.appBarSpacer}></div>
-                <div id="create-degradation-level-dialog-properties-container">
-                    <h3 className="create-degradation-level-dialog-properties-section-caption">Details</h3>
+                <div id="degradation-level-dialog-properties-container">
+                    <h3 className="degradation-level-dialog-properties-section-caption">Details</h3>
                     <FormControl className={classes.formControl}>
                         <TextField
                             label="Id"
@@ -184,9 +227,9 @@ const CreateDegradationLevelDialog = (props: ICreateDegradationLevelDialogProps)
                 <Divider className="degradation-level-dialog-properties-divider"/>
                 {configuration.subcomponents.length > 0?
                     <React.Fragment>
-                        <div id="create-degradation-level-dialog-dependency-container">
-                            <h3 className="create-degradation-level-dialog-properties-section-caption">Shadowmode dependencies</h3>
-                            <div id="create-degradation-level-dialog-dependency-container-item">
+                        <div id="degradation-level-dialog-dependency-container">
+                            <h3 className="degradation-level-dialog-properties-section-caption">Shadowmode dependencies</h3>
+                            <div id="degradation-level-dialog-dependency-container-item">
                                 
                                 {configuration.subcomponents.map(subc => {
                                     return (
@@ -200,7 +243,7 @@ const CreateDegradationLevelDialog = (props: ICreateDegradationLevelDialogProps)
                                 })}
                             </div>
                         </div>
-                        <Divider className="create-degradation-level-dialog-properties-divider"/>
+                        <Divider className="degradation-level-dialog-properties-divider"/>
                     </React.Fragment>
                     : null
                 }
@@ -215,4 +258,4 @@ const CreateDegradationLevelDialog = (props: ICreateDegradationLevelDialogProps)
     );
 }
 
-export default CreateDegradationLevelDialog;
+export default DegradationLevelDialog;
