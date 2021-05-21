@@ -7,3 +7,9 @@
     flex-shrink: 1;
     flex-basis: auto;
 }
+
+#degradation-level-configuration-graph-container{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}

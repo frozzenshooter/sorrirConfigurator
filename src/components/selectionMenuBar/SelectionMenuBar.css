@@ -1,0 +1,7 @@
+#selection-menu-bar{
+    display: inline-flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: flex-end;    
+    box-sizing: border-box;
+}
