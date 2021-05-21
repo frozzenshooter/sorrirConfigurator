@@ -19,11 +19,8 @@ import IConfiguration from '../../../models/IConfiguration';
 import DegradationLevelDependencySelector from '../DegradationLevelDependencySelector/DegradationLevelDependencySelector';
 import IDegradationLevelDependency from '../../../models/IDegradationLevelDependency';
 import DecisionDialog from '../../decisionDialog/DecisionDialog';
-
-export enum DegradationLevelDialogType {
-    Create = 0,
-    Edit = 1,
-}
+import DegradationLevelDialogType from './DegradationLevelDialogType';
+import Alert from '@material-ui/lab/Alert';
 
 export interface IDegradationLevelDialogProps {
     open: boolean
@@ -33,7 +30,7 @@ export interface IDegradationLevelDialogProps {
 }
 
 /**
- * Styles for the @DecisionDialog
+ * Styles for the @DegradationLevelDialog
  */
  const useStyles = makeStyles((theme: Theme) =>
  createStyles({
@@ -65,7 +62,7 @@ const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
 
     const {open, type, degradationLevel, onClose} = props;
 
-    // Init empty 
+    //#region Init state
     const initalDegradationLevel :IDegradationLevel = {
         id: 0,
         label: "",
@@ -78,50 +75,115 @@ const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
         initalDegradationLevel.dependencies = degradationLevel.dependencies.slice();
     }
 
+    //#endregion
+
     const [id, setId] = React.useState<number>(initalDegradationLevel.id);
     const [label, setLabel] = React.useState<string>(initalDegradationLevel.label);
     const [dependencies, setDependencies] = React.useState<IDegradationLevelDependency[]>(initalDegradationLevel.dependencies);
     const [openConfirmationDialog, setOpenConfirmationDialog] = React.useState<boolean>(false);
-
+    const [errorMessages, setErrorMessages] = React.useState<string[]>([]);
 
     const classes = useStyles();
 
     const {configuration, updateConfiguration} = useConfigurationContext();
 
-    const handleClose = () => {
 
+    //#region Close/Save handling
+    const resetState = () => {
         if(type === DegradationLevelDialogType.Create){
             setId(0);
             setLabel("");
             setDependencies([]);
+            setErrorMessages([]);
         }
+        // This is not required for type === Edit, because then the dialog has to be rerendered anyway
+    }
 
+    const handleClose = () => {
+        resetState();
         onClose();
     }
 
     const handleSave = () => {
-        //TODO: validate and then save in configuration
-        const newConfiguration: IConfiguration = JSON.parse(JSON.stringify(configuration));
+        if(isValid()){
+            const newConfiguration: IConfiguration = JSON.parse(JSON.stringify(configuration));
 
-        // Remove all dont cares and only save the relevant ones
-        const newDependencies = dependencies.filter(d => d.shadowmodeId !== "").slice();
+            // Remove all dont cares and only save the relevant ones
+            const newDependencies = dependencies.filter(d => d.shadowmodeId !== "").slice();
+    
+            if(type === DegradationLevelDialogType.Create) {
 
-        const newDegradationLevel: IDegradationLevel = {
-            id: id,
-            label: label,
-            dependencies: newDependencies
-        };
+                // you can just push it - validate ensures there can't be an invalid state
+                const newDegradationLevel: IDegradationLevel = {
+                    id: id,
+                    label: label,
+                    dependencies: newDependencies
+                };
+        
+                newConfiguration.degradationLevels.push(newDegradationLevel);
 
-        newConfiguration.degradationLevels.push(newDegradationLevel);
+            }else if(type === DegradationLevelDialogType.Edit) {
+
+                if(id !== initalDegradationLevel.id){
+                    // id has changed - remove old level and insert new one
+                    newConfiguration.degradationLevels = newConfiguration.degradationLevels.filter(d => d.id !== initalDegradationLevel.id).slice();
+                    const newDegradationLevel: IDegradationLevel = {
+                        id: id,
+                        label: label,
+                        dependencies: newDependencies
+                    };
+            
+                    newConfiguration.degradationLevels.push(newDegradationLevel);
+                }else{
+                    // id the same - update
+                    const index = newConfiguration.degradationLevels.findIndex(d => d.id === id);
+                    newConfiguration.degradationLevels[index].label = label;
+                    newConfiguration.degradationLevels[index].dependencies = dependencies.slice();
+                }
+            }
+
+            resetState();
+            updateConfiguration(newConfiguration);
+            onClose();
+        }
+    };
+
+    //#endregion
+
+    //#region Validation
+    const isValid = (): boolean => {
+        let isValid = true;
+        const newErrorMessages :string[] = [];
 
         if(type === DegradationLevelDialogType.Create){
-            setId(0);
-            setLabel("");
-            setDependencies([]);
+            // Validate if id already exists?
+
+            const index = configuration.degradationLevels.findIndex(d => d.id === id);
+            if(index !== -1){
+                isValid = false;
+                newErrorMessages.push("The id '"+id+"' is already used by another Degradation Level");
+            }
         }
-        updateConfiguration(newConfiguration);
-        onClose();
+
+        if(type === DegradationLevelDialogType.Edit){
+            // If id has changed it can happen that the id is already used by another DegradationLevel
+            if(id !== initalDegradationLevel.id){
+                const index = configuration.degradationLevels.findIndex(d => d.id === id);
+                if(index !== -1){
+                    isValid = false;
+                    newErrorMessages.push("The id '"+id+"' is already used by another Degradation Level");
+                }
+            }
+        }
+
+        setErrorMessages(newErrorMessages);
+
+        return isValid
     };
+
+    //#endregion
+
+    //#region change handlers
 
     const handleDegradationLevelDependencySelectorChange = (degradationLevelDependency: IDegradationLevelDependency) => {
 
@@ -146,8 +208,11 @@ const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
             return dependencies[index].shadowmodeId;
         }
 
+        //This means the subcomponent is "DC" - don't care
         return "";
     };
+
+    //#endregion
 
     //#region Cancel confirmation dialog
 
@@ -166,6 +231,7 @@ const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
     
     //#endregion
 
+    //#region Title generation
     const getTitle = () => {
         let title = "";
 
@@ -182,6 +248,8 @@ const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
         return title;
     }
 
+    //#endregion
+    
     return (
         <Dialog
             fullScreen={true}
@@ -204,6 +272,22 @@ const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
                     </Toolbar>
                 </AppBar>
                 <div className={classes.appBarSpacer}></div>
+                {errorMessages.length > 0?
+                    <div id="degradation-level-dialog-error-container">
+                        {errorMessages.map(e => {
+                                return (
+                                    <div className="degradation-level-dialog-error-container-item">
+                                        <Alert severity="error">
+                                            {e}
+                                        </Alert>                                    
+                                    </div>
+                                );
+                            }
+                        )}
+                    </div>
+                    : 
+                    null
+                }
                 <div id="degradation-level-dialog-properties-container">
                     <h3 className="degradation-level-dialog-properties-section-caption">Details</h3>
                     <FormControl className={classes.formControl}>

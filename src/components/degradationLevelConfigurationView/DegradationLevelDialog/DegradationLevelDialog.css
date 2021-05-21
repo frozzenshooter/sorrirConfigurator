@@ -1,8 +1,17 @@
 #degradation-level-dialog-properties-container{
-    padding-top: 16px;    
     padding-bottom: 16px;
     padding-right: 2%;
     padding-left: 2%;
+}
+
+#degradation-level-dialog-error-container{
+    padding-top: 16px;    
+    padding-right: 2%;
+    padding-left: 2%;
+}
+
+.degradation-level-dialog-error-container-item{
+    padding-bottom: 8px;
 }
 
 .degradation-level-dialog-properties-section-caption{

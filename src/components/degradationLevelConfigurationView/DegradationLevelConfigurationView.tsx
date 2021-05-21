@@ -2,8 +2,9 @@ import { Button, Paper } from '@material-ui/core';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import React from 'react';
 import './DegradationLevelConfigurationView.css';
-import DegradationLevelDialog, { DegradationLevelDialogType } from './DegradationLevelDialog/DegradationLevelDialog';
+import DegradationLevelDialog from './DegradationLevelDialog/DegradationLevelDialog';
 import IDegradationLevel from '../../models/IDegradationLevel';
+import DegradationLevelDialogType from './DegradationLevelDialog/DegradationLevelDialogType';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
