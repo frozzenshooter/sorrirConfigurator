@@ -30,6 +30,7 @@ const SubcomponentDialog = (props: ISubcomponentDialogProps) => {
     const [name, setName] = React.useState<string>(subcomponent.name);
     const [shadowmodes, setShadowmodes] = React.useState<IShadowmode[]>(subcomponent.shadowmodes);
     const [errors, setErrors] = React.useState<string[]>([]);
+    const [updateId, setUpdateId] = React.useState<boolean>(subcomponent.id === "");
 
     const isValidSubcomponent = (): boolean => {
         let isValid = true;
@@ -114,10 +115,18 @@ const SubcomponentDialog = (props: ISubcomponentDialogProps) => {
 
     const handleIdChange = (ev : React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
         setId(ev.target.value);
+        if(ev.target.value === ""){
+            setUpdateId(true);
+        }else{
+            setUpdateId(false);
+        }
     }
 
     const handleNameChange = (ev : React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
         setName(ev.target.value);
+        if(updateId === true){
+            setId(ev.target.value);
+        }
     }
 
     const handleShadowmodeChange = (shadowmodes: IShadowmode[]) => {
@@ -152,22 +161,23 @@ const SubcomponentDialog = (props: ISubcomponentDialogProps) => {
                             : 
                             null
                         }
-                        <TextField 
-                            variant="outlined"
-                            id="id"
-                            label="ID" 
-                            value={id}
-                            onChange={handleIdChange}
-                            className="subcomponent-dialog-content-container-item"
-                            style={{paddingBottom: "16px"}}/>
-                        <TextField 
-                            variant="outlined"
-                            id="name"
-                            label="Name"
-                            value={name}
-                            onChange={handleNameChange}
-                            className="subcomponent-dialog-content-container-item"
-                            style={{paddingBottom: "16px"}}/>
+                        <div id="subcomponent-dialog-content-properties-container">
+                            <div id ="subcomponent-dialog-content-container-name">
+                                <TextField 
+                                    variant="outlined"
+                                    id="name"
+                                    label="Name"
+                                    value={name}
+                                    onChange={handleNameChange}/>
+                            </div>
+                            <TextField 
+                                variant="outlined"
+                                id="id"
+                                label="ID" 
+                                value={id}
+                                onChange={handleIdChange}/>
+         
+                        </div>
                         <ShadowmodeChipInput
                             shadowmodes={shadowmodes.slice()}
                             onChange={handleShadowmodeChange}

@@ -2,14 +2,21 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    width: 100%;
 }
 
-.subcomponent-dialog-content-container-item{
-    padding-bottom: 16px;
+#subcomponent-dialog-content-properties-container{
+    display: inline-flex;
+    padding-top: 8px;
+}
+
+#subcomponent-dialog-content-container-name{
+    margin-right: 16px;
 }
 
 .subcomponent-dialog-content-container-error{
     padding-bottom: 8px;
+    width: 100%;
 }
 
 #subcomponent-dialog-error-container{

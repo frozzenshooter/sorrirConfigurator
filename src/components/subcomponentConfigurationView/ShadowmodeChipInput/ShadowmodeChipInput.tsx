@@ -44,6 +44,7 @@ const ShadowmodeChipInput = (props: IShadowmodeChipInputProps) => {
     return (
         <div id="shadowmode-chip-input-container">
             <TextField
+                label="Shadowmodes" 
                 value={textfieldValue}
                 onChange={(ev) => {setTextFieldValue(ev.target.value);}}
                 onKeyPress={handleKeyPress}

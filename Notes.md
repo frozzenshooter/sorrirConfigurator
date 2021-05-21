@@ -1,25 +1,24 @@
-### Notes
+### Offene Punkte
 
-Validierung beim Import? Ja
-
-Whitespace not allowed in chips
-
-Textfeld im export (readonly)
-Validierung des Exports neim öffnen der View
+##### Nächste Schritte
 
 
-Textfeld alternative ansicht für jede View 
-Nummerierung der Shadowmodes -> weiter rechts höherer mode
+ + SubcomponentDialog: Felder neu anordnen (Id rechts neben Namen) 
+ + [X] SubcomponentDialog: Id automatisch ausfüllen wenn Namen getippt wird (sofern nicht schon vergeben)
+ + SubcomponentDialog: Lebel für Chip Creator
+ + CSS im Level-Dialog
+ + Level-Konfiguration mittels "Schwimmlanes" - React flow entfernen?
+ + Inverse der Konfiguration für Upgrades (extra halten)
+ + Dokumente ausfüllen
+ + Animation um zu erklären, dass man den Wizard zum Navigieren nutzen kann
+
+##### Optional/Am Schluss
+ + Validieren des Import Schemas
+ + Textfeld/Editor zum manuellen Bearbeiten der Konfiguration -> hierfür wird dann auch die Validierung benötigt
+ + Sortierung der Shadowmodes ("weiter rechts hat höhere prio")
 
 
-### Questions
-
-Müssen DC bei den Leveln gepseichert werden ?
-Soll man die ID von Leveln validieren? -> Was machen wenn man merhfach die gleiche Id hat ?
--> Welche validierung braucht man beim Erzeugen an sich? Benötigt man ein Label/eine passende id?
-
-
-###TODOs
+### Further general steps
 
 + Static files require some work (change icons, ...)
 + Welcome page with the offical logo
