@@ -3,10 +3,10 @@
 ##### Nächste Schritte
 
 
- + SubcomponentDialog: Felder neu anordnen (Id rechts neben Namen) 
+ + [X] SubcomponentDialog: Felder neu anordnen (Id rechts neben Namen) 
  + [X] SubcomponentDialog: Id automatisch ausfüllen wenn Namen getippt wird (sofern nicht schon vergeben)
- + SubcomponentDialog: Lebel für Chip Creator
- + CSS im Level-Dialog
+ + [X] SubcomponentDialog: Lebel für Chip Creator
+ + CSS im Level-Dialog ( Divider passen nicht)
  + Level-Konfiguration mittels "Schwimmlanes" - React flow entfernen?
  + Inverse der Konfiguration für Upgrades (extra halten)
  + Dokumente ausfüllen
