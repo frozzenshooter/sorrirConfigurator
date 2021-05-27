@@ -8,6 +8,8 @@ import DegradationLevelDialogType from './DegradationLevelDialog/DegradationLeve
 import SelectionMenuBar from '../selectionMenuBar/SelectionMenuBar';
 import DegradationGraphEditor from './DegradationGraphEditor/DegradationGraphEditor';
 import DegradationLevelDeleteDialog from './DegradationLevelDeleteDialog/DegradationLevelDeleteDialog';
+import ConfigurationValidator from '../../util/ConfigurationValidator';
+import { useConfigurationContext } from '../../context/ConfigurationContext';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -32,6 +34,9 @@ const DegradationLevelConfigurationView = () => {
       label: "d1",
       dependencies: []
     }]);
+
+
+    const {configuration, updateConfiguration} = useConfigurationContext();
 
     return (
       <>
@@ -101,6 +106,13 @@ const DegradationLevelConfigurationView = () => {
                     setSelectedDegradationLevel([]);
                 }}>
                     Empty Select
+                </Button>
+                <Button onClick={() => {
+                    
+                    const validator = ConfigurationValidator.getInstance();
+                    console.log(validator.validate({degradationLevels: [], subcomponents:[]}));                    
+                }}>
+                    Test Validation
                 </Button>
 
               </div>
