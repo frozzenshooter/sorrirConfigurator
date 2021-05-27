@@ -4,6 +4,7 @@ import { useConfigurationContext } from "../../../context/ConfigurationContext";
 import IConfiguration from "../../../models/IConfiguration";
 import Alert from '@material-ui/lab/Alert';
 import './ConfigurationFileImport.css';
+import ConfigurationValidator from "../../../util/ConfigurationValidator";
 
 const ConfigurationFileImport = () => {
 
@@ -14,7 +15,6 @@ const ConfigurationFileImport = () => {
 
     const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 
-
         if(event?.target?.files !== null && event.target.files.length > 0){
             const newFilename = event.target.files[0].name;  
             
@@ -24,16 +24,16 @@ const ConfigurationFileImport = () => {
                 if(!reader.error){
                     const jsonData = reader.result?.toString();
                     if(jsonData){
-                        // Only handle data if there is valid data                      
-                        try{
-                            const loadedConfig : IConfiguration = JSON.parse(jsonData);
 
-                            //TODO: validate the input?
-                            updateConfiguration(loadedConfig);
+                        const validator = ConfigurationValidator.getInstance();
+                        const errors = validator.parseAndValidate(jsonData);
+                        
+                        if(errors.length > 0) {
+
+                            setError(errors.join('\n'));
+                        }else{
+                            updateConfiguration(validator.getParsedConfiguration());
                             setError("");
-                        }catch(ex){
-                    
-                            setError((ex as Error).message);
                         }
                         setFilename(newFilename);
                     }
@@ -64,6 +64,7 @@ const ConfigurationFileImport = () => {
 
                     </Button>
                     {filename !== ""? <div className="configuration-file-import-button-container-item">Filename: <strong>{filename}</strong></div>: null}
+                    <span id="configuration-file-import-note">(This will override the current configuration with the data from the uploaded file)</span>
                 </div>
                 {error !== ""? <div id="configuration-file-import-alert"><Alert severity="error">{error}</Alert></div>: null}
 

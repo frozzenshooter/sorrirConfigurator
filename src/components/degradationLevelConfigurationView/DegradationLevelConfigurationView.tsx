@@ -107,14 +107,6 @@ const DegradationLevelConfigurationView = () => {
                 }}>
                     Empty Select
                 </Button>
-                <Button onClick={() => {
-                    
-                    const validator = ConfigurationValidator.getInstance();
-                    console.log(validator.validate({degradationLevels: [], subcomponents:[]}));                    
-                }}>
-                    Test Validation
-                </Button>
-
               </div>
             </Paper>
         </div>
