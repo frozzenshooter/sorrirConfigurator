@@ -1,7 +1,6 @@
 import { Button } from "@material-ui/core";
 import React from "react";
 import { useConfigurationContext } from "../../../context/ConfigurationContext";
-import IConfiguration from "../../../models/IConfiguration";
 import Alert from '@material-ui/lab/Alert';
 import './ConfigurationFileImport.css';
 import ConfigurationValidator from "../../../util/ConfigurationValidator";
