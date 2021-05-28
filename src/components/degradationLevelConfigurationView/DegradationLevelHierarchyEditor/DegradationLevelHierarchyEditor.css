@@ -1,0 +1,38 @@
+#degradation-level-hierarchy-editor-container{
+    display: flex;
+    height: 100%;
+    flex-direction: row;
+}
+
+#degradation-level-hierarchy-editor-sidebar{
+    height: 100%;
+    flex-grow: 1;
+    flex-basis: 100px;
+    border-right: 1px solid rgba(0, 0, 0, 0.12);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    display: flex;
+    flex-direction: column;
+}
+
+#degradation-level-hierarchy-editor-tree-container{
+    height: 100%;
+    flex-grow: 5;
+    min-height: 0;
+}
+
+#degradation-level-hierarchy-editor-sidebar-title{  
+    padding:16px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+#degradation-level-hierarchy-editor-sidebar-content{
+    overflow-y: auto;
+    flex-grow: 1;
+    min-height: 0;
+}
+
+.degradation-level-hierarchy-editor-sidebar-item{
+    padding:16px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    margin: 8px 8px 8px 8px;
+}
