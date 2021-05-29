@@ -1,3 +1,4 @@
+import { Button } from '@material-ui/core';
 import './DegradationLevelHierarchyEditor.css';
 
 export interface IDegradationLevelHierarchyEditorProps{
@@ -27,6 +28,30 @@ const DegradationLevelHierarchyEditor = (props: IDegradationLevelHierarchyEditor
             </div>
             <div id="degradation-level-hierarchy-editor-tree-container">
 
+                <div id="degradation-level-hierarchy-editor-tree-container-content-test">
+                    <Button onClick={() => {
+                        const ele = document.getElementById("degradation-level-hierarchy-editor-tree-container-content-test");
+                        if(ele){
+                            const height = ele.offsetHeight;
+                            if(height){
+                                ele.style.height = (height + 50)+"px";
+                            }
+                        }
+                    }}>
+                        Add bottom
+                    </Button>
+                    <Button onClick={() => {
+                        const ele = document.getElementById("degradation-level-hierarchy-editor-tree-container-content-test");
+                        if(ele){
+                            const width = ele.offsetWidth;
+                            if(width){
+                                ele.style.width = (width + 50)+"px";
+                            }
+                        }
+                    }}>
+                        Add right
+                    </Button>
+                </div>
             </div>
         </div>
     );

@@ -17,6 +17,9 @@
     height: 100%;
     flex-grow: 11;
     min-height: 0;
+    overflow: auto;
+    position: relative;
+    
 }
 
 #degradation-level-hierarchy-editor-sidebar-title{  
@@ -35,4 +38,13 @@
     padding:16px;
     border: 1px solid rgba(0, 0, 0, 0.12);
     margin: 8px 8px 8px 8px;
+}
+
+#degradation-level-hierarchy-editor-tree-container-content-test{
+    /*box-sizing: border-box;*/
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(90deg, #fff 21px, transparent 1%) center, linear-gradient(#fff 21px, transparent 1%) center, rgba(0, 0, 0, 0.38);
+	background-size: 22px 22px;
 }
