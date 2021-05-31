@@ -48,3 +48,14 @@
     background: linear-gradient(90deg, #fff 21px, transparent 1%) center, linear-gradient(#fff 21px, transparent 1%) center, rgba(0, 0, 0, 0.38);
 	background-size: 22px 22px;
 }
+
+.degradation-level-hierarchy-editor-tree-container-content-test-item{
+    width: 100px;
+    height: 64px;
+    background-color: #fff;
+    border: 1px solid black;
+    text-align: center;
+    left: calc(50% - 50px);
+    position: relative;
+    display:inline-block;
+}
