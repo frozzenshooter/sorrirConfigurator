@@ -19,7 +19,8 @@
     min-height: 0;
     overflow: auto;
     position: relative;
-    
+    background: linear-gradient(90deg, #f5f5f5 21px, transparent 1%) center, linear-gradient(#f5f5f5 21px, transparent 1%) center, rgba(0, 0, 0, 0.38);
+	background-size: 22px 22px;
 }
 
 #degradation-level-hierarchy-editor-sidebar-title{  
@@ -41,21 +42,8 @@
 }
 
 #degradation-level-hierarchy-editor-tree-container-content-test{
-    /*box-sizing: border-box;*/
     position: absolute;
     height: 100%;
     width: 100%;
-    background: linear-gradient(90deg, #fff 21px, transparent 1%) center, linear-gradient(#fff 21px, transparent 1%) center, rgba(0, 0, 0, 0.38);
-	background-size: 22px 22px;
 }
 
-.degradation-level-hierarchy-editor-tree-container-content-test-item{
-    width: 100px;
-    height: 64px;
-    background-color: #fff;
-    border: 1px solid black;
-    text-align: center;
-    left: calc(50% - 50px);
-    position: relative;
-    display:inline-block;
-}
