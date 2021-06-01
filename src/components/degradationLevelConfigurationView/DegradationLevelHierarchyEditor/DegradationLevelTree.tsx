@@ -22,7 +22,7 @@ const DegradationLevelTree = (props: IDegradationLevelTreeProps) => {
             parentId: 0,
             label: ""
         },
-        {
+       {
             id: 3,
             parentId: 1,
             label: ""
@@ -52,7 +52,7 @@ const DegradationLevelTree = (props: IDegradationLevelTreeProps) => {
             parentId: 7,
             label: ""
         },
-        {
+        /*{
             id: 9,
             parentId: 8,
             label: ""
@@ -61,7 +61,7 @@ const DegradationLevelTree = (props: IDegradationLevelTreeProps) => {
             id: 10,
             parentId: 9,
             label: ""
-        },
+        },*/
         {
             id: 11,
             parentId: 0,

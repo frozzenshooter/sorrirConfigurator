@@ -1,5 +1,5 @@
 import React from "react";
-import Arrow from "./Arrow";
+import Arrow, { ArrowType } from "./Arrow";
 import { DEFAULT_HEIGHT, DEFAULT_WIDTH, DEFAULT_GRAPH_X_OFFSET, DEFAULT_X_PADDING, DEFAULT_Y_OFFSET as DEFAULT_GRAPH_Y_OFFSET, DEFAULT_Y_PADDING } from "./Constants";
 import TreeNode from "./TreeNode";
 
@@ -116,6 +116,7 @@ const GetDegradationLevelSubtree = (props: IDegradationLevelSubtreeProps): IDegr
                             top={yOffset+DEFAULT_HEIGHT}
                             width={subtreeWidth}
                             end={arrowEnds[index]}
+                            type={ArrowType.Degradation}
                             />);
                     })}
                 </>

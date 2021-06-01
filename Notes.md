@@ -7,9 +7,10 @@
  + [X] SubcomponentDialog: Id automatisch ausfüllen wenn Namen getippt wird (sofern nicht schon vergeben)
  + [X] SubcomponentDialog: Lebel für Chip Creator
  + CSS im Level-Dialog ( Divider passen nicht)
- + Level-Konfiguration mittels "Schwimmlanes" - React flow entfernen?
+ + [X] React flow entfernen
+ + Level-Konfiguration mittels "Schwimmlanes"
  + Inverse der Konfiguration für Upgrades (extra halten)
- + Dokumente ausfüllen
+ + [X] Dokumente ausfüllen
  + Animation um zu erklären, dass man den Wizard zum Navigieren nutzen kann
 
 ##### Optional/Am Schluss

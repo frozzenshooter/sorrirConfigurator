@@ -26,8 +26,8 @@
 }
 
 .degradation-level-dialog-properties-divider{
-    margin-right: 2%;
-    margin-left: 2%;
+    margin-right: 2% !important;
+    margin-left: 2% !important;
 }
 
 #degradation-level-dialog-dependency-container{
