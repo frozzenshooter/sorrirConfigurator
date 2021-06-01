@@ -22,7 +22,7 @@ const DegradationLevelTree = (props: IDegradationLevelTreeProps) => {
             parentId: 0,
             label: ""
         },
-        /*{
+        {
             id: 3,
             parentId: 1,
             label: ""
@@ -61,7 +61,27 @@ const DegradationLevelTree = (props: IDegradationLevelTreeProps) => {
             id: 10,
             parentId: 9,
             label: ""
-        }*/
+        },
+        {
+            id: 11,
+            parentId: 0,
+            label: ""
+        },
+        {
+            id: 12,
+            parentId: 0,
+            label: ""
+        },
+        {
+            id: 13,
+            parentId: 11,
+            label: ""
+        },
+        {
+            id: 14,
+            parentId: 11,
+            label: ""
+        },
     ];
 
     const subtreeResult = GetDegradationLevelSubtree({id:0, nodes:initNodes});

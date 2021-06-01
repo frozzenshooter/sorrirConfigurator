@@ -19,8 +19,10 @@ const TreeNode = (props:ITreeNodeProps) => {
             style={{
                 top:top+"px", 
                 left:left+"px", 
-                width: DEFAULT_WIDTH+"px",
-                height: DEFAULT_HEIGHT+"px"
+                width: (DEFAULT_WIDTH-32)+"px",
+                height: (DEFAULT_HEIGHT)+"px",
+                marginRight: "16px",
+                marginLeft: "16px"
             }} 
             className="degradation-level-tree-node">
 

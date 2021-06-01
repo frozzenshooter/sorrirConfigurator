@@ -13,3 +13,10 @@
     display: flex;
     flex-direction: column;
 }
+
+#degradation-level-configuration-graph-container-test-buttons{
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
