@@ -39,17 +39,6 @@ const GetDegradationLevelSubtree = (props: IDegradationLevelSubtreeProps): IDegr
 
     const arrowEnds: number[] = [];
 
-    const getArrows = () => {
-
-        const amount = childnodes.length;
-        
-        return (
-            <>
-            </>            
-        );
-    };
-
-
     if(childnodes.length > 0){
 
         // Complexe case: recusively resolve the subtrees  

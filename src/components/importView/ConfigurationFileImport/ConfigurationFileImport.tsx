@@ -8,7 +8,7 @@ import ConfigurationValidator from "../../../util/ConfigurationValidator";
 const ConfigurationFileImport = () => {
 
     const {updateConfiguration} = useConfigurationContext();
-    const [error, setError] = React.useState<string>("");
+    const [errors, setErrors] = React.useState<string[]>([]);
     const [filename, setFilename] = React.useState<string>("");
 
 
@@ -25,14 +25,14 @@ const ConfigurationFileImport = () => {
                     if(jsonData){
 
                         const validator = ConfigurationValidator.getInstance();
-                        const errors = validator.parseAndValidate(jsonData);
+                        const foundErrors = validator.parseAndValidate(jsonData);
                         
-                        if(errors.length > 0) {
+                        if(foundErrors.length > 0) {
 
-                            setError(errors.join('\n'));
+                            setErrors(foundErrors);
                         }else{
                             updateConfiguration(validator.getParsedConfiguration());
-                            setError("");
+                            setErrors([]);
                         }
                         setFilename(newFilename);
                     }
@@ -65,7 +65,16 @@ const ConfigurationFileImport = () => {
                     {filename !== ""? <div className="configuration-file-import-button-container-item">Filename: <strong>{filename}</strong></div>: null}
                     <span id="configuration-file-import-note">(This will override the current configuration with the data from the uploaded file)</span>
                 </div>
-                {error !== ""? <div id="configuration-file-import-alert"><Alert severity="error">{error}</Alert></div>: null}
+                {errors.length > 0 ?
+                    <div id="configuration-file-import-alert">
+                            <Alert severity="error">
+                            {errors.map(error => {
+                             return (<div> {error} </div>);
+                            })}    
+                        </Alert>                    
+                    </div>
+                    : null                    
+                }
 
         </div>
     );

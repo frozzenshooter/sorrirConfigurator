@@ -1,5 +1,3 @@
-import { DEFAULT_HEIGHT, DEFAULT_WIDTH } from "./Constants";
-
 export enum ArrowType {
     Degradation = 0,
     Upgrade = 1

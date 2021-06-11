@@ -11,7 +11,7 @@ class ConfigurationValidator {
 
     private constructor() { 
         // only compile the validation once
-        const ajv = new Ajv();
+        const ajv = new Ajv({allErrors: true});
         this.validationFunction = ajv.compile<IConfiguration>(ConfigurationSchema);
         this.parsedConfiguration = EmptyConfigurationFactory();
     }
