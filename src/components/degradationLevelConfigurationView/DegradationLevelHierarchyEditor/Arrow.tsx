@@ -37,7 +37,7 @@ const Arrow = (props: IArrowProps) => {
                         <path d='M0,0 H10 L5,10 L0,0 Z' fill='black' />
                     </marker>
                 </defs> 
-                <path marker-end='url(#head)' d={"M"+arrowStart+" 0 L"+arrowStart+" 25 H"+end+" L"+end+" "+(height-10)+""} stroke="black" />
+                <path markerEnd='url(#head)' d={"M"+arrowStart+" 0 L"+arrowStart+" 25 H"+end+" L"+end+" "+(height-10)+""} stroke="black" />
             </svg>
             );
     }else{
@@ -59,7 +59,7 @@ const Arrow = (props: IArrowProps) => {
                         <path d='M0,0 H10 L5,10 L0,0 Z' fill='black' />
                     </marker>
                 </defs>         
-                <path marker-end='url(#head)' d={"M"+end+" "+height+ "L"+end +" "+(height-25)+ " " +"H"+end +"L"+arrowStart+" 25"+ "L"+arrowStart+" 10"  } stroke="black" />
+                <path markerEnd='url(#head)' d={"M"+end+" "+height+ "L"+end +" "+(height-25)+ " " +"H"+end +"L"+arrowStart+" 25"+ "L"+arrowStart+" 10"  } stroke="black" />
             </svg>
             );
     }
