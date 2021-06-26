@@ -1,10 +1,12 @@
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import { makeStyles, lighten, Theme, createStyles } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
+import Typography from '@material-ui/core/Typography';
+import clsx from 'clsx';
 import './SelectionMenuBar.css';
 
 export interface ISelectionMenuBarProps {
@@ -21,6 +23,21 @@ const useStyles = makeStyles((theme: Theme) =>
         backgroundColor: theme.palette.background.paper,
         color: theme.palette.text.secondary, 
         padding: theme.spacing(1),
+        paddingLeft: theme.spacing(2),
+    },
+    highlight:
+        theme.palette.type === 'light'
+        ? {
+            color: theme.palette.secondary.main,
+            backgroundColor: lighten(theme.palette.secondary.light, 0.85),
+            }
+        : {
+            color: theme.palette.text.primary,
+            backgroundColor: theme.palette.secondary.dark,
+            },
+    title: {
+        flex: '1 1 100%',
+        paddingTop: "12px"
     },
   }),
 );
@@ -34,7 +51,16 @@ const SelectionMenuBar = (props: ISelectionMenuBarProps) => {
 
     return (
         <>
-            <div id="selection-menu-bar" className={classes.menu}>    
+            <div id="selection-menu-bar" className={clsx(classes.menu, {[classes.highlight]: amountOfSelectedItems > 0})}>  
+                {amountOfSelectedItems > 0 ? 
+                    
+                    <Typography className={classes.title} color="inherit" variant="subtitle1" component="div">
+                        {amountOfSelectedItems} selected
+                    </Typography>
+                    : 
+                    null                    
+                }
+
                 <Tooltip title="Create">
                     <IconButton onClick={()=>{onCreateClick();}}>
                         <AddIcon />

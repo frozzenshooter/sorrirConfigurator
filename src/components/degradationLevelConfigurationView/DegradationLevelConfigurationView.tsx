@@ -27,12 +27,7 @@ const DegradationLevelConfigurationView = () => {
     const [createDialogOpen, setCreateDialogOpen] = React.useState<boolean>(false);
     const [editDialogOpen, setEditDialogOpen] = React.useState<boolean>(false);
     const [deleteDialogOpen, setDeleteDialogOpen] = React.useState<boolean>(false);
-    const [selectedDegradationLevels, setSelectedDegradationLevel] = React.useState<IDegradationLevel[]>([ {
-      id: 1,
-      label: "d1",
-      dependencies: [],
-      states: [ {name:"test123", id: "test123"} ]
-    }]);
+    const [selectedDegradationLevels, setSelectedDegradationLevel] = React.useState<IDegradationLevel[]>([]);
 
     const handleSelectionChanged = (selectedDegradationLevel: IDegradationLevel) => {
 
