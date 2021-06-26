@@ -30,7 +30,8 @@ const DegradationLevelConfigurationView = () => {
     const [selectedDegradationLevels, setSelectedDegradationLevel] = React.useState<IDegradationLevel[]>([ {
       id: 1,
       label: "d1",
-      dependencies: []
+      dependencies: [],
+      states: [ {name:"test123", id: "test123"} ]
     }]);
 
     return (
@@ -50,12 +51,14 @@ const DegradationLevelConfigurationView = () => {
                             const d1 :IDegradationLevel = {
                                 id: 1,
                                 label: "d1",
-                                dependencies: []
+                                dependencies: [],
+                                states: []
                             };
                             const d2 :IDegradationLevel = {
                                 id: 2,
                                 label: "d2",
-                                dependencies: []
+                                dependencies: [],
+                                states: []
                             };
 
                             if(selectedDegradationLevels[0].id === 1){
@@ -74,12 +77,14 @@ const DegradationLevelConfigurationView = () => {
                             const d1 :IDegradationLevel = {
                                 id: 1,
                                 label: "d1",
-                                dependencies: []
+                                dependencies: [],
+                                states: []
                             };
                             const d2 :IDegradationLevel = {
                                 id: 2,
                                 label: "d2",
-                                dependencies: []
+                                dependencies: [],
+                                states: []
                             };
                             setSelectedDegradationLevel([d1, d2]);
                         }}>
@@ -88,9 +93,10 @@ const DegradationLevelConfigurationView = () => {
                         <Button onClick={() => {
 
                             const d2 :IDegradationLevel = {
-                            id: 2,
-                            label: "d2",
-                            dependencies: []
+                                id: 2,
+                                label: "d2",
+                                dependencies: [],
+                                states: []
                             };
 
                             setSelectedDegradationLevel([d2]);

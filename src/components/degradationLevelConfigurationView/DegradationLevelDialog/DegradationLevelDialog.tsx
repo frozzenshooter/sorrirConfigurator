@@ -21,6 +21,8 @@ import IDegradationLevelDependency from '../../../models/IDegradationLevelDepend
 import DecisionDialog from '../../decisionDialog/DecisionDialog';
 import DegradationLevelDialogType from './DegradationLevelDialogType';
 import Alert from '@material-ui/lab/Alert';
+import ChipInput from '../../chipInput/ChipInput';
+import IDegradationLevelState from '../../../models/IDegradationLevelState';
 
 export interface IDegradationLevelDialogProps {
     open: boolean
@@ -66,13 +68,15 @@ const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
     const initalDegradationLevel :IDegradationLevel = {
         id: 0,
         label: "",
-        dependencies: []
+        dependencies: [],
+        states: []
     };
 
     if(type === DegradationLevelDialogType.Edit && degradationLevel !== null && degradationLevel !== undefined){
         initalDegradationLevel.id = degradationLevel.id;
         initalDegradationLevel.label = degradationLevel.label;
         initalDegradationLevel.dependencies = degradationLevel.dependencies.slice();
+        initalDegradationLevel.states = degradationLevel.states.slice();
     }
 
     //#endregion
@@ -80,6 +84,7 @@ const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
     const [id, setId] = React.useState<number>(initalDegradationLevel.id);
     const [label, setLabel] = React.useState<string>(initalDegradationLevel.label);
     const [dependencies, setDependencies] = React.useState<IDegradationLevelDependency[]>(initalDegradationLevel.dependencies);
+    const [states, setStates] = React.useState<IDegradationLevelState[]>(initalDegradationLevel.states);
     const [openConfirmationDialog, setOpenConfirmationDialog] = React.useState<boolean>(false);
     const [errorMessages, setErrorMessages] = React.useState<string[]>([]);
 
@@ -117,7 +122,8 @@ const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
                 const newDegradationLevel: IDegradationLevel = {
                     id: id,
                     label: label,
-                    dependencies: newDependencies
+                    dependencies: newDependencies,
+                    states: states
                 };
         
                 newConfiguration.degradationLevels.push(newDegradationLevel);
@@ -130,7 +136,8 @@ const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
                     const newDegradationLevel: IDegradationLevel = {
                         id: id,
                         label: label,
-                        dependencies: newDependencies
+                        dependencies: newDependencies,
+                        states: states
                     };
             
                     newConfiguration.degradationLevels.push(newDegradationLevel);
@@ -139,6 +146,7 @@ const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
                     const index = newConfiguration.degradationLevels.findIndex(d => d.id === id);
                     newConfiguration.degradationLevels[index].label = label;
                     newConfiguration.degradationLevels[index].dependencies = dependencies.slice();
+                    newConfiguration.degradationLevels[index].states = states.slice();
                 }
             }
 
@@ -211,6 +219,10 @@ const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
         //This means the subcomponent is "DC" - don't care
         return "";
     };
+
+    const handleStateChange = (newStates: IDegradationLevelState[]) => {
+        setStates(newStates);
+    }
 
     //#endregion
 
@@ -331,6 +343,15 @@ const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
                     </React.Fragment>
                     : null
                 }
+                <div id="degradation-level-dialog-states-container">
+                    <h3 className="degradation-level-dialog-properties-section-caption">Internal states</h3>
+                    <ChipInput
+                        chips={states.slice()}
+                        label="States"
+                        onChange={handleStateChange}
+                    />
+                </div>
+                
                 <DecisionDialog
                     open={openConfirmationDialog}
                     title={"Discard changes?"}

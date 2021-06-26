@@ -2,7 +2,6 @@
     display: inline-flex;
     flex-wrap: nowrap;
     flex-direction: row;    
-    padding-top: 16px;
 }
 
 #chipinput-chip-input-chip-list{

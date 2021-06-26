@@ -42,5 +42,10 @@
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: flex-start;
+}
 
+#degradation-level-dialog-states-container{
+    padding-bottom: 16px;
+    padding-right: 2%;
+    padding-left: 2%;
 }

@@ -59,6 +59,7 @@ const ChipInput = (props: ChipInputProps) => {
     return (
         <div id="chipinput-chip-input-container">
             <TextField
+                style={{flexShrink: 0}}
                 label={label}
                 value={textfieldValue}
                 onChange={(ev) => {setTextFieldValue(ev.target.value);}}

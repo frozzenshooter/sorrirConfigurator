@@ -8,6 +8,7 @@
 #subcomponent-dialog-content-properties-container{
     display: inline-flex;
     padding-top: 8px;
+    padding-bottom: 16px;
 }
 
 #subcomponent-dialog-content-container-name{

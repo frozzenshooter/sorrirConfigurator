@@ -11,7 +11,8 @@
  + Für jeden Arrow wird der Zustand des Eltern und des Kindknotens gehalten (zb bei einem Upgrade muss der interne Zustand des Kind und des Elternknoten festgelegt sein) - dies kann man Mittels dropdowns lösen ( für jeden arrow: ein dropdown mit dem Zuständen des Elternknotens und ein dropdown mit den Zuständen des Kindknotens )
  + Das kann man wiederrum in einem eigenem Step umsetzen (dh einen für das Upgrade und einen für die Degradation) - gespeichert wird das an dem jeweiligen Arrow
  + Wenn man die Shadowmodes löscht müssen entsprechende Dependencies in den DegradationLevels gelöscht werden!! Gleiches gilt für das löschen an sich
-
+ + States von dependencylevel muss überalll nachgezogen werden
+ 
 ##### Optional/Am Schluss
  + Animation um zu erklären, dass man den Wizard zum Navigieren nutzen kann
  + Textfeld/Editor zum manuellen Bearbeiten der Konfiguration -> hierfür wird dann auch die Validierung benötigt
