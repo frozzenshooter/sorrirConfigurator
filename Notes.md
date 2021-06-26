@@ -12,7 +12,8 @@
  + Das kann man wiederrum in einem eigenem Step umsetzen (dh einen für das Upgrade und einen für die Degradation) - gespeichert wird das an dem jeweiligen Arrow
  + Wenn man die Shadowmodes löscht müssen entsprechende Dependencies in den DegradationLevels gelöscht werden!! Gleiches gilt für das löschen an sich
  + States von dependencylevel muss überalll nachgezogen werden
- 
+ + Json Validierung an neues Model anpassen + Testdaten aktualisieren
+
 ##### Optional/Am Schluss
  + Animation um zu erklären, dass man den Wizard zum Navigieren nutzen kann
  + Textfeld/Editor zum manuellen Bearbeiten der Konfiguration -> hierfür wird dann auch die Validierung benötigt

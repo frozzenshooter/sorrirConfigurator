@@ -34,6 +34,21 @@ const DegradationLevelConfigurationView = () => {
       states: [ {name:"test123", id: "test123"} ]
     }]);
 
+    const handleSelectionChanged = (selectedDegradationLevel: IDegradationLevel) => {
+
+        const index = selectedDegradationLevels.findIndex(d => d.id === selectedDegradationLevel.id);
+        let newSelectedDegradationLevels = selectedDegradationLevels.slice();
+        if(index === -1){
+            // add to the selected elements
+            newSelectedDegradationLevels.push(selectedDegradationLevel);
+        }else{
+            // remove because it was selected
+            newSelectedDegradationLevels = newSelectedDegradationLevels.filter(d => d.id !== selectedDegradationLevel.id);
+        }
+
+        setSelectedDegradationLevel(newSelectedDegradationLevels);
+    };
+
     return (
       <>
         <div id="degradation-level-configuration-view-container">
@@ -45,71 +60,10 @@ const DegradationLevelConfigurationView = () => {
                         onEditClick={() =>{setEditDialogOpen(true);}}
                         onDeleteClick={() =>{setDeleteDialogOpen(true);}}
                         />
-                    <DegradationLevelHierarchyEditor/>
-                    <div id="degradation-level-configuration-graph-container-test-buttons">
-                        <Button onClick={() => {
-                            const d1 :IDegradationLevel = {
-                                id: 1,
-                                label: "d1",
-                                dependencies: [],
-                                states: []
-                            };
-                            const d2 :IDegradationLevel = {
-                                id: 2,
-                                label: "d2",
-                                dependencies: [],
-                                states: []
-                            };
-
-                            if(selectedDegradationLevels[0].id === 1){
-                                console.log("Swap: ", [d2]);
-                                setSelectedDegradationLevel([d2]);
-
-                            }else{
-                                console.log("Swap: ", [d1]);
-                                setSelectedDegradationLevel([d1]);
-                            }
-                            }}
-                        >
-                            Swap Edit
-                        </Button>
-                        <Button onClick={() => {
-                            const d1 :IDegradationLevel = {
-                                id: 1,
-                                label: "d1",
-                                dependencies: [],
-                                states: []
-                            };
-                            const d2 :IDegradationLevel = {
-                                id: 2,
-                                label: "d2",
-                                dependencies: [],
-                                states: []
-                            };
-                            setSelectedDegradationLevel([d1, d2]);
-                        }}>
-                            Multiple Select
-                        </Button>
-                        <Button onClick={() => {
-
-                            const d2 :IDegradationLevel = {
-                                id: 2,
-                                label: "d2",
-                                dependencies: [],
-                                states: []
-                            };
-
-                            setSelectedDegradationLevel([d2]);
-                            
-                        }}>
-                            Single select
-                        </Button>
-                        <Button onClick={() => {
-                        setSelectedDegradationLevel([]);
-                    }}>
-                        Empty Select
-                    </Button>
-                </div>
+                    <DegradationLevelHierarchyEditor
+                        onSelectionChanged={handleSelectionChanged}
+                        selectedDegradationLevels={selectedDegradationLevels}
+                        />
               </div>
             </Paper>
         </div>
