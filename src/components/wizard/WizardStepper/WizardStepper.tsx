@@ -17,7 +17,7 @@ const WizardStepper = (props: IWizardStepperProps) => {
 
     return (
         <div id="wizard-stepper-container">
-            <Stepper elevation={1} square={false} nonLinear activeStep={views.findIndex(v => v === currentView)}>
+            <Stepper elevation={1} square={false} nonLinear activeStep={views.findIndex(v => v === currentView)} id="wizard-stepper">
                 {views.map(view => (
                     <Step key={ViewLabelResolver(view)}>
                         <StepButton onClick={() => {onViewChange(view);}}>

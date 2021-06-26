@@ -11,11 +11,11 @@ const AppWelcome = (props: IAppWelcomeProps) => {
     const {onWizardStart} = props;
 
     const handleNewConfigurationClick = () => {
-        onWizardStart([View.SubcomponentConfiguration, View.DegradationLevelConfiguration, View.Export]);
+        onWizardStart([View.SubcomponentConfiguration, View.DegradationConfiguration, View.DegradationStateConfiguration, View.UpgradeConfiguration, View.UpgradeStateConfiguration, View.Export]);
     };
 
     const handleImportConfigurationClick = () => {
-        onWizardStart([View.Import, View.SubcomponentConfiguration, View.DegradationLevelConfiguration, View.Export]);
+        onWizardStart([View.Import, View.SubcomponentConfiguration, View.DegradationConfiguration, View.DegradationStateConfiguration, View.UpgradeConfiguration, View.UpgradeStateConfiguration, View.Export]);
     };    
 
     return (

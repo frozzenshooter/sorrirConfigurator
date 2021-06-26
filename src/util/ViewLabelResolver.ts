@@ -5,9 +5,15 @@ const ViewLabelResolver = (view: View) => {
         case View.Import:
             return "Import";
         case View.SubcomponentConfiguration:
-            return "Subcomponent Configuration";
-        case View.DegradationLevelConfiguration:
-            return "Degradation Level Configuration";
+            return "Subcomponent";
+        case View.DegradationConfiguration:
+            return "Degradation";
+        case View.DegradationStateConfiguration:
+            return "Degradation State";
+        case View.UpgradeConfiguration:
+            return "Upgrade";
+        case View.UpgradeStateConfiguration:
+            return "Upgrade State";
         case View.Export:
             return "Export";
         default:

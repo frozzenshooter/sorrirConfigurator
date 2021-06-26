@@ -2,3 +2,7 @@
     padding-left: 2%;
     padding-right: 2%;
 }
+
+#wizard-stepper{
+    overflow: auto;
+}
