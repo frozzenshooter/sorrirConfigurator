@@ -1,11 +1,11 @@
-#shadowmode-chip-input-container{
+#chipinput-chip-input-container{
     display: inline-flex;
     flex-wrap: nowrap;
     flex-direction: row;    
     padding-top: 16px;
 }
 
-#shadowmode-chip-input-shadowmode-list{
+#chipinput-chip-input-chip-list{
     display: inline-flex;
     flex-wrap: wrap;
     flex-direction: row;
@@ -13,7 +13,7 @@
     margin-block-end: 0;
 }
 
-.shadowmode-chip-input-shadowmode-list-item{
+.chipinput-chip-input-chip-list-item{
     list-style: none;
     padding: 2px;
 }

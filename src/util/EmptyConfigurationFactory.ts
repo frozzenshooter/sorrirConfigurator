@@ -4,7 +4,9 @@ const EmptyConfigurationFactory = (): IConfiguration => {
 
     return {
         subcomponents: [],
-        degradationLevels: []
+        degradationLevels: [],
+        degradations: [],
+        upgrades: []
     };
 };
 

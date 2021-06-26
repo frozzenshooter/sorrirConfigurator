@@ -8,11 +8,11 @@ import SubcomponentDialogTitle from "./SubcomponentDialogTitle";
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import './SubcomponentDialog.css';
-import ShadowmodeChipInput from "../ShadowmodeChipInput/ShadowmodeChipInput";
 import IShadowmode from "../../../models/IShadowmode";
 import { useConfigurationContext } from "../../../context/ConfigurationContext";
 import IConfiguration from "../../../models/IConfiguration";
 import Alert from '@material-ui/lab/Alert';
+import ChipInput from "../../chipInput/ChipInput";
 
 export interface ISubcomponentDialogProps {
     type: SubcomponentDialogType;
@@ -178,10 +178,11 @@ const SubcomponentDialog = (props: ISubcomponentDialogProps) => {
                                 onChange={handleIdChange}/>
          
                         </div>
-                        <ShadowmodeChipInput
-                            shadowmodes={shadowmodes.slice()}
+                        <ChipInput
+                            label={"Shadowmodes"}
+                            chips={shadowmodes.slice()}
                             onChange={handleShadowmodeChange}
-                            />
+                        />
                     </div>
                 </SubcomponentDialogContent>
                 <SubcomponentDialogActions>

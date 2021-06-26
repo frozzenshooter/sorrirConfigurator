@@ -7,7 +7,7 @@ const UpgradeStateConfigrationView = () => {
         <div id="upgrade-state-configuration-view-container">
             <Paper elevation={1}>
                 <div>
-                    UPGRADE STATE
+                    UPGRADE STATE CONFIGURATION
                 </div>
             </Paper>
         </div>
