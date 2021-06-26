@@ -6,8 +6,8 @@ import DegradationLevelDialog from './DegradationLevelDialog/DegradationLevelDia
 import IDegradationLevel from '../../models/IDegradationLevel';
 import DegradationLevelDialogType from './DegradationLevelDialog/DegradationLevelDialogType';
 import SelectionMenuBar from '../selectionMenuBar/SelectionMenuBar';
-import DegradationGraphEditor from './DegradationGraphEditor/DegradationGraphEditor';
 import DegradationLevelDeleteDialog from './DegradationLevelDeleteDialog/DegradationLevelDeleteDialog';
+import DegradationLevelHierarchyEditor from '../degradationLevelHierarchyEditor/DegradationLevelHierarchyEditor';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -44,7 +44,7 @@ const DegradationLevelConfigurationView = () => {
                         onEditClick={() =>{setEditDialogOpen(true);}}
                         onDeleteClick={() =>{setDeleteDialogOpen(true);}}
                         />
-                    <DegradationGraphEditor/>
+                    <DegradationLevelHierarchyEditor/>
                     <div id="degradation-level-configuration-graph-container-test-buttons">
                         <Button onClick={() => {
                             const d1 :IDegradationLevel = {

@@ -93,11 +93,15 @@ const SubcomponentDialog = (props: ISubcomponentDialogProps) => {
                     shadowmodes: shadowmodes
                 };
                 newConfiguration.subcomponents.push(newSubcomponent);
+
             }else{
                 // just update
                 newConfiguration.subcomponents[index].name = name;
                 newConfiguration.subcomponents[index].shadowmodes = shadowmodes;
             }
+
+            // There might be degradation levels with a dependency on this subcomponent which have to be updated
+            // TODO: !!!!!!!!!!!!!!!!!!!
 
         }else{
 

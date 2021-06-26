@@ -1,12 +1,7 @@
+import DegradationLevelTree from '../degradationLevelConfigurationView/DegradationLevelHierarchyEditor/DegradationLevelTree';
 import './DegradationLevelHierarchyEditor.css';
-import DegradationLevelTree from './DegradationLevelTree';
 
-
-export interface IDegradationLevelHierarchyEditorProps{
-
-}
-
-const DegradationLevelHierarchyEditor = (props: IDegradationLevelHierarchyEditorProps) => {
+const DegradationLevelHierarchyEditor =  () => {
 
     const t = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16];
 

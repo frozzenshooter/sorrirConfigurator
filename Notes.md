@@ -10,7 +10,7 @@
  + Level bekommt beim Erstellen/Bearbeiten-Dialog ein neues Feld: Zustände - im Endeffekt eine Liste von Strings mit den Zuständen (evt mit Chip Selector umsetzen)
  + Für jeden Arrow wird der Zustand des Eltern und des Kindknotens gehalten (zb bei einem Upgrade muss der interne Zustand des Kind und des Elternknoten festgelegt sein) - dies kann man Mittels dropdowns lösen ( für jeden arrow: ein dropdown mit dem Zuständen des Elternknotens und ein dropdown mit den Zuständen des Kindknotens )
  + Das kann man wiederrum in einem eigenem Step umsetzen (dh einen für das Upgrade und einen für die Degradation) - gespeichert wird das an dem jeweiligen Arrow
-
+ + Wenn man die Shadowmodes löscht müssen entsprechende Dependencies in den DegradationLevels gelöscht werden!! Gleiches gilt für das löschen an sich
 
 ##### Optional/Am Schluss
  + Animation um zu erklären, dass man den Wizard zum Navigieren nutzen kann
