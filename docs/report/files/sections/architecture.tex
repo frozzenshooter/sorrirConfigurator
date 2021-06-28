@@ -1,0 +1,85 @@
+\section{Architecture}
+\label{sec:architecture}
+\open{Use figures for the different sections (e.g. import successful and unsuccessful)}
+
+\subsection{General concepts}
+\begin{itemize}
+    \item Modular
+    \item Extensible ( integration of other steps)
+\end{itemize}
+
+\subsection{Wizard}
+\begin{itemize}
+    \item Component to allow a step by step configuration
+    \item Different configurations - with and without import in the app start possible
+    \item Restart of the wizard in every step possible (will delete all changes and return to the start)
+    \item Easy extensible: add new steps - internally called views by:
+    \begin{itemize}
+        \item Extending the View- enum with the new view ("src\textbackslash util\textbackslash Views.ts")
+        \item Providing a Label (will be used as caption) ("src\textbackslash util\textbackslash ViewLabelResolver.ts")
+        \item Adding the View (react component) that will be displayed for the step in the Wizard ("src\textbackslash components\textbackslash wizard\textbackslash ViewSelector\textbackslash ViewSelector.tsx")
+    \end{itemize}
+\end{itemize}
+
+\subsection{Import}
+\begin{itemize}
+    \item Step to import an existing configuration (json file)
+    \item Will validate the Json file and display errors (validates if it can be parsed and will also display if it matches the formal description of the configuration ( details in the validation section) 
+    \item After a successful import - internal configuration state will be updated and the current state will be displayed in a json viewer (with syntax highlight)
+    \item internal configuration is based on a several interfaces found in "src\textbackslash models"
+\end{itemize}
+
+\subsection{Validation}
+\begin{itemize}
+    \item Validates if the file can be parsed as Json element
+    \item If it can be parsed the validation will be done
+    \item short explanation of the different schema types?
+    \item use of ajv ( support of JSON Schema and JSON Type Definition)
+    \item atm most tools support Json Schema (cite \url{https://ajv.js.org/guide/schema-language.html})  $\rightarrow$ selection for our usecase - but no offical RFC only internet draft
+    \item ajv used because it supports both - migration later possible (to RFC8927 JSON Type Definition)
+    \item Short overview of the implemented schema for the configuration (perhaps using UML diagram)
+\end{itemize}
+
+\subsection{Subcomponent configuration}
+\begin{itemize}
+    \item Subcomponents required for the creation of degradation levels
+    \item Subcomponent has an id, a name and several shadowmodes (internal state of the subcomponent)
+    \item each shadowmode has an id and a name 
+    \item In order to be able to manage the relevant subcomponents for the component, a table with a creation/edit and deletion dialog is offered
+    \item The creation/edit dialog offers several functions: 
+        \begin{itemize}
+            \item Internal validation function (non empty fields + check for already existing subcomponents with the same id)
+            \item id autofill ( based on the name) if no value is set
+        \end{itemize}
+\end{itemize}
+
+\subsection{Degradation Level Management}
+\begin{itemize}
+    \item Creation/Deletion in the Degradation and Upgrade Configuration views
+    \item Create/Edit with a Dialog:
+    \begin{itemize}
+        \item name and id as string
+        \item the subcomponent states of the level (will show all possible values of a subcomponent and to choose what has to be true for this level)
+        \item creation of internal states of the Level (with custom chip input)
+        \item validation if id exists/ etc.
+    \end{itemize}
+    \item Multi selection in the Degradation and Upgrade Configuration View
+\end{itemize}
+
+\subsection{Degradation and Upgrade configuration}
+\begin{itemize}
+    \item Custom Graph View for the Hierarchy (Recursive generation of the Graph)
+    \item Drag and Drop Support to update the Graph (degradation level hierarchy)
+    \item Off state as default node
+    \item Explain model on how to save the hierarchy (LevelChange model) 
+    \item shows all levels even the ones that are not inserted in the hierarchy yet
+    \item Upgrade: Inverse of the Degradation Graph - same functionality as Degradation Graph
+    \item Both will be saved separately in the configuration and are also separate steps in the wizard
+\end{itemize}
+
+\subsection{LevelChange configuration}
+\begin{itemize}
+    \item configure the state in which the level after the degradation or upgrade is
+    \item separate step in the wizard for both degradation and uprade
+    \item shows for all LevelChanges the states of the corresponding level and allows the selection of the state the level will be in after the degradation/upgrade 
+\end{itemize}

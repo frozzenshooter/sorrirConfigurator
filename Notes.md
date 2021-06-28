@@ -14,6 +14,9 @@
  + States von dependencylevel muss überalll nachgezogen werden
  + Json Validierung an neues Model anpassen + Testdaten aktualisieren
 
+
+
+ + Frage: Muss der State des Levels beim Arrow Start und Result definiert sein oder nur beim Result?
 ##### Optional/Am Schluss
  + Animation um zu erklären, dass man den Wizard zum Navigieren nutzen kann
  + Textfeld/Editor zum manuellen Bearbeiten der Konfiguration -> hierfür wird dann auch die Validierung benötigt

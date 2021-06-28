@@ -1,0 +1,29 @@
+\documentclass[10pt, a4, titlepage]{scrartcl}
+\usepackage[USenglish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\usepackage{todonotes}
+
+\newcommand{\open}[1]{\todo[inline,color=green!20!white]{\textbf{TODO:} #1}}
+
+\title{Development of a web-based application for the degradation configuration of IoT components}
+\subtitle{Project Report}
+\author{Steffen Knoblauch \texttt{steffen.knoblauch@uni-ulm.de}}
+\date{June 2021}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+\setcounter{tocdepth}{2} % only show sections and subsections
+\tableofcontents
+\newpage
+
+\setcounter{page}{1}
+\input{sections/introduction}
+\input{sections/technologyStack}
+\input{sections/architecture}
+
+
+\end{document}
