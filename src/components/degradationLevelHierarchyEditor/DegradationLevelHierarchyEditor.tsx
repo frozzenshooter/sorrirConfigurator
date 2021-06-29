@@ -42,23 +42,27 @@ const DegradationLevelHierarchyEditor =  (props: DegradationLevelHierarchyEditor
 
     return (
         <div id="degradation-level-hierarchy-editor-container">
-            <div id="degradation-level-hierarchy-editor-sidebar">
-                <div id="degradation-level-hierarchy-editor-sidebar-title">
-                    Unsorted
-                </div>
-                <div id="degradation-level-hierarchy-editor-sidebar-content">
-                    {unsortedLevels.map((ul)=>{
+            {unsortedLevels.length > 0 ?
+                (<div id="degradation-level-hierarchy-editor-sidebar">
+                    <div id="degradation-level-hierarchy-editor-sidebar-title">
+                        Unsorted
+                    </div>
+                    <div id="degradation-level-hierarchy-editor-sidebar-content">
+                        {unsortedLevels.map((ul)=>{
 
-                            return (<DegradationLevelNode 
-                                isSelected={isSelected(ul.id)}
-                                degradationLevel={ul}
-                                onSelectionChanged={onSelectionChanged}
-                                key={ul.id}
-                            />)
-                        })
-                    }
-                </div>
-            </div>
+                                return (<DegradationLevelNode 
+                                    isSelected={isSelected(ul.id)}
+                                    degradationLevel={ul}
+                                    onSelectionChanged={onSelectionChanged}
+                                    key={ul.id}
+                                />)
+                            })
+                        }
+                    </div>
+                </div>)
+            :
+                null
+            }
             <div id="degradation-level-hierarchy-editor-tree-container">
                 <DegradationLevelTree />
             </div>
