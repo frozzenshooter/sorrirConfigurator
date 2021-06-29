@@ -60,9 +60,9 @@ const DegradationLevelNode = (props: IDegradationLevelNodeProps) => {
         onSelectionChanged(degradationLevel);
     }
 
-
     const [{isDragging}, drag] = useDrag(() => ({
         type: ItemTypes.LEVEL,
+        item: degradationLevel,
         collect: monitor => ({
           isDragging: !!monitor.isDragging(),
         }),
