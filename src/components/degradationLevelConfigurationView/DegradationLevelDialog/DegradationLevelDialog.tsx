@@ -99,6 +99,7 @@ const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
             setId(0);
             setLabel("");
             setDependencies([]);
+            setStates([]);
             setErrorMessages([]);
         }
         // This is not required for type === Edit, because then the dialog has to be rerendered anyway

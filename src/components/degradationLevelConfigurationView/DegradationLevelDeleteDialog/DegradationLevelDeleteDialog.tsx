@@ -7,11 +7,12 @@ export interface IDegradationLevelDeleteDialogProps {
     open: boolean;
     degradationLevels: IDegradationLevel[];
     onClose: () => void;
+    onDeleteComplete: () => void;
 }
 
 const DegradationLevelDeleteDialog = (props: IDegradationLevelDeleteDialogProps) => {
 
-    const {open, degradationLevels, onClose} = props;
+    const {open, degradationLevels, onClose, onDeleteComplete} = props;
 
     const {configuration, updateConfiguration} = useConfigurationContext();
 
@@ -27,7 +28,7 @@ const DegradationLevelDeleteDialog = (props: IDegradationLevelDeleteDialogProps)
         });
 
         updateConfiguration(newConfiguration);
-        onClose();
+        onDeleteComplete();
     };
 
     return (

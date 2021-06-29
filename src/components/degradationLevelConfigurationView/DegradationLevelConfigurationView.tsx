@@ -85,7 +85,11 @@ const DegradationLevelConfigurationView = () => {
             <DegradationLevelDeleteDialog
                 open={deleteDialogOpen}
                 degradationLevels={selectedDegradationLevels}
-                onClose={() => {setDeleteDialogOpen(false);}}            
+                onClose={() => {setDeleteDialogOpen(false);}} 
+                onDeleteComplete={() => {
+                  setDeleteDialogOpen(false); 
+                  setSelectedDegradationLevel([]); 
+                }}           
             />
             : 
             null
