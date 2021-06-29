@@ -4,6 +4,8 @@ import { DEFAULT_HEIGHT, DEFAULT_WIDTH } from "../degradationLevelConfigurationV
 import { makeStyles, lighten, Theme, createStyles } from '@material-ui/core/styles';
 
 import './DegradationLevelNode.css';
+import ItemTypes from "./ItemTypes";
+import { useDrag } from "react-dnd";
 
 export interface IDegradationLevelNodeProps {
     degradationLevel: IDegradationLevel;
@@ -58,10 +60,23 @@ const DegradationLevelNode = (props: IDegradationLevelNodeProps) => {
         onSelectionChanged(degradationLevel);
     }
 
+
+    const [{isDragging}, drag] = useDrag(() => ({
+        type: ItemTypes.LEVEL,
+        collect: monitor => ({
+          isDragging: !!monitor.isDragging(),
+        }),
+    }))
+
+
     return (
         <Paper
             className={classNames}
             onClick={handleClick}
+            ref={drag}
+            style={{
+              opacity: isDragging ? 0.5 : 1,
+            }}
         >
               <div className="degradation-level-node-content">
                 <div className="degradation-level-node-content-label">

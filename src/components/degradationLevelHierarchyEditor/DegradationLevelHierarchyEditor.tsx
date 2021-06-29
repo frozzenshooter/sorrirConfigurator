@@ -4,7 +4,8 @@ import IDegradationLevel from '../../models/IDegradationLevel';
 import DegradationLevelTree from '../degradationLevelConfigurationView/DegradationLevelHierarchyEditor/DegradationLevelTree';
 import './DegradationLevelHierarchyEditor.css';
 import DegradationLevelNode from './DegradationLevelNode';
-
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
 
 export interface DegradationLevelHierarchyEditorProps {
     selectedDegradationLevels: IDegradationLevel[];
@@ -41,32 +42,34 @@ const DegradationLevelHierarchyEditor =  (props: DegradationLevelHierarchyEditor
     }
 
     return (
-        <div id="degradation-level-hierarchy-editor-container">
-            {unsortedLevels.length > 0 ?
-                (<div id="degradation-level-hierarchy-editor-sidebar">
-                    <div id="degradation-level-hierarchy-editor-sidebar-title">
-                        Unsorted
-                    </div>
-                    <div id="degradation-level-hierarchy-editor-sidebar-content">
-                        {unsortedLevels.map((ul)=>{
+        <DndProvider backend={HTML5Backend}>
+                <div id="degradation-level-hierarchy-editor-container">
+                    {unsortedLevels.length > 0 ?
+                        (<div id="degradation-level-hierarchy-editor-sidebar">
+                            <div id="degradation-level-hierarchy-editor-sidebar-title">
+                                Unsorted
+                            </div>
+                            <div id="degradation-level-hierarchy-editor-sidebar-content">
+                                {unsortedLevels.map((ul)=>{
 
-                                return (<DegradationLevelNode 
-                                    isSelected={isSelected(ul.id)}
-                                    degradationLevel={ul}
-                                    onSelectionChanged={onSelectionChanged}
-                                    key={ul.id}
-                                />)
-                            })
-                        }
+                                        return (<DegradationLevelNode 
+                                            isSelected={isSelected(ul.id)}
+                                            degradationLevel={ul}
+                                            onSelectionChanged={onSelectionChanged}
+                                            key={ul.id}
+                                        />)
+                                    })
+                                }
+                            </div>
+                        </div>)
+                    :
+                        null
+                    }
+                    <div id="degradation-level-hierarchy-editor-tree-container">
+                        <DegradationLevelTree />
                     </div>
-                </div>)
-            :
-                null
-            }
-            <div id="degradation-level-hierarchy-editor-tree-container">
-                <DegradationLevelTree />
-            </div>
-        </div>
+                </div>
+        </DndProvider>
     );
 };
 
