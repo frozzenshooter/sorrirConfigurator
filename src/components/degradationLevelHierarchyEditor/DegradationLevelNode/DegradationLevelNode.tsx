@@ -1,10 +1,10 @@
 import { Paper } from "@material-ui/core";
-import IDegradationLevel from "../../models/IDegradationLevel";
-import { DEFAULT_HEIGHT, DEFAULT_WIDTH } from "../degradationLevelConfigurationView/DegradationLevelHierarchyEditor/Constants";
+import IDegradationLevel from "../../../models/IDegradationLevel";
+import { DEFAULT_HEIGHT, DEFAULT_WIDTH } from "../../degradationLevelConfigurationView/DegradationLevelHierarchyEditor/Constants";
 import { makeStyles, lighten, Theme, createStyles } from '@material-ui/core/styles';
 
 import './DegradationLevelNode.css';
-import ItemTypes from "./ItemTypes";
+import ItemTypes from "../ItemTypes";
 import { useDrag } from "react-dnd";
 
 export interface IDegradationLevelNodeProps {
@@ -13,7 +13,7 @@ export interface IDegradationLevelNodeProps {
     onSelectionChanged: (selected: IDegradationLevel) => void;
 }
 
-
+// Style required for the selection of the nodes
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     normal: {

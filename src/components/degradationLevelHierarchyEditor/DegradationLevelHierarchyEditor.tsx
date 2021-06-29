@@ -3,7 +3,7 @@ import { useConfigurationContext } from '../../context/ConfigurationContext';
 import IDegradationLevel from '../../models/IDegradationLevel';
 import DegradationLevelTree from '../degradationLevelConfigurationView/DegradationLevelHierarchyEditor/DegradationLevelTree';
 import './DegradationLevelHierarchyEditor.css';
-import DegradationLevelNode from './DegradationLevelNode';
+import DegradationLevelNode from './DegradationLevelNode/DegradationLevelNode';
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 
@@ -51,13 +51,14 @@ const DegradationLevelHierarchyEditor =  (props: DegradationLevelHierarchyEditor
                             </div>
                             <div id="degradation-level-hierarchy-editor-sidebar-content">
                                 {unsortedLevels.map((ul)=>{
-
-                                        return (<DegradationLevelNode 
-                                            isSelected={isSelected(ul.id)}
-                                            degradationLevel={ul}
-                                            onSelectionChanged={onSelectionChanged}
-                                            key={ul.id}
-                                        />)
+                                        return (
+                                            <DegradationLevelNode 
+                                                isSelected={isSelected(ul.id)}
+                                                degradationLevel={ul}
+                                                onSelectionChanged={onSelectionChanged}
+                                                key={ul.id}
+                                            />
+                                        );
                                     })
                                 }
                             </div>
