@@ -11,6 +11,8 @@ export interface IDegradationLevelNodeProps {
     degradationLevel: IDegradationLevel;
     isSelected: boolean;
     onSelectionChanged: (selected: IDegradationLevel) => void;
+    top?: number;
+    left?: number;
 }
 
 // Style required for the selection of the nodes
@@ -45,7 +47,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const DegradationLevelNode = (props: IDegradationLevelNodeProps) => {
 
-    const {degradationLevel, isSelected, onSelectionChanged} = props;
+    const {degradationLevel, isSelected, top, left, onSelectionChanged} = props;
 
     const classes = useStyles();
 
@@ -68,23 +70,50 @@ const DegradationLevelNode = (props: IDegradationLevelNodeProps) => {
         }),
     }))
 
+    if(top && left){
+        // This is the case in which the node is used in the tree
 
-    return (
-        <Paper
-            className={classNames}
-            onClick={handleClick}
-            ref={drag}
-            style={{
-              opacity: isDragging ? 0.5 : 1,
-            }}
-        >
-              <div className="degradation-level-node-content">
-                <div className="degradation-level-node-content-label">
-                    {label}
+        return (
+            <Paper
+                className={classNames}
+                onClick={handleClick}
+                ref={drag}
+                style={{
+                  opacity: isDragging ? 0.5 : 1,
+                  top:top+"px", 
+                  left:left+"px", 
+                  position: "absolute"
+                }}
+            >
+                  <div className="degradation-level-node-content">
+                    <div className="degradation-level-node-content-label">
+                        {label}
+                    </div>
                 </div>
-            </div>
-        </Paper>
-    );
+            </Paper>
+        );
+
+    }else{
+        
+        // This is the case for the unsorted degradation levels that don't require an additonal positioning
+
+        return (
+            <Paper
+                className={classNames}
+                onClick={handleClick}
+                ref={drag}
+                style={{
+                  opacity: isDragging ? 0.5 : 1,
+                }}
+            >
+                  <div className="degradation-level-node-content">
+                    <div className="degradation-level-node-content-label">
+                        {label}
+                    </div>
+                </div>
+            </Paper>
+        );
+    }
 };
 
 export default DegradationLevelNode;

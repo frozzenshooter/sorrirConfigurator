@@ -1,22 +1,25 @@
 import IDegradationLevel from "../../../models/IDegradationLevel";
 import ILevelChange from "../../../models/ILevelChange";
+import DegradationLevelTreeNode from "./DegradationLevelTreeNode";
 import { DEFAULT_NODE_WIDTH, DEFAULT_TREE_X_OFFSET, DEFAULT_TREE_Y_OFFSET } from "./TreeConstants";
 
 export interface IDegradationLevelTreeProps {
     degradationLevels: IDegradationLevel[]; // presort the relevant levels to just have to do it once
     levelChanges: ILevelChange[];
     onSelectionChanged: (selected: IDegradationLevel) => void;
+    selectedDegradationLevels: IDegradationLevel[];
 }
 
 const DegradationLevelTree = (props: IDegradationLevelTreeProps) => {
 
-    const {degradationLevels, levelChanges, onSelectionChanged} = props;
+    const {degradationLevels, levelChanges, selectedDegradationLevels, onSelectionChanged} = props;
 
     // Calculate the subtree (including the width for the internal calculation)
     const subtreeResult = GetSubtree({
         degradationLevels:degradationLevels,
         levelChanges: levelChanges,
-        onSelectionChanged: onSelectionChanged
+        onSelectionChanged: onSelectionChanged,
+        selectedDegradationLevels: selectedDegradationLevels
     });
 
     return (
@@ -34,8 +37,9 @@ interface ISubtreeProps {
     xOffset?: number; // not set as inital values
     yOffset?: number; // not set as inital values
     degradationLevels: IDegradationLevel[]; // all relevant degradationLevels
-    levelChanges: ILevelChange[]; // all LevelCHanges that are configured
+    levelChanges: ILevelChange[]; // all LevelChanges that are configured
     onSelectionChanged: (selected: IDegradationLevel) => void;
+    selectedDegradationLevels: IDegradationLevel[];
 }
 
 interface ISubtreeResult {
@@ -46,7 +50,7 @@ interface ISubtreeResult {
 
 const GetSubtree = (props: ISubtreeProps): ISubtreeResult => {
 
-    const {currentDegradationLevel, degradationLevels, levelChanges, onSelectionChanged} = props;
+    const {currentDegradationLevel, degradationLevels, levelChanges, onSelectionChanged, selectedDegradationLevels} = props;
     let { xOffset, yOffset } = props;
 
     // For the case it is nothing set (which is the inital case) use the default offset of the graph
@@ -66,6 +70,18 @@ const GetSubtree = (props: ISubtreeProps): ISubtreeResult => {
 
     const relevantChildIds = levelChanges.filter(lc => lc.resultDegradationLevelId === currentDegradationLevelId).map(lc => lc.startDegradationLevelId);
 
+    const isSelected = (id: number | null) => {
+        if(id === null){
+            // This is the case for the OFF node - can't be selected
+            return false;
+        }
+
+        const index = selectedDegradationLevels.findIndex(d => d.id === id);
+
+        return index !== -1;
+    }
+
+
     if(relevantChildIds.length > 0){
 
         // This case requires to (recursively) calculate a subtree (this might be either a single childnode or a larger subtree) with the corresponding width
@@ -79,8 +95,13 @@ const GetSubtree = (props: ISubtreeProps): ISubtreeResult => {
         return {
             width: DEFAULT_NODE_WIDTH,
             node: (
-                    <div>
-                    </div>
+                    <DegradationLevelTreeNode 
+                        onSelectionChanged={onSelectionChanged}
+                        isSelected={isSelected(currentDegradationLevelId)}
+                        degradationLevel={currentDegradationLevel}
+                        left={xOffset}
+                        top={yOffset}
+                    />
                 )
 
         };
@@ -88,10 +109,12 @@ const GetSubtree = (props: ISubtreeProps): ISubtreeResult => {
     }    
 }
 
+
 //#endregion
 
 export default DegradationLevelTree;
 
+/*
 
 
 const GetDegradationLevelSubtreeaa = (props: IDegradationLevelSubtreeProps): IDegradationLevelSubtreeResult => {
@@ -204,3 +227,5 @@ const GetDegradationLevelSubtreeaa = (props: IDegradationLevelSubtreeProps): IDe
         };
     }
 };
+
+*/
