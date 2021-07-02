@@ -4,7 +4,7 @@ export interface IDegradationLevelTreeProps{
 
 }
 
-const DegradationLevelTree = (props: IDegradationLevelTreeProps) => {
+const DegradationLevelTreeOld = (props: IDegradationLevelTreeProps) => {
 
     const initNodes: IDegradationLevelTreeNode[] = [
         {
@@ -94,5 +94,5 @@ const DegradationLevelTree = (props: IDegradationLevelTreeProps) => {
 
 };
 
-export default DegradationLevelTree;
+export default DegradationLevelTreeOld;
 

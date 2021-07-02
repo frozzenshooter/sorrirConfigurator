@@ -1,11 +1,12 @@
 import { constants } from 'os';
 import { useConfigurationContext } from '../../context/ConfigurationContext';
 import IDegradationLevel from '../../models/IDegradationLevel';
-import DegradationLevelTree from '../degradationLevelConfigurationView/DegradationLevelHierarchyEditor/DegradationLevelTree';
 import './DegradationLevelHierarchyEditor.css';
 import DegradationLevelNode from './DegradationLevelNode/DegradationLevelNode';
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
+import DegradationLevelTree from './DegradationLevelTree/DegradationLevelTree';
+import DegradationLevelTreeOld from '../degradationLevelConfigurationView/DegradationLevelHierarchyEditor/DegradationLevelTree';
 
 export interface DegradationLevelHierarchyEditorProps {
     selectedDegradationLevels: IDegradationLevel[];
@@ -14,7 +15,6 @@ export interface DegradationLevelHierarchyEditorProps {
 
 const DegradationLevelHierarchyEditor =  (props: DegradationLevelHierarchyEditorProps) => {
 
-    const t = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16];
     const {onSelectionChanged, selectedDegradationLevels} = props;
 
     const {configuration} = useConfigurationContext();
@@ -22,7 +22,7 @@ const DegradationLevelHierarchyEditor =  (props: DegradationLevelHierarchyEditor
     // only get the start values because every level has to be at least one time the start of an arrow because all result in the off state
     const levelIds = configuration.degradations.map(d => d.startDegradationLevelId);
     
-
+    // Presort the DegradationLevels
     const unsortedLevels: IDegradationLevel[] = [];
     const sortedLevels: IDegradationLevel[] = [];
 
@@ -37,7 +37,6 @@ const DegradationLevelHierarchyEditor =  (props: DegradationLevelHierarchyEditor
 
     const isSelected = (id: number) => {
         const index = selectedDegradationLevels.findIndex(d => d.id === id);
-
         return index !== -1;
     }
 
@@ -67,11 +66,23 @@ const DegradationLevelHierarchyEditor =  (props: DegradationLevelHierarchyEditor
                         null
                     }
                     <div id="degradation-level-hierarchy-editor-tree-container">
-                        <DegradationLevelTree />
+
+                    <DegradationLevelTree 
+                            degradationLevels={sortedLevels}
+                            levelChanges={configuration.degradations}
+                            onSelectionChanged={onSelectionChanged}
+                            selectedDegradationLevels={selectedDegradationLevels}
+                        />
+
+                        
                     </div>
                 </div>
         </DndProvider>
     );
 };
+
+/*
+ <DegradationLevelTreeOld />
+ */
 
 export default DegradationLevelHierarchyEditor;

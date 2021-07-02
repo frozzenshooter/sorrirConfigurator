@@ -70,7 +70,7 @@ const DegradationLevelNode = (props: IDegradationLevelNodeProps) => {
         }),
     }))
 
-    if(top && left){
+    if(top != undefined && left  != undefined){
         // This is the case in which the node is used in the tree
 
         return (

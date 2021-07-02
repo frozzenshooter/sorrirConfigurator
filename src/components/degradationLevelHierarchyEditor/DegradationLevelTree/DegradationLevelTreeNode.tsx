@@ -1,6 +1,8 @@
+import { Paper } from "@material-ui/core";
 import React from "react";
 import IDegradationLevel from "../../../models/IDegradationLevel";
 import DegradationLevelNode from "../DegradationLevelNode/DegradationLevelNode";
+import { DEFAULT_NODE_HEIGHT, DEFAULT_NODE_WIDTH } from "./TreeConstants";
 
 export interface IDegradationLevelTreeNodeProps {
     top: number;
@@ -12,31 +14,40 @@ export interface IDegradationLevelTreeNodeProps {
 
 const DegradationLevelTreeNode = (props: IDegradationLevelTreeNodeProps) => {
 
-    const {degradationLevel, isSelected, onSelectionChanged} = props;
+    const {degradationLevel, isSelected, top, left, onSelectionChanged} = props;
 
     if(!degradationLevel){
 
         // Case for the OFF STATE
         return (
-            <div>
-                OFF
-            </div>
+            <Paper
+                style={{
+                    top:top+"px", 
+                    left:left+"px", 
+                    position: "absolute",
+                    margin: "8px",
+                    width: DEFAULT_NODE_WIDTH-32,
+                    height: DEFAULT_NODE_HEIGHT
+                }}
+            >
+                <div className="degradation-level-node-content">
+                    <div className="degradation-level-node-content-label">
+                        OFF
+                    </div>
+                </div>
+            </Paper>
         )
     }
 
     return (
         <React.Fragment>
-            <div>
-                TOP DROP ZONE
-            </div>
             <DegradationLevelNode
                 degradationLevel={degradationLevel}
                 isSelected={isSelected}
                 onSelectionChanged={onSelectionChanged}
+                top={top}
+                left={left}
             />
-            <div>
-                BOTTOM DROP ZONE
-            </div>
         </React.Fragment>
     );
 };
