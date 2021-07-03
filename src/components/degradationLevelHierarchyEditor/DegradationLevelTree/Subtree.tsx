@@ -1,5 +1,6 @@
 import IDegradationLevel from "../../../models/IDegradationLevel";
 import ILevelChange from "../../../models/ILevelChange";
+import Arrow, { ArrowType } from "../../degradationLevelConfigurationView/DegradationLevelHierarchyEditor/Arrow";
 import DegradationLevelTreeNode from "./DegradationLevelTreeNode";
 import { DEFAULT_NODE_HEIGHT, DEFAULT_NODE_WIDTH, DEFAULT_NODE_Y_PADDING, DEFAULT_TREE_X_OFFSET, DEFAULT_TREE_Y_OFFSET } from "./TreeConstants";
 
@@ -65,6 +66,8 @@ const GetSubtree = (props: ISubtreeProps): ISubtreeResult => {
         return index !== -1;
     }
 
+    const arrowEnds: number[] = [];
+
     if(relevantChildIds.length > 0){
 
         // This case requires to (recursively) calculate a subtree (this might be either a single childnode or a larger subtree) with the corresponding width
@@ -97,7 +100,7 @@ const GetSubtree = (props: ISubtreeProps): ISubtreeResult => {
                 onSelectionChanged: onSelectionChanged                
             });
 
-            //arrowEnds.push(subtreeWidth + subtree.width/2);
+            arrowEnds.push(completeSubtreeWidth + subtreeResult.width/2);
 
             // Update the complete width
             completeSubtreeWidth = completeSubtreeWidth + subtreeResult.width;
@@ -121,37 +124,34 @@ const GetSubtree = (props: ISubtreeProps): ISubtreeResult => {
                     top={yOffset}
                 />
                 {subtreeNodes}
-            </>
-            )
-        };
-
-/**
                 {arrowEnds.length > 0 ? 
                     <>
-                    {arrowEnds.map((a,index) => {
+                    {arrowEnds.map((a, index) => {
 
                         if(!xOffset){
-                            xOffset = DEFAULT_GRAPH_X_OFFSET;
+                            xOffset = DEFAULT_TREE_Y_OFFSET;
                         }
 
                         if(!yOffset){ 
-                            yOffset = DEFAULT_GRAPH_Y_OFFSET;
+                            yOffset = DEFAULT_TREE_Y_OFFSET;
                         }
 
                         return (
 
                         <Arrow 
                             left={xOffset}
-                            top={yOffset+DEFAULT_HEIGHT}
-                            width={subtreeWidth}
+                            top={yOffset+DEFAULT_NODE_HEIGHT}
+                            width={completeSubtreeWidth}
                             end={arrowEnds[index]}
                             type={ArrowType.Degradation}
                             />);
                     })}
                 </>
                 : null}
+            </>
+            )
+        };
 
- */
         
     }else{
 

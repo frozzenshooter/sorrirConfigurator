@@ -27,10 +27,12 @@ const DegradationLevelTreeNodeDrop = (props: IDegradationLevelTreeNodeDropProps)
                 left: left + "px",
                 position: "absolute",
                 margin: "8px",
-                width: DEFAULT_NODE_WIDTH - 32, //(-2 because of the border)
+                width: DEFAULT_NODE_WIDTH - 32,
                 border: isOver ? "1px dashed black" : "none",
                 height: "20px" , 
-                boxSizing: "border-box"             
+                boxSizing: "border-box",
+                backgroundColor: isOver ? "rgba(63, 81, 181, 0.3)" : "transparent",
+                zIndex: 9 // required because otherwise the arrows would be in front of it             
             }}
         >
             
