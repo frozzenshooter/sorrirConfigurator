@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme: Theme) =>
         backgroundColor: theme.palette.background.paper,
         color: theme.palette.text.primary, 
         margin: "8px",
-        width: DEFAULT_WIDTH-32,
+        width: DEFAULT_WIDTH-32, //-32 becuase of the padding that will be added by the paper
         height: DEFAULT_HEIGHT
     },
     selected:
@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme: Theme) =>
             color: theme.palette.text.primary,
             backgroundColor: theme.palette.secondary.dark,
             margin: "8px",
-            width: DEFAULT_WIDTH-32,
+            width: DEFAULT_WIDTH-32, //-32 becuase of the padding that will be added by the paper
             height: DEFAULT_HEIGHT
           },
   }),
@@ -51,6 +51,7 @@ const DegradationLevelNode = (props: IDegradationLevelNodeProps) => {
 
     const classes = useStyles();
 
+    // Dynamically set different classes based on the selection state of the current degradation level
     let classNames = classes.normal;
     if(isSelected){
         classNames = classes.selected;
@@ -70,50 +71,31 @@ const DegradationLevelNode = (props: IDegradationLevelNodeProps) => {
         }),
     }))
 
+    // Determine if the node will be displayed in the tree and therefore additonal css properties have to be set
+    let isUsedInTree = false;
     if(top != undefined && left  != undefined){
-        // This is the case in which the node is used in the tree
-
-        return (
-            <Paper
-                className={classNames}
-                onClick={handleClick}
-                ref={drag}
-                style={{
-                  opacity: isDragging ? 0.5 : 1,
-                  top:top+"px", 
-                  left:left+"px", 
-                  position: "absolute"
-                }}
-            >
-                  <div className="degradation-level-node-content">
-                    <div className="degradation-level-node-content-label">
-                        {label}
-                    </div>
-                </div>
-            </Paper>
-        );
-
-    }else{
-        
-        // This is the case for the unsorted degradation levels that don't require an additonal positioning
-
-        return (
-            <Paper
-                className={classNames}
-                onClick={handleClick}
-                ref={drag}
-                style={{
-                  opacity: isDragging ? 0.5 : 1,
-                }}
-            >
-                  <div className="degradation-level-node-content">
-                    <div className="degradation-level-node-content-label">
-                        {label}
-                    </div>
-                </div>
-            </Paper>
-        );
+        isUsedInTree = true;
     }
+
+    return (
+        <Paper
+            className={classNames}
+            onClick={handleClick}
+            ref={drag}
+            style={{
+              opacity: isDragging ? 0.5 : 1,
+              top: isUsedInTree ? top+"px" : "0px", 
+              left: isUsedInTree ? left+"px" : "0px", 
+              position: isUsedInTree ? "absolute" : "static"
+            }}
+        >
+              <div className="degradation-level-node-content">
+                <div className="degradation-level-node-content-label">
+                    {label}
+                </div>
+            </div>
+        </Paper>
+    );
 };
 
 export default DegradationLevelNode;
