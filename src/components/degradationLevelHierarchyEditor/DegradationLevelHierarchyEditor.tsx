@@ -1,4 +1,3 @@
-import { constants } from 'os';
 import { useConfigurationContext } from '../../context/ConfigurationContext';
 import IDegradationLevel from '../../models/IDegradationLevel';
 import './DegradationLevelHierarchyEditor.css';
@@ -27,7 +26,7 @@ const DegradationLevelHierarchyEditor =  (props: DegradationLevelHierarchyEditor
 
     for(const degradationLevel of configuration.degradationLevels){
         const index = levelIds.findIndex(id => id === degradationLevel.id); 
-        if(index != -1){   
+        if(index !== -1){   
             sortedLevels.push(degradationLevel);
         }else{
             unsortedLevels.push(degradationLevel);
@@ -50,7 +49,7 @@ const DegradationLevelHierarchyEditor =  (props: DegradationLevelHierarchyEditor
                             <div id="degradation-level-hierarchy-editor-sidebar-content">
                                 {unsortedLevels.map((ul)=>{
                                         return (
-                                            <DegradationLevelNode 
+                                            <DegradationLevelNode
                                                 isSelected={isSelected(ul.id)}
                                                 degradationLevel={ul}
                                                 onSelectionChanged={onSelectionChanged}
@@ -66,12 +65,12 @@ const DegradationLevelHierarchyEditor =  (props: DegradationLevelHierarchyEditor
                     }
                     <div id="degradation-level-hierarchy-editor-tree-container">
 
-                    <DegradationLevelTree 
-                            degradationLevels={sortedLevels}
-                            levelChanges={configuration.degradations}
-                            onSelectionChanged={onSelectionChanged}
-                            selectedDegradationLevels={selectedDegradationLevels}
-                        />
+                        <DegradationLevelTree
+                                degradationLevels={sortedLevels}
+                                levelChanges={configuration.degradations}
+                                onSelectionChanged={onSelectionChanged}
+                                selectedDegradationLevels={selectedDegradationLevels}
+                            />
 
                         
                     </div>

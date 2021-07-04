@@ -1,3 +1,4 @@
+import React from "react";
 import IDegradationLevel from "../../../models/IDegradationLevel";
 import ILevelChange from "../../../models/ILevelChange";
 import Arrow, { ArrowType } from "./Arrow";
@@ -115,8 +116,9 @@ const GetSubtree = (props: ISubtreeProps): ISubtreeResult => {
         return {
             width: completeSubtreeWidth,
             node: (
-            <>
+            <React.Fragment key={currentDegradationLevelId /* This id has to be set because React wants to resolve it under the hood*/}>
                 <DegradationLevelTreeNode 
+                    key={currentDegradationLevelId}
                     onSelectionChanged={onSelectionChanged}
                     isSelected={isSelected(currentDegradationLevelId)}
                     degradationLevel={currentDegradationLevel}
@@ -126,29 +128,30 @@ const GetSubtree = (props: ISubtreeProps): ISubtreeResult => {
                 {subtreeNodes}
                 {arrowsEndXCoordinates.length > 0 ? 
                     <>
-                    {arrowsEndXCoordinates.map((a, index) => {
+                        {arrowsEndXCoordinates.map((a, index) => {
 
-                        if(!xOffset){
-                            xOffset = DEFAULT_TREE_Y_OFFSET;
-                        }
+                            if(!xOffset){
+                                xOffset = DEFAULT_TREE_Y_OFFSET;
+                            }
 
-                        if(!yOffset){ 
-                            yOffset = DEFAULT_TREE_Y_OFFSET;
-                        }
+                            if(!yOffset){ 
+                                yOffset = DEFAULT_TREE_Y_OFFSET;
+                            }
 
-                        return (
-
-                        <Arrow 
-                            left={xOffset}
-                            top={yOffset+DEFAULT_NODE_HEIGHT - 8}
-                            width={completeSubtreeWidth}
-                            endXCoordinate={arrowsEndXCoordinates[index]}
-                            type={ArrowType.Degradation}
-                            />);
-                    })}
-                </>
+                            return (
+                                <Arrow 
+                                    key={index}
+                                    left={xOffset}
+                                    top={yOffset+DEFAULT_NODE_HEIGHT - 8}
+                                    width={completeSubtreeWidth}
+                                    endXCoordinate={arrowsEndXCoordinates[index]}
+                                    type={ArrowType.Degradation}
+                                    />
+                            );
+                        })}
+                    </>
                 : null}
-            </>
+            </React.Fragment>
             )
         };
 
@@ -160,6 +163,7 @@ const GetSubtree = (props: ISubtreeProps): ISubtreeResult => {
             width: DEFAULT_NODE_WIDTH,
             node: (
                     <DegradationLevelTreeNode 
+                        key={currentDegradationLevelId}
                         onSelectionChanged={onSelectionChanged}
                         isSelected={isSelected(currentDegradationLevelId)}
                         degradationLevel={currentDegradationLevel}

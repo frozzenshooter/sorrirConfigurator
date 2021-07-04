@@ -1,4 +1,4 @@
-import { Button, Paper } from '@material-ui/core';
+import { Paper } from '@material-ui/core';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import React from 'react';
 import './DegradationLevelConfigurationView.css';

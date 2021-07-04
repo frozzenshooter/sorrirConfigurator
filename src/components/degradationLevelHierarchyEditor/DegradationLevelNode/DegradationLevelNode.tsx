@@ -64,7 +64,7 @@ const DegradationLevelNode = (props: IDegradationLevelNodeProps) => {
 
     // Determine if the node will be displayed in the tree and therefore additonal css properties have to be set
     let isUsedInTree = false;
-    if(top != undefined && left  != undefined){
+    if(top !== undefined && left  !== undefined){
         isUsedInTree = true;
     }
 
