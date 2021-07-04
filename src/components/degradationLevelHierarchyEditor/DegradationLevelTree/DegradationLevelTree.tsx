@@ -1,6 +1,8 @@
+import { useEffect } from "react";
+import { useCallback, useState } from "react";
 import IDegradationLevel from "../../../models/IDegradationLevel";
 import ILevelChange from "../../../models/ILevelChange";
-import GetSubtree, { SubtreeType } from "./Subtree";
+import GetSubtree, { ISubtreeResult, SubtreeType } from "./Subtree";
 
 export enum DegradationLevelTreeType {
     Degradation = 0,
@@ -118,17 +120,38 @@ const DegradationLevelTree = (props: IDegradationLevelTreeProps) => {
     
 
     // Calculate the subtree (including the width for the internal calculation)
-    const subtreeResult = GetSubtree({
+    /*const subtreeResult = GetSubtree({
+        degradationLevels: testlevels,
+        levelChanges: testlevelChg,
+        onSelectionChanged: onSelectionChanged,
+        selectedDegradationLevels: selectedDegradationLevels,
+        subtreeType: degradationLevelTreeType === DegradationLevelTreeType.Degradation ? SubtreeType.Degradation : SubtreeType.Upgrade,
+    });*/
+
+    const [result, setResult] = useState<ISubtreeResult>();
+
+    /*const subtreeResult = useCallback(() => GetSubtree({
         degradationLevels: degradationLevels,
         levelChanges: levelChanges,
         onSelectionChanged: onSelectionChanged,
         selectedDegradationLevels: selectedDegradationLevels,
         subtreeType: degradationLevelTreeType === DegradationLevelTreeType.Degradation ? SubtreeType.Degradation : SubtreeType.Upgrade,
-    });
+    }), [degradationLevels, levelChanges]);*/
+
+    useEffect(() => {
+        const subtreeResult = GetSubtree({
+            degradationLevels: degradationLevels,
+            levelChanges: levelChanges,
+            onSelectionChanged: onSelectionChanged,
+            selectedDegradationLevels: selectedDegradationLevels,
+            subtreeType: degradationLevelTreeType === DegradationLevelTreeType.Degradation ? SubtreeType.Degradation : SubtreeType.Upgrade,
+        });
+        setResult(subtreeResult);
+    }, [degradationLevels, levelChanges])
 
     return (
         <>
-            {subtreeResult.node}
+            {result?.node}
         </>
     );
 };

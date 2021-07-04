@@ -5,8 +5,7 @@ import { useConfigurationContext } from "../../../context/ConfigurationContext";
 import IDegradationLevel from "../../../models/IDegradationLevel";
 import IDegradationLevelState from "../../../models/IDegradationLevelState";
 import IConfiguration from "../../../models/IConfiguration";
-import { useCallback } from "react";
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export enum DegradationLevelTreeNodeDropType {
     ABOVE = 0,
@@ -26,10 +25,11 @@ const DegradationLevelTreeNodeDrop = (props: IDegradationLevelTreeNodeDropProps)
 
     const {configuration, updateConfiguration} = useConfigurationContext();
 
-    const handleDrop = (item: IDegradationLevel) => {
-   
-        console.log(configuration);
 
+    const [item, setItem] = useState<IDegradationLevel>();
+
+    /*const handleDrop = (item: IDegradationLevel) => {
+   
         //console.log(degradationLevelId + "("+asString(type)+"):", item);
         
         const newConfiguration : IConfiguration = JSON.parse(JSON.stringify(configuration));
@@ -46,15 +46,40 @@ const DegradationLevelTreeNodeDrop = (props: IDegradationLevelTreeNodeDropProps)
         //console.log(configuration, newConfiguration);
     
         updateConfiguration(newConfiguration);
+    };*/
+
+    const handleDrop = (item: IDegradationLevel, oldConfiguration: IConfiguration) => {
+           
+        console.log(configuration);
+
+        const newConfiguration : IConfiguration = Object.assign({}, oldConfiguration);
+    
+        newConfiguration.degradations.push({
+            resultDegradationLevelId: degradationLevelId,
+            startDegradationLevelId: item.id,
+            stateResultLevel: null,
+            stateStartLevel: null,
+        });
+    
+        //newConfiguration.degradationLevels = configuration.degradationLevels.slice();
+    
+        updateConfiguration(newConfiguration);
     };
+
+
+    useEffect(() => {
+        if(item){
+            handleDrop(item, configuration);
+        }
+    }, [item]);
 
     const [{ isOver }, drop] = useDrop(() => ({
         accept: ItemTypes.LEVEL,
-        drop: (item) => handleDrop(item as IDegradationLevel), // as works because we only allow to drop items with the ItemType LEVEL
+        drop: (i) => setItem(i as IDegradationLevel), // as works because we only allow to drop items with the ItemType LEVEL
         collect: monitor => ({
           isOver: !!monitor.isOver(),
         }),
-    }))
+    }));
 
     return (
         <div

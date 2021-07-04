@@ -31,31 +31,6 @@ const DegradationLevelConfigurationView = () => {
     const [deleteDialogOpen, setDeleteDialogOpen] = React.useState<boolean>(false);
     const [selectedDegradationLevels, setSelectedDegradationLevel] = React.useState<IDegradationLevel[]>([]);
 
-    const {configuration, updateConfiguration} = useConfigurationContext();
-
-   
-    const handleDrop = (item: IDegradationLevel, degradationLevelId: number | null) => {
-   
-        console.log(configuration);
-
-        //console.log(degradationLevelId + "("+asString(type)+"):", item);
-        
-        const newConfiguration : IConfiguration = JSON.parse(JSON.stringify(configuration));
-    
-        newConfiguration.degradations.push({
-            resultDegradationLevelId: degradationLevelId,
-            startDegradationLevelId: item.id,
-            stateResultLevel: null,
-            stateStartLevel: null,
-        });
-    
-        newConfiguration.degradationLevels = configuration.degradationLevels.slice();
-    
-        //console.log(configuration, newConfiguration);
-    
-        updateConfiguration(newConfiguration);
-    };
-
     const handleSelectionChanged = (selectedDegradationLevel: IDegradationLevel) => {
 
         const index = selectedDegradationLevels.findIndex(d => d.id === selectedDegradationLevel.id);
