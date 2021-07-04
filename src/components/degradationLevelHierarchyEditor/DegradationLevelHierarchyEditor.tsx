@@ -4,16 +4,23 @@ import './DegradationLevelHierarchyEditor.css';
 import DegradationLevelNode from './DegradationLevelNode/DegradationLevelNode';
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
-import DegradationLevelTree from './DegradationLevelTree/DegradationLevelTree';
+import DegradationLevelTree, { DegradationLevelTreeType } from './DegradationLevelTree/DegradationLevelTree';
+
+export enum DegradationLevelHierarchyEditorType {
+    Degradation = 0,
+    Upgrade = 1
+}
 
 export interface DegradationLevelHierarchyEditorProps {
     selectedDegradationLevels: IDegradationLevel[];
     onSelectionChanged: (selected: IDegradationLevel) => void;
+    degradationLevelHierarchyEditorType: DegradationLevelHierarchyEditorType;
+
 }
 
 const DegradationLevelHierarchyEditor =  (props: DegradationLevelHierarchyEditorProps) => {
 
-    const {onSelectionChanged, selectedDegradationLevels} = props;
+    const {onSelectionChanged, selectedDegradationLevels, degradationLevelHierarchyEditorType} = props;
 
     const {configuration} = useConfigurationContext();
     
@@ -67,9 +74,10 @@ const DegradationLevelHierarchyEditor =  (props: DegradationLevelHierarchyEditor
 
                         <DegradationLevelTree
                                 degradationLevels={sortedLevels}
-                                levelChanges={configuration.degradations}
+                                levelChanges={degradationLevelHierarchyEditorType === DegradationLevelHierarchyEditorType.Degradation ? configuration.degradations : configuration.upgrades}
                                 onSelectionChanged={onSelectionChanged}
                                 selectedDegradationLevels={selectedDegradationLevels}
+                                degradationLevelTreeType={ degradationLevelHierarchyEditorType === DegradationLevelHierarchyEditorType.Degradation ? DegradationLevelTreeType.Degradation : DegradationLevelTreeType.Upgrade}
                             />
 
                         

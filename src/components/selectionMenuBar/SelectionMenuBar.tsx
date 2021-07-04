@@ -42,8 +42,6 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-
-
 const SelectionMenuBar = (props: ISelectionMenuBarProps) => {
 
     const {amountOfSelectedItems, onCreateClick, onEditClick, onDeleteClick} = props;
@@ -70,9 +68,9 @@ const SelectionMenuBar = (props: ISelectionMenuBarProps) => {
                     amountOfSelectedItems === 1 ?
                             <>
                                 <Tooltip title="Edit">
-                                <IconButton onClick={()=>{onEditClick();}}>
-                                    <EditIcon />
-                                </IconButton>
+                                    <IconButton onClick={()=>{onEditClick();}}>
+                                        <EditIcon />
+                                    </IconButton>
                                 </Tooltip>            
                                 <Tooltip title="Delete">
                                     <IconButton onClick={()=>{onDeleteClick();}}>
@@ -82,9 +80,9 @@ const SelectionMenuBar = (props: ISelectionMenuBarProps) => {
                             </>
                         :
                             <Tooltip title="Delete">
-                            <IconButton onClick={()=>{onDeleteClick();}}>
-                                <DeleteIcon />
-                            </IconButton>
+                                <IconButton onClick={()=>{onDeleteClick();}}>
+                                    <DeleteIcon />
+                                </IconButton>
                             </Tooltip>  
                     :
                     null

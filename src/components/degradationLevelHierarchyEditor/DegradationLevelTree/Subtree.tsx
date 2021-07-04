@@ -5,6 +5,12 @@ import Arrow, { ArrowType } from "./Arrow";
 import DegradationLevelTreeNode from "./DegradationLevelTreeNode";
 import { DEFAULT_NODE_HEIGHT, DEFAULT_NODE_WIDTH, DEFAULT_NODE_Y_DISTANCE, DEFAULT_TREE_X_OFFSET, DEFAULT_TREE_Y_OFFSET } from "./TreeConstants";
 
+
+export enum SubtreeType {
+    Degradation = 0,
+    Upgrade = 1
+}
+
 export interface ISubtreeProps {
     currentDegradationLevel?: IDegradationLevel; // not set value means inital OFF state
     degradationLevels: IDegradationLevel[]; // all relevant degradationLevels
@@ -17,6 +23,8 @@ export interface ISubtreeProps {
     // SELECTION
     onSelectionChanged: (selected: IDegradationLevel) => void;
     selectedDegradationLevels: IDegradationLevel[];
+
+    subtreeType: SubtreeType;
 }
 
 /**
@@ -36,7 +44,7 @@ export interface ISubtreeResult {
  */
 const GetSubtree = (props: ISubtreeProps): ISubtreeResult => {
 
-    const {currentDegradationLevel, degradationLevels, levelChanges, onSelectionChanged, selectedDegradationLevels} = props;
+    const {currentDegradationLevel, degradationLevels, levelChanges, subtreeType, onSelectionChanged, selectedDegradationLevels} = props;
     let { xOffset, yOffset } = props;
 
     // For the case it is nothing set (which is the inital case) use the default offset of the graph
@@ -98,7 +106,8 @@ const GetSubtree = (props: ISubtreeProps): ISubtreeResult => {
                 selectedDegradationLevels: selectedDegradationLevels,                 
                 xOffset: xOffsetCurrent, 
                 yOffset: yOffsetCurrent,
-                onSelectionChanged: onSelectionChanged                
+                onSelectionChanged: onSelectionChanged,
+                subtreeType: subtreeType                
             });
 
             arrowsEndXCoordinates.push(completeSubtreeWidth + subtreeResult.width/2);
@@ -145,7 +154,7 @@ const GetSubtree = (props: ISubtreeProps): ISubtreeResult => {
                                     top={yOffset+DEFAULT_NODE_HEIGHT - 8}
                                     width={completeSubtreeWidth}
                                     endXCoordinate={arrowsEndXCoordinates[index]}
-                                    type={ArrowType.Degradation}
+                                    type={subtreeType === SubtreeType.Degradation ? ArrowType.Degradation : ArrowType.Upgrade}
                                     />
                             );
                         })}

@@ -7,7 +7,7 @@ import IDegradationLevel from '../../models/IDegradationLevel';
 import DegradationLevelDialogType from './DegradationLevelDialog/DegradationLevelDialogType';
 import SelectionMenuBar from '../selectionMenuBar/SelectionMenuBar';
 import DegradationLevelDeleteDialog from './DegradationLevelDeleteDialog/DegradationLevelDeleteDialog';
-import DegradationLevelHierarchyEditor from '../degradationLevelHierarchyEditor/DegradationLevelHierarchyEditor';
+import DegradationLevelHierarchyEditor, { DegradationLevelHierarchyEditorType } from '../degradationLevelHierarchyEditor/DegradationLevelHierarchyEditor';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -58,6 +58,7 @@ const DegradationLevelConfigurationView = () => {
                     <DegradationLevelHierarchyEditor
                         onSelectionChanged={handleSelectionChanged}
                         selectedDegradationLevels={selectedDegradationLevels}
+                        degradationLevelHierarchyEditorType={DegradationLevelHierarchyEditorType.Degradation}
                         />
               </div>
             </Paper>
