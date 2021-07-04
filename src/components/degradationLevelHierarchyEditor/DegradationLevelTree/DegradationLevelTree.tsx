@@ -22,7 +22,7 @@ const DegradationLevelTree = (props: IDegradationLevelTreeProps) => {
     const {degradationLevels, levelChanges, degradationLevelTreeType, selectedDegradationLevels, onSelectionChanged} = props;
 
     //TESTDATA
-    let levels = [
+    let testlevels :IDegradationLevel[] = [
         {
             "id": 0,
             "label": "Test 0",
@@ -71,7 +71,7 @@ const DegradationLevelTree = (props: IDegradationLevelTreeProps) => {
         }
     ]
 
-    let levelChg = [
+    let testlevelChg : ILevelChange[]  = [
         {
             startDegradationLevelId: 0, 
             stateStartLevel: "start", 
@@ -116,13 +116,14 @@ const DegradationLevelTree = (props: IDegradationLevelTreeProps) => {
         },
     ]; 
     
+
     // Calculate the subtree (including the width for the internal calculation)
     const subtreeResult = GetSubtree({
-        degradationLevels: levels,
-        levelChanges: levelChg,
+        degradationLevels: degradationLevels,
+        levelChanges: levelChanges,
         onSelectionChanged: onSelectionChanged,
         selectedDegradationLevels: selectedDegradationLevels,
-        subtreeType: degradationLevelTreeType === DegradationLevelTreeType.Degradation ? SubtreeType.Degradation : SubtreeType.Upgrade
+        subtreeType: degradationLevelTreeType === DegradationLevelTreeType.Degradation ? SubtreeType.Degradation : SubtreeType.Upgrade,
     });
 
     return (

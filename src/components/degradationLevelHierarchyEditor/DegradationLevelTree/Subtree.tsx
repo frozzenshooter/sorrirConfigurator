@@ -107,7 +107,7 @@ const GetSubtree = (props: ISubtreeProps): ISubtreeResult => {
                 xOffset: xOffsetCurrent, 
                 yOffset: yOffsetCurrent,
                 onSelectionChanged: onSelectionChanged,
-                subtreeType: subtreeType                
+                subtreeType: subtreeType           
             });
 
             arrowsEndXCoordinates.push(completeSubtreeWidth + subtreeResult.width/2);

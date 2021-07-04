@@ -1,6 +1,12 @@
 import { DEFAULT_DROP_NODE_HEIGHT, DEFAULT_NODE_WIDTH } from "./TreeConstants";
 import { useDrop } from 'react-dnd'
 import ItemTypes from "../ItemTypes";
+import { useConfigurationContext } from "../../../context/ConfigurationContext";
+import IDegradationLevel from "../../../models/IDegradationLevel";
+import IDegradationLevelState from "../../../models/IDegradationLevelState";
+import IConfiguration from "../../../models/IConfiguration";
+import { useCallback } from "react";
+import { useEffect } from "react";
 
 export enum DegradationLevelTreeNodeDropType {
     ABOVE = 0,
@@ -18,17 +24,33 @@ const DegradationLevelTreeNodeDrop = (props: IDegradationLevelTreeNodeDropProps)
 
     const {top, left, degradationLevelId, type} = props;
 
-    const asString = (type: DegradationLevelTreeNodeDropType) => {
-        if(type === DegradationLevelTreeNodeDropType.ABOVE){
-            return "above";
-        }else{
-            return "below";
-        }        
-    }
+    const {configuration, updateConfiguration} = useConfigurationContext();
+
+    const handleDrop = (item: IDegradationLevel) => {
+   
+        console.log(configuration);
+
+        //console.log(degradationLevelId + "("+asString(type)+"):", item);
+        
+        const newConfiguration : IConfiguration = JSON.parse(JSON.stringify(configuration));
+    
+        newConfiguration.degradations.push({
+            resultDegradationLevelId: degradationLevelId,
+            startDegradationLevelId: item.id,
+            stateResultLevel: null,
+            stateStartLevel: null,
+        });
+    
+        newConfiguration.degradationLevels = configuration.degradationLevels.slice();
+    
+        //console.log(configuration, newConfiguration);
+    
+        updateConfiguration(newConfiguration);
+    };
 
     const [{ isOver }, drop] = useDrop(() => ({
         accept: ItemTypes.LEVEL,
-        drop: (item) => console.log(degradationLevelId + "("+asString(type)+"):", item),
+        drop: (item) => handleDrop(item as IDegradationLevel), // as works because we only allow to drop items with the ItemType LEVEL
         collect: monitor => ({
           isOver: !!monitor.isOver(),
         }),

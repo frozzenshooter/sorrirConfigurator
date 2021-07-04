@@ -8,6 +8,8 @@ import DegradationLevelDialogType from './DegradationLevelDialog/DegradationLeve
 import SelectionMenuBar from '../selectionMenuBar/SelectionMenuBar';
 import DegradationLevelDeleteDialog from './DegradationLevelDeleteDialog/DegradationLevelDeleteDialog';
 import DegradationLevelHierarchyEditor, { DegradationLevelHierarchyEditorType } from '../degradationLevelHierarchyEditor/DegradationLevelHierarchyEditor';
+import { ConfigurationContext, useConfigurationContext } from '../../context/ConfigurationContext';
+import IConfiguration from '../../models/IConfiguration';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -29,6 +31,31 @@ const DegradationLevelConfigurationView = () => {
     const [deleteDialogOpen, setDeleteDialogOpen] = React.useState<boolean>(false);
     const [selectedDegradationLevels, setSelectedDegradationLevel] = React.useState<IDegradationLevel[]>([]);
 
+    const {configuration, updateConfiguration} = useConfigurationContext();
+
+   
+    const handleDrop = (item: IDegradationLevel, degradationLevelId: number | null) => {
+   
+        console.log(configuration);
+
+        //console.log(degradationLevelId + "("+asString(type)+"):", item);
+        
+        const newConfiguration : IConfiguration = JSON.parse(JSON.stringify(configuration));
+    
+        newConfiguration.degradations.push({
+            resultDegradationLevelId: degradationLevelId,
+            startDegradationLevelId: item.id,
+            stateResultLevel: null,
+            stateStartLevel: null,
+        });
+    
+        newConfiguration.degradationLevels = configuration.degradationLevels.slice();
+    
+        //console.log(configuration, newConfiguration);
+    
+        updateConfiguration(newConfiguration);
+    };
+
     const handleSelectionChanged = (selectedDegradationLevel: IDegradationLevel) => {
 
         const index = selectedDegradationLevels.findIndex(d => d.id === selectedDegradationLevel.id);
@@ -45,57 +72,57 @@ const DegradationLevelConfigurationView = () => {
     };
 
     return (
-      <>
-        <div id="degradation-level-configuration-view-container">
-            <Paper className={classes.degradationLevelConfigurationViewPaper}>
-              <div id="degradation-level-configuration-graph-container">
-                    <SelectionMenuBar
-                        amountOfSelectedItems={selectedDegradationLevels.length}
-                        onCreateClick={() =>{setCreateDialogOpen(true);}}
-                        onEditClick={() =>{setEditDialogOpen(true);}}
-                        onDeleteClick={() =>{setDeleteDialogOpen(true);}}
-                        />
-                    <DegradationLevelHierarchyEditor
-                        onSelectionChanged={handleSelectionChanged}
-                        selectedDegradationLevels={selectedDegradationLevels}
-                        degradationLevelHierarchyEditorType={DegradationLevelHierarchyEditorType.Degradation}
-                        />
-              </div>
-            </Paper>
-        </div>
+        <>
+          <div id="degradation-level-configuration-view-container">
+              <Paper className={classes.degradationLevelConfigurationViewPaper}>
+                <div id="degradation-level-configuration-graph-container">
+                      <SelectionMenuBar
+                          amountOfSelectedItems={selectedDegradationLevels.length}
+                          onCreateClick={() =>{setCreateDialogOpen(true);}}
+                          onEditClick={() =>{setEditDialogOpen(true);}}
+                          onDeleteClick={() =>{setDeleteDialogOpen(true);}} 
+                          />
+                      <DegradationLevelHierarchyEditor
+                            onSelectionChanged={handleSelectionChanged}
+                            selectedDegradationLevels={selectedDegradationLevels}
+                            degradationLevelHierarchyEditorType={DegradationLevelHierarchyEditorType.Degradation}
+                            />
+                </div>
+              </Paper>
+          </div>
 
-        <DegradationLevelDialog 
-          open={createDialogOpen}
-          type={DegradationLevelDialogType.Create}
-          onClose={() => {setCreateDialogOpen(false);}}
-        />
+          <DegradationLevelDialog 
+            open={createDialogOpen}
+            type={DegradationLevelDialogType.Create}
+            onClose={() => {setCreateDialogOpen(false);}}
+          />
 
-        {selectedDegradationLevels.length === 1 && editDialogOpen? 
+          {selectedDegradationLevels.length === 1 && editDialogOpen? 
 
-            <DegradationLevelDialog 
-              open={editDialogOpen}
-              type={DegradationLevelDialogType.Edit}
-              degradationLevel={selectedDegradationLevels[0]}
-              onClose={() => {setEditDialogOpen(false);}}
-              />
-          : 
-            null
-        }
-
-        {selectedDegradationLevels.length > 0 && deleteDialogOpen ?
-            <DegradationLevelDeleteDialog
-                open={deleteDialogOpen}
-                degradationLevels={selectedDegradationLevels}
-                onClose={() => {setDeleteDialogOpen(false);}} 
-                onDeleteComplete={() => {
-                  setDeleteDialogOpen(false); 
-                  setSelectedDegradationLevel([]); 
-                }}           
-            />
+              <DegradationLevelDialog 
+                open={editDialogOpen}
+                type={DegradationLevelDialogType.Edit}
+                degradationLevel={selectedDegradationLevels[0]}
+                onClose={() => {setEditDialogOpen(false);}}
+                />
             : 
-            null
-        }
-      </>
+              null
+          }
+
+          {selectedDegradationLevels.length > 0 && deleteDialogOpen ?
+              <DegradationLevelDeleteDialog
+                  open={deleteDialogOpen}
+                  degradationLevels={selectedDegradationLevels}
+                  onClose={() => {setDeleteDialogOpen(false);}} 
+                  onDeleteComplete={() => {
+                    setDeleteDialogOpen(false); 
+                    setSelectedDegradationLevel([]); 
+                  }}           
+              />
+              : 
+              null
+          }
+        </>
     );
 }
 
