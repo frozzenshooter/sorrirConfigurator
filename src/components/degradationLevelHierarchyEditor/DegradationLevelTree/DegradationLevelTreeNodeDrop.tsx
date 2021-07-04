@@ -2,18 +2,33 @@ import { DEFAULT_DROP_NODE_HEIGHT, DEFAULT_NODE_WIDTH } from "./TreeConstants";
 import { useDrop } from 'react-dnd'
 import ItemTypes from "../ItemTypes";
 
+export enum DegradationLevelTreeNodeDropType {
+    ABOVE = 0,
+    BELOW = 1
+}
+
 export interface IDegradationLevelTreeNodeDropProps {
-    top: number,
-    left: number
+    top: number;
+    left: number;
+    degradationLevelId: number | null;
+    type: DegradationLevelTreeNodeDropType;
 }
 
 const DegradationLevelTreeNodeDrop = (props: IDegradationLevelTreeNodeDropProps) => {
 
-    const {top, left} = props;
+    const {top, left, degradationLevelId, type} = props;
+
+    const asString = (type: DegradationLevelTreeNodeDropType) => {
+        if(type === DegradationLevelTreeNodeDropType.ABOVE){
+            return "above";
+        }else{
+            return "below";
+        }        
+    }
 
     const [{ isOver }, drop] = useDrop(() => ({
         accept: ItemTypes.LEVEL,
-        drop: (item) => console.log(ItemTypes),
+        drop: (item) => console.log(degradationLevelId + "("+asString(type)+"):", item),
         collect: monitor => ({
           isOver: !!monitor.isOver(),
         }),
