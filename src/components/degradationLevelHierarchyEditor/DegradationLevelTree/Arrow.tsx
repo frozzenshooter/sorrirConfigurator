@@ -1,3 +1,5 @@
+import { DEFAULT_NODE_Y_DISTANCE } from "./TreeConstants";
+
 export enum ArrowType {
     Degradation = 0,
     Upgrade = 1
@@ -7,23 +9,25 @@ export interface IArrowProps {
     left: number,
     top: number,
     width: number,
-    end: number,
+    endXCoordinate: number,
     type: ArrowType,
 }
 
 const Arrow = (props: IArrowProps) => {
 
-    const {top, left, width, end, type} = props;
+    const {top, left, width, endXCoordinate, type} = props;
 
-    const arrowStart = width/2;
-    const height = 50;
+    const arrowXCoordinateStart = width/2;
+    const height = DEFAULT_NODE_Y_DISTANCE + 16; // + 16 is because of the internal padding of the tree nodes
+
+    const halfHeight = height / 2;
 
     if(type === ArrowType.Upgrade){
         return(
             <svg
                 style = {{
                     position:"absolute", 
-                    top:top+"px",
+                    top: top+"px",
                     left: left +"px"
                 }}
                 preserveAspectRatio="none" 
@@ -37,7 +41,7 @@ const Arrow = (props: IArrowProps) => {
                         <path d='M0,0 H10 L5,10 L0,0 Z' fill='black' />
                     </marker>
                 </defs> 
-                <path markerEnd='url(#head)' d={"M"+arrowStart+" 0 L"+arrowStart+" 25 H"+end+" L"+end+" "+(height-10)+""} stroke="black" />
+                <path markerEnd='url(#head)' d={"M"+arrowXCoordinateStart+" 0 L"+arrowXCoordinateStart+" "+halfHeight+" H"+endXCoordinate+" L"+endXCoordinate+" "+(height-10)+""} stroke="black" />
             </svg>
             );
     }else{
@@ -59,7 +63,7 @@ const Arrow = (props: IArrowProps) => {
                         <path d='M0,0 H10 L5,10 L0,0 Z' fill='black' />
                     </marker>
                 </defs>         
-                <path markerEnd='url(#head)' d={"M"+end+" "+height+ "L"+end +" "+(height-25)+ " " +"H"+end +"L"+arrowStart+" 25"+ "L"+arrowStart+" 10"  } stroke="black" />
+                <path markerEnd='url(#head)' d={"M"+endXCoordinate+" "+height+ "L"+endXCoordinate +" "+(height-halfHeight)+ " " +"H"+endXCoordinate +"L"+arrowXCoordinateStart+" "+halfHeight+""+ "L"+arrowXCoordinateStart+" 10"  } stroke="black" />
             </svg>
             );
     }

@@ -6,7 +6,6 @@ import DegradationLevelNode from './DegradationLevelNode/DegradationLevelNode';
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import DegradationLevelTree from './DegradationLevelTree/DegradationLevelTree';
-import DegradationLevelTreeOld from '../degradationLevelConfigurationView/DegradationLevelHierarchyEditor/DegradationLevelTree';
 
 export interface DegradationLevelHierarchyEditorProps {
     selectedDegradationLevels: IDegradationLevel[];
@@ -80,9 +79,5 @@ const DegradationLevelHierarchyEditor =  (props: DegradationLevelHierarchyEditor
         </DndProvider>
     );
 };
-
-/*
- <DegradationLevelTreeOld />
- */
 
 export default DegradationLevelHierarchyEditor;

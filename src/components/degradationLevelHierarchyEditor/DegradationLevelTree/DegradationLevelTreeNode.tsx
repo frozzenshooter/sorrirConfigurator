@@ -3,7 +3,7 @@ import React from "react";
 import IDegradationLevel from "../../../models/IDegradationLevel";
 import DegradationLevelNode from "../DegradationLevelNode/DegradationLevelNode";
 import DegradationLevelTreeNodeDrop from "./DegradationLevelTreeNodeDrop";
-import { DEFAULT_NODE_HEIGHT, DEFAULT_NODE_WIDTH } from "./TreeConstants";
+import { DEFAULT_DROP_NODE_HEIGHT, DEFAULT_NODE_HEIGHT, DEFAULT_NODE_WIDTH } from "./TreeConstants";
 
 export interface IDegradationLevelTreeNodeProps {
     top: number;
@@ -19,38 +19,49 @@ const DegradationLevelTreeNode = (props: IDegradationLevelTreeNodeProps) => {
 
     if(!degradationLevel){
 
+        const finalWidth = DEFAULT_NODE_WIDTH - 16; // -16 because of the padding that is added 
+        const finalHeight = DEFAULT_NODE_HEIGHT - 16; // -16 because of the padding that is added 
+
         // Case for the OFF STATE
         return ( 
-        <React.Fragment>
-            <Paper
-                style={{
-                top:top+"px", 
-                left:left+"px", 
-                position: "absolute",
-                margin: "8px",
-                width: DEFAULT_NODE_WIDTH-32,
-                height: DEFAULT_NODE_HEIGHT
-                }}
+            <React.Fragment>
+                <div
+                    style={{
+                        width: finalWidth, 
+                        height: finalHeight,
+                        padding: "8px",
+                        top: top+"px", 
+                        left: left+"px", 
+                        position: "absolute",
+                    }}
                 >
-                <div className="degradation-level-node-content">
-                <div className="degradation-level-node-content-label">
-                    OFF
+                    <Paper
+                        style={{
+                            width: finalWidth, 
+                            height: finalHeight,
+                        }}
+                    >
+                        <div className="degradation-level-node-content">
+                            <div className="degradation-level-node-content-label">
+                                OFF
+                            </div>
+                        </div>
+                    </Paper>
                 </div>
-                </div>
-            </Paper>
-            <DegradationLevelTreeNodeDrop
-                left={left}
-                top={top+DEFAULT_NODE_HEIGHT}
-            />
-        </React.Fragment>
+                <DegradationLevelTreeNodeDrop
+                    left={left+8}  // 8 addtional pixels because the normal nodes have a padding - to align them correctly
+                    top={top+DEFAULT_NODE_HEIGHT-8} // remove 8 pixels because the normal nodes have a padding - to align them correctly
+                />
+
+            </React.Fragment>
         )
     }
 
     return (
         <React.Fragment>
             <DegradationLevelTreeNodeDrop
-                left={left}
-                top={top-20}
+                left={left + 8} // 8 addtional pixels because the normal nodes have a padding - to align them correctly
+                top={top-DEFAULT_DROP_NODE_HEIGHT + 8} // - DEFAULT_DROP_NODE_HEIGHT to align the dropzone above the TreeNode
             />
             <DegradationLevelNode
                 degradationLevel={degradationLevel}
@@ -60,8 +71,8 @@ const DegradationLevelTreeNode = (props: IDegradationLevelTreeNodeProps) => {
                 left={left}
             />
             <DegradationLevelTreeNodeDrop
-                left={left}
-                top={top+DEFAULT_NODE_HEIGHT}
+                left={left + 8} // 8 addtional pixels because the normal nodes have a padding - to align them correctly
+                top={top + DEFAULT_NODE_HEIGHT - 8} // remove 8 pixels because the normal nodes have a padding - to align them correctly
             />
         </React.Fragment>
     );

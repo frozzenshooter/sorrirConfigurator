@@ -1,4 +1,4 @@
-import { DEFAULT_NODE_WIDTH } from "./TreeConstants";
+import { DEFAULT_DROP_NODE_HEIGHT, DEFAULT_NODE_WIDTH } from "./TreeConstants";
 import { useDrop } from 'react-dnd'
 import ItemTypes from "../ItemTypes";
 
@@ -26,10 +26,9 @@ const DegradationLevelTreeNodeDrop = (props: IDegradationLevelTreeNodeDropProps)
                 top: top + "px",
                 left: left + "px",
                 position: "absolute",
-                margin: "8px",
-                width: DEFAULT_NODE_WIDTH - 32,
+                width: DEFAULT_NODE_WIDTH - 16,
                 border: isOver ? "1px dashed black" : "none",
-                height: "20px" , 
+                height: DEFAULT_DROP_NODE_HEIGHT+ "px" , 
                 boxSizing: "border-box",
                 backgroundColor: isOver ? "rgba(63, 81, 181, 0.3)" : "transparent",
                 zIndex: 9 // required because otherwise the arrows would be in front of it             

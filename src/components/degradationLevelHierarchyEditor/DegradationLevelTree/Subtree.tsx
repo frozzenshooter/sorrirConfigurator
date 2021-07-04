@@ -1,8 +1,8 @@
 import IDegradationLevel from "../../../models/IDegradationLevel";
 import ILevelChange from "../../../models/ILevelChange";
-import Arrow, { ArrowType } from "../../degradationLevelConfigurationView/DegradationLevelHierarchyEditor/Arrow";
+import Arrow, { ArrowType } from "./Arrow";
 import DegradationLevelTreeNode from "./DegradationLevelTreeNode";
-import { DEFAULT_NODE_HEIGHT, DEFAULT_NODE_WIDTH, DEFAULT_NODE_Y_PADDING, DEFAULT_TREE_X_OFFSET, DEFAULT_TREE_Y_OFFSET } from "./TreeConstants";
+import { DEFAULT_NODE_HEIGHT, DEFAULT_NODE_WIDTH, DEFAULT_NODE_Y_DISTANCE, DEFAULT_TREE_X_OFFSET, DEFAULT_TREE_Y_OFFSET } from "./TreeConstants";
 
 export interface ISubtreeProps {
     currentDegradationLevel?: IDegradationLevel; // not set value means inital OFF state
@@ -66,7 +66,7 @@ const GetSubtree = (props: ISubtreeProps): ISubtreeResult => {
         return index !== -1;
     }
 
-    const arrowEnds: number[] = [];
+    const arrowsEndXCoordinates: number[] = [];
 
     if(relevantChildIds.length > 0){
 
@@ -76,7 +76,7 @@ const GetSubtree = (props: ISubtreeProps): ISubtreeResult => {
         let completeSubtreeWidth : number = 0;
 
         // Calculate the top value for the childnodes/subtrees       
-        const yOffsetCurrent = yOffset + DEFAULT_NODE_Y_PADDING + DEFAULT_NODE_HEIGHT;
+        const yOffsetCurrent = yOffset + DEFAULT_NODE_Y_DISTANCE + DEFAULT_NODE_HEIGHT;
 
         // left value of the first childnode/subtree
         let xOffsetCurrent = xOffset; 
@@ -100,7 +100,7 @@ const GetSubtree = (props: ISubtreeProps): ISubtreeResult => {
                 onSelectionChanged: onSelectionChanged                
             });
 
-            arrowEnds.push(completeSubtreeWidth + subtreeResult.width/2);
+            arrowsEndXCoordinates.push(completeSubtreeWidth + subtreeResult.width/2);
 
             // Update the complete width
             completeSubtreeWidth = completeSubtreeWidth + subtreeResult.width;
@@ -124,9 +124,9 @@ const GetSubtree = (props: ISubtreeProps): ISubtreeResult => {
                     top={yOffset}
                 />
                 {subtreeNodes}
-                {arrowEnds.length > 0 ? 
+                {arrowsEndXCoordinates.length > 0 ? 
                     <>
-                    {arrowEnds.map((a, index) => {
+                    {arrowsEndXCoordinates.map((a, index) => {
 
                         if(!xOffset){
                             xOffset = DEFAULT_TREE_Y_OFFSET;
@@ -140,9 +140,9 @@ const GetSubtree = (props: ISubtreeProps): ISubtreeResult => {
 
                         <Arrow 
                             left={xOffset}
-                            top={yOffset+DEFAULT_NODE_HEIGHT}
+                            top={yOffset+DEFAULT_NODE_HEIGHT - 8}
                             width={completeSubtreeWidth}
-                            end={arrowEnds[index]}
+                            endXCoordinate={arrowsEndXCoordinates[index]}
                             type={ArrowType.Degradation}
                             />);
                     })}
