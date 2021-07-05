@@ -8,8 +8,6 @@ import './UpgradeLevelConfigrationView.css'
 import DegradationLevelDialog from '../degradationLevelConfigurationView/DegradationLevelDialog/DegradationLevelDialog';
 import DegradationLevelDeleteDialog from '../degradationLevelConfigurationView/DegradationLevelDeleteDialog/DegradationLevelDeleteDialog';
 import DegradationLevelDialogType from '../degradationLevelConfigurationView/DegradationLevelDialog/DegradationLevelDialogType';
-import { useConfigurationContext } from '../../context/ConfigurationContext';
-import IConfiguration from '../../models/IConfiguration';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

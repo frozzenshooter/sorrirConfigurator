@@ -1,11 +1,12 @@
+/* eslint-disable react-hooks/exhaustive-deps*/
+// this rule has to be excluded becuase of the usage of useEffect here
 import { DEFAULT_DROP_NODE_HEIGHT, DEFAULT_NODE_WIDTH } from "./TreeConstants";
 import { useDrop } from 'react-dnd'
 import ItemTypes from "../ItemTypes";
 import { useConfigurationContext } from "../../../context/ConfigurationContext";
 import IDegradationLevel from "../../../models/IDegradationLevel";
-import IDegradationLevelState from "../../../models/IDegradationLevelState";
 import IConfiguration from "../../../models/IConfiguration";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 export enum DegradationLevelTreeNodeDropType {
     ABOVE = 0,
@@ -28,13 +29,13 @@ const DegradationLevelTreeNodeDrop = (props: IDegradationLevelTreeNodeDropProps)
     // required to be able to update the callback for the drop behavior using useEffect
     const [item, setItem] = useState<IDegradationLevel>();
 
-    const handleDrop = (item: IDegradationLevel, oldConfiguration: IConfiguration, type: DegradationLevelTreeNodeDropType) => {
+    const handleDrop = (item: IDegradationLevel) => {
            
         // check if an update is required (trivial case - you would insert it on the same spot again - ids are the same)
         
         if(item.id !== degradationLevelId){
 
-            const newConfiguration : IConfiguration = Object.assign({}, oldConfiguration);
+            const newConfiguration : IConfiguration = Object.assign({}, configuration);
         
             //#region Handle the removal of the current item from another position in the tree
             
@@ -95,6 +96,7 @@ const DegradationLevelTreeNodeDrop = (props: IDegradationLevelTreeNodeDropProps)
             }else{            
                 // BELOW CASE
 
+
                 // it is possible to simply add a new level change (old ones are already removed and there should no effects on other level changes)
                 newConfiguration.degradations.push({
                     resultDegradationLevelId: degradationLevelId,
@@ -110,16 +112,17 @@ const DegradationLevelTreeNodeDrop = (props: IDegradationLevelTreeNodeDropProps)
         }
     };
 
-    // required to be able to update the configuration by dropping an item
+    // required to be able to update the configuration by dropping an item - this will create a warning in the build process
+    // to mitigate this a complete other way of creating the tree is probably required
     useEffect(() => {
         if(item){
-            handleDrop(item, configuration, type);
+            handleDrop(item);
         }
     }, [item]);
 
     const [{ isOver }, drop] = useDrop(() => ({
         accept: ItemTypes.LEVEL,
-        drop: (i) => setItem(i as IDegradationLevel), // as works because we only allow to drop items with the ItemType LEVEL
+        drop: (i) => setItem(i as IDegradationLevel), // 'as' works because we only allow to drop items with the ItemType LEVEL
         collect: monitor => ({
           isOver: !!monitor.isOver(),
         }),

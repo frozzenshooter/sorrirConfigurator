@@ -1,7 +1,6 @@
 import { useConfigurationContext } from "../../../context/ConfigurationContext";
 import IConfiguration from "../../../models/IConfiguration";
 import IDegradationLevel from "../../../models/IDegradationLevel";
-import ILevelChange from "../../../models/ILevelChange";
 import DecisionDialog from "../../decisionDialog/DecisionDialog";
 
 export interface IDegradationLevelDeleteDialogProps {

@@ -8,8 +8,6 @@ import DegradationLevelDialogType from './DegradationLevelDialog/DegradationLeve
 import SelectionMenuBar from '../selectionMenuBar/SelectionMenuBar';
 import DegradationLevelDeleteDialog from './DegradationLevelDeleteDialog/DegradationLevelDeleteDialog';
 import DegradationLevelHierarchyEditor, { DegradationLevelHierarchyEditorType } from '../degradationLevelHierarchyEditor/DegradationLevelHierarchyEditor';
-import { ConfigurationContext, useConfigurationContext } from '../../context/ConfigurationContext';
-import IConfiguration from '../../models/IConfiguration';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

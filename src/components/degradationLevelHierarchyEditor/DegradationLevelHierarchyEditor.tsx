@@ -5,8 +5,6 @@ import DegradationLevelNode from './DegradationLevelNode/DegradationLevelNode';
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import DegradationLevelTree, { DegradationLevelTreeType } from './DegradationLevelTree/DegradationLevelTree';
-import IConfiguration from '../../models/IConfiguration';
-import { useEffect, useState } from 'react';
 
 export enum DegradationLevelHierarchyEditorType {
     Degradation = 0,
