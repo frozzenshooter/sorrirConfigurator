@@ -48,7 +48,8 @@ const DegradationLevelNode = (props: IDegradationLevelNodeProps) => {
         classNames = classes.selected;
     }
 
-    const label = degradationLevel.label + " (" + degradationLevel.id + ")";
+    const labelText = degradationLevel.label !== "" ? degradationLevel.label : "Level";
+    const label = degradationLevel.id + " - " + labelText;
 
     const handleClick = () => {
         onSelectionChanged(degradationLevel);
