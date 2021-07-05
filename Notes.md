@@ -13,7 +13,7 @@
  + Wenn man die Shadowmodes löscht müssen entsprechende Dependencies in den DegradationLevels gelöscht werden!! Gleiches gilt für das löschen an sich
  + States von dependencylevel muss überalll nachgezogen werden
  + Json Validierung an neues Model anpassen + Testdaten aktualisieren
-
+ + Deleation Handling of Levels - create/update LevelChanges for upgrades and degradations
 
 
  + Frage: Muss der State des Levels beim Arrow Start und Result definiert sein oder nur beim Result?
