@@ -25,27 +25,95 @@ const DegradationLevelTreeNodeDrop = (props: IDegradationLevelTreeNodeDropProps)
 
     const {configuration, updateConfiguration} = useConfigurationContext();
 
-
+    // required to be able to update the callback for the drop behavior using useEffect
     const [item, setItem] = useState<IDegradationLevel>();
 
-    const handleDrop = (item: IDegradationLevel, oldConfiguration: IConfiguration) => {
+    const handleDrop = (item: IDegradationLevel, oldConfiguration: IConfiguration, type: DegradationLevelTreeNodeDropType) => {
            
-        const newConfiguration : IConfiguration = Object.assign({}, oldConfiguration);
-    
-        newConfiguration.degradations.push({
-            resultDegradationLevelId: degradationLevelId,
-            startDegradationLevelId: item.id,
-            stateResultLevel: null,
-            stateStartLevel: null,
-        });
+        // check if an update is required (trivial case - you would insert it on the same spot again - ids are the same)
         
-        updateConfiguration(newConfiguration);
+        if(item.id !== degradationLevelId){
+
+            const newConfiguration : IConfiguration = Object.assign({}, oldConfiguration);
+        
+            //#region Handle the removal of the current item from another position in the tree
+            
+            // Can only be one or none because only one parent is possible
+            const startLevelChangeIndex = newConfiguration.degradations.findIndex(d => d.startDegradationLevelId === item.id);
+
+            if(startLevelChangeIndex !== -1){
+                // only if there is a parent it is required to update possible child nodes
+
+                const startLevelChange = newConfiguration.degradations[startLevelChangeIndex];
+
+                // Get all the levels that result in the current level to be able to create new levelchanges that will start from them but end in the current parent level
+                const currentResultLevelChanges = newConfiguration.degradations.filter(d => d.resultDegradationLevelId === item.id);
+
+                // Remove all current level changes
+                newConfiguration.degradations = newConfiguration.degradations.filter(d => d.startDegradationLevelId !== item.id && d.resultDegradationLevelId !== item.id);
+        
+                for(const lvlChg of currentResultLevelChanges){
+                    newConfiguration.degradations.push({
+                        resultDegradationLevelId: startLevelChange.resultDegradationLevelId,
+                        startDegradationLevelId: lvlChg.startDegradationLevelId,
+                        stateResultLevel: startLevelChange.stateResultLevel,
+                        stateStartLevel: lvlChg.stateStartLevel,
+                    });
+                }
+            }
+            //#endregion
+
+            //#region Handle the insertion of the current item in the tree
+
+            if(type === DegradationLevelTreeNodeDropType.ABOVE){
+
+                const index = newConfiguration.degradations.findIndex(d => d.startDegradationLevelId === degradationLevelId);
+                if(index !== -1){
+                    // Should always find a degradation, but just to be sure
+
+                    const currentLevelChange = newConfiguration.degradations[index];
+                    
+                    newConfiguration.degradations = newConfiguration.degradations.filter(d => d.startDegradationLevelId !== degradationLevelId).slice();
+
+                    // replacement of the currentLevelChange
+                    newConfiguration.degradations.push({
+                        resultDegradationLevelId: item.id,
+                        startDegradationLevelId: currentLevelChange.startDegradationLevelId,
+                        stateResultLevel: null,
+                        stateStartLevel: currentLevelChange.stateStartLevel,
+                    });
+
+                    // additional LevelChange outgoing from this Level to the previous child level
+                    newConfiguration.degradations.push({
+                        resultDegradationLevelId: currentLevelChange.resultDegradationLevelId,
+                        startDegradationLevelId: item.id,
+                        stateResultLevel: currentLevelChange.stateResultLevel,
+                        stateStartLevel: null,
+                    });
+
+                }
+            }else{            
+                // BELOW CASE
+
+                // it is possible to simply add a new level change (old ones are already removed and there should no effects on other level changes)
+                newConfiguration.degradations.push({
+                    resultDegradationLevelId: degradationLevelId,
+                    startDegradationLevelId: item.id,
+                    stateResultLevel: null,
+                    stateStartLevel: null,
+                });
+            }
+
+            //#endregion
+
+            updateConfiguration(newConfiguration);
+        }
     };
 
     // required to be able to update the configuration by dropping an item
     useEffect(() => {
         if(item){
-            handleDrop(item, configuration);
+            handleDrop(item, configuration, type);
         }
     }, [item]);
 
