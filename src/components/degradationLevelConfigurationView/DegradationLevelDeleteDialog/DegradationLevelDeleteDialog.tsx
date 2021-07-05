@@ -21,7 +21,7 @@ const DegradationLevelDeleteDialog = (props: IDegradationLevelDeleteDialogProps)
     };
 
     const handleDeletion = () => {
-        const newConfiguration: IConfiguration = JSON.parse(JSON.stringify(configuration));
+        const newConfiguration: IConfiguration = Object.assign({}, configuration);
 
         degradationLevels.forEach(dl => {
             newConfiguration.degradationLevels = newConfiguration.degradationLevels.filter(d => d.id !== dl.id).slice();

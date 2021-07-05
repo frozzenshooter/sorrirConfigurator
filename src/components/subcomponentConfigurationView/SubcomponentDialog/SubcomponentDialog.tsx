@@ -79,7 +79,7 @@ const SubcomponentDialog = (props: ISubcomponentDialogProps) => {
             return;
         }
 
-        const newConfiguration : IConfiguration = JSON.parse(JSON.stringify(configuration));
+        const newConfiguration : IConfiguration = Object.assign({}, configuration);
 
         if(type === SubcomponentDialogType.Edit){
 

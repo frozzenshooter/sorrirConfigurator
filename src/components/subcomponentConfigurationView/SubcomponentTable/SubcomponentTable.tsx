@@ -97,7 +97,7 @@ const SubComponentTable = () => {
     };
 
     const handleDeleteConfirm = () => {
-        const newConfiguration : IConfiguration = JSON.parse(JSON.stringify(configuration));
+        const newConfiguration : IConfiguration = Object.assign({}, configuration);
         newConfiguration.subcomponents = configuration.subcomponents.filter(subcomponent => !isSelected(subcomponent.id)).slice();
         setSelected([]);
         setDeleteDialogOpen(false);

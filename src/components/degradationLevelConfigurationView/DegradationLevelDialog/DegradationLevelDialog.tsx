@@ -112,7 +112,7 @@ const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
 
     const handleSave = () => {
         if(isValid()){
-            const newConfiguration: IConfiguration = JSON.parse(JSON.stringify(configuration));
+            const newConfiguration: IConfiguration = Object.assign({}, configuration);
 
             // Remove all dont cares and only save the relevant ones
             const newDependencies = dependencies.filter(d => d.shadowmodeId !== "").slice();

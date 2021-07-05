@@ -28,30 +28,8 @@ const DegradationLevelTreeNodeDrop = (props: IDegradationLevelTreeNodeDropProps)
 
     const [item, setItem] = useState<IDegradationLevel>();
 
-    /*const handleDrop = (item: IDegradationLevel) => {
-   
-        //console.log(degradationLevelId + "("+asString(type)+"):", item);
-        
-        const newConfiguration : IConfiguration = JSON.parse(JSON.stringify(configuration));
-    
-        newConfiguration.degradations.push({
-            resultDegradationLevelId: degradationLevelId,
-            startDegradationLevelId: item.id,
-            stateResultLevel: null,
-            stateStartLevel: null,
-        });
-    
-        newConfiguration.degradationLevels = configuration.degradationLevels.slice();
-    
-        //console.log(configuration, newConfiguration);
-    
-        updateConfiguration(newConfiguration);
-    };*/
-
     const handleDrop = (item: IDegradationLevel, oldConfiguration: IConfiguration) => {
            
-        console.log(configuration);
-
         const newConfiguration : IConfiguration = Object.assign({}, oldConfiguration);
     
         newConfiguration.degradations.push({
@@ -60,13 +38,11 @@ const DegradationLevelTreeNodeDrop = (props: IDegradationLevelTreeNodeDropProps)
             stateResultLevel: null,
             stateStartLevel: null,
         });
-    
-        //newConfiguration.degradationLevels = configuration.degradationLevels.slice();
-    
+        
         updateConfiguration(newConfiguration);
     };
 
-
+    // required to be able to update the configuration by dropping an item
     useEffect(() => {
         if(item){
             handleDrop(item, configuration);
