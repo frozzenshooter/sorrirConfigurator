@@ -66,7 +66,7 @@ const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
 
     //#region Init state
     const initalDegradationLevel :IDegradationLevel = {
-        id: 0,
+        id: 1,
         label: "",
         dependencies: [],
         states: []
@@ -96,7 +96,7 @@ const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
     //#region Close/Save handling
     const resetState = () => {
         if(type === DegradationLevelDialogType.Create){
-            setId(0);
+            setId(1);
             setLabel("");
             setDependencies([]);
             setStates([]);
@@ -183,6 +183,11 @@ const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
                     newErrorMessages.push("The id '"+id+"' is already used by another Degradation Level");
                 }
             }
+        }
+
+        if(id === 0){
+            isValid = false;
+            newErrorMessages.push("The id '0' is reserved for the OFF Level");
         }
 
         setErrorMessages(newErrorMessages);

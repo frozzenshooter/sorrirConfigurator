@@ -16,7 +16,7 @@ export enum DegradationLevelTreeNodeDropType {
 export interface IDegradationLevelTreeNodeDropProps {
     top: number;
     left: number;
-    degradationLevelId: number | null;
+    degradationLevelId: number;
     type: DegradationLevelTreeNodeDropType;
 }
 

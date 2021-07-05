@@ -23,7 +23,6 @@ export interface ISubtreeProps {
     // SELECTION
     onSelectionChanged: (selected: IDegradationLevel) => void;
     selectedDegradationLevels: IDegradationLevel[];
-
     subtreeType: SubtreeType;
 }
 
@@ -56,8 +55,8 @@ const GetSubtree = (props: ISubtreeProps): ISubtreeResult => {
         yOffset = DEFAULT_TREE_Y_OFFSET;
     }
 
-    // Null has to be possible for the OFF node
-    let currentDegradationLevelId: number | null = null;
+    // Zero for the OFF node
+    let currentDegradationLevelId: number = 0;
     if(currentDegradationLevel){
         currentDegradationLevelId = currentDegradationLevel.id;
     }
@@ -65,8 +64,8 @@ const GetSubtree = (props: ISubtreeProps): ISubtreeResult => {
     // Calculate the childnodes to determine if a recursion is required or if you can just return the current node 
     const relevantChildIds = levelChanges.filter(lc => lc.resultDegradationLevelId === currentDegradationLevelId).map(lc => lc.startDegradationLevelId);
 
-    const isSelected = (id: number | null) => {
-        if(id === null){
+    const isSelected = (id: number) => {
+        if(id === 0){
             // This is the case for the OFF node - can't be selected
             return false;
         }

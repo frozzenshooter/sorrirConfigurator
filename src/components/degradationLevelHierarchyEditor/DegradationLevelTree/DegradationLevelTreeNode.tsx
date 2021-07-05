@@ -43,7 +43,7 @@ const DegradationLevelTreeNode = (props: IDegradationLevelTreeNodeProps) => {
                     >
                         <div className="degradation-level-node-content">
                             <div className="degradation-level-node-content-label">
-                                OFF
+                                0 - OFF
                             </div>
                         </div>
                     </Paper>
@@ -51,7 +51,7 @@ const DegradationLevelTreeNode = (props: IDegradationLevelTreeNodeProps) => {
                 <DegradationLevelTreeNodeDrop
                     left={left+8}  // 8 addtional pixels because the normal nodes have a padding - to align them correctly
                     top={top+DEFAULT_NODE_HEIGHT-8} // remove 8 pixels because the normal nodes have a padding - to align them correctly
-                    degradationLevelId={null}
+                    degradationLevelId={0}
                     type={DegradationLevelTreeNodeDropType.BELOW}
                 />
 
