@@ -38,12 +38,11 @@ const StateSelector = (props: IStateSelectorProps) => {
     const classes = useStyles();
 
     const handleChange = (newStateId: string) => {
-
         onChange(startState, newStateId);
     }
 
     return (
-        <div className="state-selector-container">
+        <div className="state-selector-container" key={startLabel + " "+ resultLabel}>
             <FormControl className={classes.formControl} key={startState.id}>
                 <InputLabel shrink id="start-state-selector-label">{startLabel}</InputLabel>
                 <Select

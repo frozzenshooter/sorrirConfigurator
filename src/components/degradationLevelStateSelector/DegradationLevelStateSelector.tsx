@@ -48,7 +48,7 @@ const DegradationLevelStateSelector = (props: IDegradationLevelStateSelectorProp
     }
 
     return (
-        <div className="degradation-level-state-selector-container">
+        <div className="degradation-level-state-selector-container" key={(startLabel+ " " + resultLabel)}>
                 <div className="degradation-level-state-selector-title">
                     {"State changes for "+ typeString + " from '"} 
                         <b>{startLabel}</b>
