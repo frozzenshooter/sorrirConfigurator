@@ -10,6 +10,7 @@ export interface IStateSelectorProps {
     startLabel: string;
     resultLabel: string;
     currentResultStateId: string | null; 
+    onChange: (startState: IDegradationLevelState, resultStateId: string) => void;
 }
 
 
@@ -32,13 +33,18 @@ export interface IStateSelectorProps {
 
 const StateSelector = (props: IStateSelectorProps) => {
 
-    const {currentResultStateId, resultStates, startState, startLabel, resultLabel} = props;
+    const {currentResultStateId, resultStates, startState, startLabel, resultLabel, onChange} = props;
 
     const classes = useStyles();
 
+    const handleChange = (newStateId: string) => {
+
+        onChange(startState, newStateId);
+    }
+
     return (
         <div className="state-selector-container">
-            <FormControl className={classes.formControl}>
+            <FormControl className={classes.formControl} key={startState.id}>
                 <InputLabel shrink id="start-state-selector-label">{startLabel}</InputLabel>
                 <Select
                     variant="outlined"
@@ -60,7 +66,7 @@ const StateSelector = (props: IStateSelectorProps) => {
                 width={150}
             />
 
-            <FormControl className={classes.formControl}>
+            <FormControl className={classes.formControl} key={(currentResultStateId === null? "": currentResultStateId)}>
                 <InputLabel shrink id="result-state-selector-label">{resultLabel}</InputLabel>
                 <Select
                     variant="outlined"
@@ -68,7 +74,7 @@ const StateSelector = (props: IStateSelectorProps) => {
                     id="result-state-selector"
                     value={currentResultStateId === null? "": currentResultStateId}
                     onChange={(ev)=> {
-                        console.log((ev.target.value as string));
+                        handleChange((ev.target.value as string));
                     }}
                         displayEmpty
                         className={classes.selectEmpty}

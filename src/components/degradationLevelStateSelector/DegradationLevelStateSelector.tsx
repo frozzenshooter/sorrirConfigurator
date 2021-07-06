@@ -15,11 +15,14 @@ export interface IDegradationLevelStateSelectorProps {
     levelChange: ILevelChange;
     startDegradationLevel: IDegradationLevel | null;
     resultDegradationLevel: IDegradationLevel | null;
+    onChange: (levelChange: ILevelChange, startState: IDegradationLevelState, resultStateId: string) => void;
 }
 
 const DegradationLevelStateSelector = (props: IDegradationLevelStateSelectorProps) => {
     
-    const {type, levelChange, startDegradationLevel, resultDegradationLevel} = props;
+    const {type, levelChange, startDegradationLevel, resultDegradationLevel, onChange} = props;
+
+    //#region Label creation
 
     const getDegradationLevelLabel = (degradationLevel : IDegradationLevel | null) : string => {
 
@@ -37,6 +40,12 @@ const DegradationLevelStateSelector = (props: IDegradationLevelStateSelectorProp
 
     const startLabel = getDegradationLevelLabel(startDegradationLevel);
     const resultLabel = getDegradationLevelLabel(resultDegradationLevel)
+
+    //#endregion
+
+    const handleChange = (startState: IDegradationLevelState, resultStateId: string) => {
+        onChange(levelChange, startState, resultStateId);
+    }
 
     return (
         <div className="degradation-level-state-selector-container">
@@ -58,7 +67,6 @@ const DegradationLevelStateSelector = (props: IDegradationLevelStateSelectorProp
 
                     {startDegradationLevel?.states.map(s => {
 
-
                             let resultStates : IDegradationLevelState[] = [];
                             if(resultDegradationLevel){
                                 resultStates = resultDegradationLevel.states;
@@ -79,6 +87,7 @@ const DegradationLevelStateSelector = (props: IDegradationLevelStateSelectorProp
                                         currentResultStateId={currentResultStateId}
                                         startLabel={startLabel}
                                         resultLabel={resultLabel}
+                                        onChange={handleChange}
                                     />
                                 </div>
                             );
