@@ -1,5 +1,6 @@
 import IDegradationLevel from "../../../models/IDegradationLevel";
 import ILevelChange from "../../../models/ILevelChange";
+import DeleteDropNode, { DeleteDropNodeType } from "./DeleteDropNode";
 import GetSubtree, { SubtreeType } from "./Subtree";
 
 export enum DegradationLevelTreeType {
@@ -21,6 +22,8 @@ const DegradationLevelTree = (props: IDegradationLevelTreeProps) => {
 
     const {degradationLevels, levelChanges, degradationLevelTreeType, selectedDegradationLevels, onSelectionChanged} = props;
 
+    const deleteDropNodeHeight = 50;
+
     // Calculate the subtree (including the width for the internal calculation)
     const subtreeResult = GetSubtree({
         degradationLevels: degradationLevels,
@@ -28,10 +31,16 @@ const DegradationLevelTree = (props: IDegradationLevelTreeProps) => {
         onSelectionChanged: onSelectionChanged,
         selectedDegradationLevels: selectedDegradationLevels,
         subtreeType: degradationLevelTreeType === DegradationLevelTreeType.Degradation ? SubtreeType.Degradation : SubtreeType.Upgrade,
+        yOffset: deleteDropNodeHeight
     });
 
     return (
         <>
+            <DeleteDropNode 
+                type={degradationLevelTreeType === DegradationLevelTreeType.Degradation ? DeleteDropNodeType.Degradation : DeleteDropNodeType.Upgrade}
+                width={subtreeResult.width}
+                height={deleteDropNodeHeight}
+            />
             {subtreeResult?.node}
         </>
     );

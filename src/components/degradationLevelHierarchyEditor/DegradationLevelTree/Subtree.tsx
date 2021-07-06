@@ -145,7 +145,7 @@ const GetSubtree = (props: ISubtreeProps): ISubtreeResult => {
                         {arrowsEndXCoordinates.map((a, index) => {
 
                             if(!xOffset){
-                                xOffset = DEFAULT_TREE_Y_OFFSET;
+                                xOffset = DEFAULT_TREE_X_OFFSET;
                             }
 
                             if(!yOffset){ 
