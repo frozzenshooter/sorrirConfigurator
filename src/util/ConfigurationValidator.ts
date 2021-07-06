@@ -1,7 +1,7 @@
 import Ajv, { DefinedError, ValidateFunction } from "ajv";
 import IConfiguration from "../models/IConfiguration";
 import ConfigurationSchema from "./ConfigurationSchema";
-import GetEmptyConfiguration from "./EmptyConfigurationFactory";
+import GetEmptyConfiguration from "./GetEmptyConfiguration";
 
 class ConfigurationValidator {
     private static instance: ConfigurationValidator;

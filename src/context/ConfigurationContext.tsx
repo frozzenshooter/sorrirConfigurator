@@ -2,7 +2,7 @@ import React from "react";
 import { createContext } from "react";
 import ConfigurationContextType from "../models/ConfigurationContextType";
 import IConfiguration from "../models/IConfiguration";
-import GetEmptyConfiguration from "../util/EmptyConfigurationFactory";
+import GetEmptyConfiguration from "../util/GetEmptyConfiguration";
 
 const configurationContextDefaultValues: ConfigurationContextType = { 
     configuration: GetEmptyConfiguration(), 

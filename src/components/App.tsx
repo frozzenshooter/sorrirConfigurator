@@ -1,7 +1,7 @@
 import React from "react";
 import { ConfigurationContext } from "../context/ConfigurationContext";
 import IConfiguration from "../models/IConfiguration";
-import GetEmptyConfiguration from "../util/EmptyConfigurationFactory";
+import GetEmptyConfiguration from "../util/GetEmptyConfiguration";
 import View from "../util/Views";
 import AppWelcome from "./appWelcome/AppWelcome";
 import Wizard from "./wizard/Wizard";
