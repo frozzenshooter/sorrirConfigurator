@@ -9,7 +9,8 @@
  + Deletion Handling of Levels - create/update LevelChanges for upgrades and degradations
  + ID update for degradation levels has to also update the levelchanges
  
- + Löschen einer Zuordnung mittels drag and drop des knotens auf "Mülleimer"
+ + Löschen einer Zuordnung mittels drag and drop des knotens auf "Mülleimer" - hierfür am bestene eine zentrale lösch funktion bauen, die dann quasi nur das item, den typ(upgrade/degradation) und eine configuration erhält und eine modifizierte version zurückgibt - kann man auch in dem delete beim Löschen eines Levels verwenden
+
  + OFF bekommt immer die ID 0 - beim erstellen der Level etc beachten.
  + Minus bei den TreeNodes (Wenn kein Label vorhanden: statischer String anzeigen)
  + Übergänge löschen (states der LevelChanges)
@@ -17,6 +18,7 @@
  + Alle startzusätnde ergeben eine neue Zeiel Beim Zustand definieren -> überall kann ein beliebiger Endzustand aus dem resultierenden Level ausgwählt werden
  + Hierfür benötigt man dann wiederum ein eigenes Datenobjekt
  + Id aktualisieren beim level -> alles nachziehen
+ + zusammenfassen der einzelnen enums für upgrade/degradtion in einem zentralen enum
 
 ### Further general steps
 + Static files require some work (change icons, ...)

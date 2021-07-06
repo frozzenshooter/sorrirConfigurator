@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import IDegradationLevel from "../../../models/IDegradationLevel";
 import IConfiguration from "../../../models/IConfiguration";
 import { useConfigurationContext } from "../../../context/ConfigurationContext";
+import LevelChangeDeletion, { LevelChangeDeletionType } from '../../../util/LevelChangeDeletion';
 
 export enum  DeleteDropNodeType {
     Degradation = 0,
@@ -29,10 +30,12 @@ const DeleteDropNode = (props: DeleteDropNodeProps) => {
 
     const handleDrop = (item: IDegradationLevel) =>{
 
-        const newConfiguration : IConfiguration = Object.assign({}, configuration);
+        let newConfiguration : IConfiguration = Object.assign({}, configuration);
 
-        //TODO: add a function that deletes a level properly
-        newConfiguration.degradations = newConfiguration.degradations.filter(d => d.startDegradationLevelId !== item.id && d.resultDegradationLevelId !== item.id ).slice();
+        const levelChangeDeletionType = type === DeleteDropNodeType.Degradation ? LevelChangeDeletionType.Degradation : LevelChangeDeletionType.Upgrade;
+
+        // Delete either the degradations or the upgrades (depending on the tree)
+        newConfiguration = LevelChangeDeletion(newConfiguration, levelChangeDeletionType, item);
 
         updateConfiguration(newConfiguration);
 

@@ -22,7 +22,7 @@ const DegradationLevelTree = (props: IDegradationLevelTreeProps) => {
 
     const {degradationLevels, levelChanges, degradationLevelTreeType, selectedDegradationLevels, onSelectionChanged} = props;
 
-    const deleteDropNodeHeight = 50;
+    const deleteDropNodeHeight = 53;
 
     // Calculate the subtree (including the width for the internal calculation)
     const subtreeResult = GetSubtree({
