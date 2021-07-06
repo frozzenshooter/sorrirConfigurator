@@ -33,7 +33,7 @@ const DegradationLevelTreeNodeDrop = (props: IDegradationLevelTreeNodeDropProps)
     const {configuration, updateConfiguration} = useConfigurationContext();
 
     // required to be able to update the callback for the drop behavior using useEffect
-    const [item, setItem] = useState<IDegradationLevel>();
+    const [item, setItem] = useState<IDegradationLevel | null>(null);
 
     const handleDrop = (item: IDegradationLevel) => {
            
@@ -112,12 +112,15 @@ const DegradationLevelTreeNodeDrop = (props: IDegradationLevelTreeNodeDropProps)
 
             updateConfiguration(newConfiguration);
         }
+        
+        // required to set it null in the case that you wwant to drop the same element twice on the same drop zone (if no new value is set the handle drop isn't called)
+        setItem(null);
     };
 
     // required to be able to update the configuration by dropping an item - this will create a warning in the build process
     // to mitigate this a complete other way of creating the tree is probably required
     useEffect(() => {
-        if(item){
+        if(item != null){
             handleDrop(item);
         }
     }, [item]);
