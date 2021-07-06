@@ -1,6 +1,6 @@
 import IConfiguration from "../models/IConfiguration";
 
-const EmptyConfigurationFactory = (): IConfiguration => {
+const GetEmptyConfiguration = (): IConfiguration => {
 
     return {
         subcomponents: [],
@@ -10,4 +10,4 @@ const EmptyConfigurationFactory = (): IConfiguration => {
     };
 };
 
-export default EmptyConfigurationFactory;
+export default GetEmptyConfiguration;

@@ -1,7 +1,7 @@
 import React from "react";
 import { ConfigurationContext } from "../context/ConfigurationContext";
 import IConfiguration from "../models/IConfiguration";
-import EmptyConfigurationFactory from "../util/EmptyConfigurationFactory";
+import GetEmptyConfiguration from "../util/EmptyConfigurationFactory";
 import View from "../util/Views";
 import AppWelcome from "./appWelcome/AppWelcome";
 import Wizard from "./wizard/Wizard";
@@ -10,7 +10,7 @@ const App = () => {
 
   const [wizardStart, setWizardStart] = React.useState<boolean>(false);
   const [requiredViews, setRequiredViews] =  React.useState<View[]>([]);
-  const [configuration, setConfiguration] = React.useState<IConfiguration>(EmptyConfigurationFactory());
+  const [configuration, setConfiguration] = React.useState<IConfiguration>(GetEmptyConfiguration());
 
   const handleWizardStart = (requiredViews: View[]) => {
     setRequiredViews(requiredViews);
@@ -18,7 +18,7 @@ const App = () => {
   };
 
   const handleWizardRestart = () => {
-    setConfiguration(EmptyConfigurationFactory());
+    setConfiguration(GetEmptyConfiguration());
     setRequiredViews([]);
     setWizardStart(false);
   };

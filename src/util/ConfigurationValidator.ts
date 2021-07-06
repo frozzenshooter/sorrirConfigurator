@@ -1,7 +1,7 @@
 import Ajv, { DefinedError, ValidateFunction } from "ajv";
 import IConfiguration from "../models/IConfiguration";
 import ConfigurationSchema from "./ConfigurationSchema";
-import EmptyConfigurationFactory from "./EmptyConfigurationFactory";
+import GetEmptyConfiguration from "./EmptyConfigurationFactory";
 
 class ConfigurationValidator {
     private static instance: ConfigurationValidator;
@@ -13,7 +13,7 @@ class ConfigurationValidator {
         // only compile the validation once
         const ajv = new Ajv({allErrors: true});
         this.validationFunction = ajv.compile<IConfiguration>(ConfigurationSchema);
-        this.parsedConfiguration = EmptyConfigurationFactory();
+        this.parsedConfiguration = GetEmptyConfiguration();
     }
 
     public static getInstance(): ConfigurationValidator {
