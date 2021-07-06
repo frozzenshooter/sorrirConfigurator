@@ -23,19 +23,39 @@ const DegradationLevelHierarchyEditor =  (props: DegradationLevelHierarchyEditor
 
     const {configuration} = useConfigurationContext();
 
-    // only get the start values because every level has to be at least one time the start of an arrow because all result in the off state
-    const levelIds = configuration.degradations.map(d => d.startDegradationLevelId);
-    
     // Presort the DegradationLevels
     const unsortedLevels: IDegradationLevel[] = [];
     const sortedLevels: IDegradationLevel[] = [];
 
-    for(const degradationLevel of configuration.degradationLevels){
-        const index = levelIds.findIndex(id => id === degradationLevel.id); 
-        if(index !== -1){   
-            sortedLevels.push(degradationLevel);
-        }else{
-            unsortedLevels.push(degradationLevel);
+    if(degradationLevelHierarchyEditorType === DegradationLevelHierarchyEditorType.Degradation){
+
+        // Tree will show degradation and therefore we have to look into the degradations
+
+        // only get the start values because every level has to be at least one time the start of an arrow because all result in the off state
+        const levelIds = configuration.degradations.map(d => d.startDegradationLevelId);
+        
+        for(const degradationLevel of configuration.degradationLevels){
+            const index = levelIds.findIndex(id => id === degradationLevel.id); 
+            if(index !== -1){   
+                sortedLevels.push(degradationLevel);
+            }else{
+                unsortedLevels.push(degradationLevel);
+            }
+        }
+    }else{
+
+        // Tree will show upgrades and therefore we have to look into the upgrades
+
+         // only get the result values because every level has to be at least one time the result of an arrow because all start at least from the off state
+        const levelIds = configuration.upgrades.map(d => d.resultDegradationLevelId);
+        
+        for(const degradationLevel of configuration.degradationLevels){
+            const index = levelIds.findIndex(id => id === degradationLevel.id); 
+            if(index !== -1){   
+                sortedLevels.push(degradationLevel);
+            }else{
+                unsortedLevels.push(degradationLevel);
+            }
         }
     }
 

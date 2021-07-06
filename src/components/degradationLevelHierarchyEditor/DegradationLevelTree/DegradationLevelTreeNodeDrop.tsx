@@ -8,21 +8,27 @@ import IDegradationLevel from "../../../models/IDegradationLevel";
 import IConfiguration from "../../../models/IConfiguration";
 import { useEffect, useState } from "react";
 
-export enum DegradationLevelTreeNodeDropType {
+export enum DegradationLevelTreeNodeDropPositionType {
     ABOVE = 0,
     BELOW = 1
+}
+
+export enum DegradationLevelTreeNodeDropType {
+    Degradation = 0,
+    Upgrade = 1
 }
 
 export interface IDegradationLevelTreeNodeDropProps {
     top: number;
     left: number;
     degradationLevelId: number;
+    positionType: DegradationLevelTreeNodeDropPositionType;
     type: DegradationLevelTreeNodeDropType;
 }
 
 const DegradationLevelTreeNodeDrop = (props: IDegradationLevelTreeNodeDropProps) => {
 
-    const {top, left, degradationLevelId, type} = props;
+    const {top, left, degradationLevelId, positionType, type} = props;
 
     const {configuration, updateConfiguration} = useConfigurationContext();
 
@@ -57,7 +63,7 @@ const DegradationLevelTreeNodeDrop = (props: IDegradationLevelTreeNodeDropProps)
                     newConfiguration.degradations.push({
                         resultDegradationLevelId: startLevelChange.resultDegradationLevelId,
                         startDegradationLevelId: lvlChg.startDegradationLevelId,
-                        stateChanges: []
+                        stateChanges: [] // always remove all states, because we have to update in the next wizard step anyway
                     });
                 }
             }
@@ -65,7 +71,7 @@ const DegradationLevelTreeNodeDrop = (props: IDegradationLevelTreeNodeDropProps)
 
             //#region Handle the insertion of the current item in the tree
 
-            if(type === DegradationLevelTreeNodeDropType.ABOVE){
+            if(positionType === DegradationLevelTreeNodeDropPositionType.ABOVE){
 
                 const index = newConfiguration.degradations.findIndex(d => d.startDegradationLevelId === degradationLevelId);
                 if(index !== -1){
@@ -79,14 +85,14 @@ const DegradationLevelTreeNodeDrop = (props: IDegradationLevelTreeNodeDropProps)
                     newConfiguration.degradations.push({
                         resultDegradationLevelId: item.id,
                         startDegradationLevelId: currentLevelChange.startDegradationLevelId,  
-                        stateChanges: []
+                        stateChanges: [] // always remove all states, because we have to update in the next wizard step anyway
                     });
 
                     // additional LevelChange outgoing from this Level to the previous child level
                     newConfiguration.degradations.push({
                         resultDegradationLevelId: currentLevelChange.resultDegradationLevelId,
                         startDegradationLevelId: item.id,
-                        stateChanges: []
+                        stateChanges: [] // always remove all states, because we have to update in the next wizard step anyway
                     });
 
                 }
@@ -98,7 +104,7 @@ const DegradationLevelTreeNodeDrop = (props: IDegradationLevelTreeNodeDropProps)
                 newConfiguration.degradations.push({
                     resultDegradationLevelId: degradationLevelId,
                     startDegradationLevelId: item.id,
-                    stateChanges: []
+                    stateChanges: [] // always remove all states, because we have to update in the next wizard step anyway
                 });
             }
 

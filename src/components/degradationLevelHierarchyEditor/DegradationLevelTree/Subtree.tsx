@@ -2,9 +2,8 @@ import React from "react";
 import IDegradationLevel from "../../../models/IDegradationLevel";
 import ILevelChange from "../../../models/ILevelChange";
 import Arrow, { ArrowType } from "./Arrow";
-import DegradationLevelTreeNode from "./DegradationLevelTreeNode";
+import DegradationLevelTreeNode, { DegradationLevelTreeNodeType } from "./DegradationLevelTreeNode";
 import { DEFAULT_NODE_HEIGHT, DEFAULT_NODE_WIDTH, DEFAULT_NODE_Y_DISTANCE, DEFAULT_TREE_X_OFFSET, DEFAULT_TREE_Y_OFFSET } from "./TreeConstants";
-
 
 export enum SubtreeType {
     Degradation = 0,
@@ -62,8 +61,14 @@ const GetSubtree = (props: ISubtreeProps): ISubtreeResult => {
     }
 
     // Calculate the childnodes to determine if a recursion is required or if you can just return the current node 
-    const relevantChildIds = levelChanges.filter(lc => lc.resultDegradationLevelId === currentDegradationLevelId).map(lc => lc.startDegradationLevelId);
-
+    let relevantChildIds : number[]= [];
+    if(subtreeType === SubtreeType.Degradation){
+        relevantChildIds = levelChanges.filter(lc => lc.resultDegradationLevelId === currentDegradationLevelId).map(lc => lc.startDegradationLevelId);
+    }else{
+        // for the upgrade case the level changes are inverted ("arrow direction inverted")
+        relevantChildIds = levelChanges.filter(lc => lc.startDegradationLevelId === currentDegradationLevelId).map(lc => lc.resultDegradationLevelId);
+    }
+    
     const isSelected = (id: number) => {
         if(id === 0){
             // This is the case for the OFF node - can't be selected
@@ -132,6 +137,7 @@ const GetSubtree = (props: ISubtreeProps): ISubtreeResult => {
                     degradationLevel={currentDegradationLevel}
                     left={currentNodeLeft}
                     top={yOffset}
+                    type={subtreeType === SubtreeType.Degradation ? DegradationLevelTreeNodeType.Degradation : DegradationLevelTreeNodeType.Upgrade}
                 />
                 {subtreeNodes}
                 {arrowsEndXCoordinates.length > 0 ? 
@@ -177,6 +183,7 @@ const GetSubtree = (props: ISubtreeProps): ISubtreeResult => {
                         degradationLevel={currentDegradationLevel}
                         left={xOffset}
                         top={yOffset}
+                        type={subtreeType === SubtreeType.Degradation ? DegradationLevelTreeNodeType.Degradation : DegradationLevelTreeNodeType.Upgrade}
                     />
                 )
 
