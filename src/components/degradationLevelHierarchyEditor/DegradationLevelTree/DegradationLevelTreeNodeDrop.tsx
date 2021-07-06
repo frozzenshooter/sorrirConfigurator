@@ -57,8 +57,7 @@ const DegradationLevelTreeNodeDrop = (props: IDegradationLevelTreeNodeDropProps)
                     newConfiguration.degradations.push({
                         resultDegradationLevelId: startLevelChange.resultDegradationLevelId,
                         startDegradationLevelId: lvlChg.startDegradationLevelId,
-                        stateResultLevel: startLevelChange.stateResultLevel,
-                        stateStartLevel: lvlChg.stateStartLevel,
+                        stateChanges: []
                     });
                 }
             }
@@ -79,17 +78,15 @@ const DegradationLevelTreeNodeDrop = (props: IDegradationLevelTreeNodeDropProps)
                     // replacement of the currentLevelChange
                     newConfiguration.degradations.push({
                         resultDegradationLevelId: item.id,
-                        startDegradationLevelId: currentLevelChange.startDegradationLevelId,
-                        stateResultLevel: null,
-                        stateStartLevel: currentLevelChange.stateStartLevel,
+                        startDegradationLevelId: currentLevelChange.startDegradationLevelId,  
+                        stateChanges: []
                     });
 
                     // additional LevelChange outgoing from this Level to the previous child level
                     newConfiguration.degradations.push({
                         resultDegradationLevelId: currentLevelChange.resultDegradationLevelId,
                         startDegradationLevelId: item.id,
-                        stateResultLevel: currentLevelChange.stateResultLevel,
-                        stateStartLevel: null,
+                        stateChanges: []
                     });
 
                 }
@@ -101,8 +98,7 @@ const DegradationLevelTreeNodeDrop = (props: IDegradationLevelTreeNodeDropProps)
                 newConfiguration.degradations.push({
                     resultDegradationLevelId: degradationLevelId,
                     startDegradationLevelId: item.id,
-                    stateResultLevel: null,
-                    stateStartLevel: null,
+                    stateChanges: []
                 });
             }
 

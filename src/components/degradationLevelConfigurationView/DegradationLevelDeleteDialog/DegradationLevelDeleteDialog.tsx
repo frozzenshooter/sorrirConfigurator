@@ -49,8 +49,7 @@ const DegradationLevelDeleteDialog = (props: IDegradationLevelDeleteDialogProps)
                     newConfiguration.degradations.push({
                         resultDegradationLevelId: parentNodeId,
                         startDegradationLevelId: childNode.startDegradationLevelId,
-                        stateResultLevel: null,
-                        stateStartLevel: childNode.stateStartLevel,
+                        stateChanges: []
                     });
                 }
             }
