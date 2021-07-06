@@ -1,4 +1,18 @@
 .degradation-level-state-selector-container{
     display:flex;
-    padding: 24px;
+    flex-direction: column;
+}
+
+.degradation-level-state-selector-selectors-container{
+    display:flex;
+    flex-direction: column;
+}
+
+.degradation-level-state-selector-selector-row{
+    padding-top: 16px;
+}
+
+.degradation-level-state-selector-selectors-no-start-states-container{
+    padding: 16px;
+    font-weight: 500;
 }

@@ -1,0 +1,4 @@
+.state-selector-container{
+    display: flex;
+    flex-direction: row;
+}

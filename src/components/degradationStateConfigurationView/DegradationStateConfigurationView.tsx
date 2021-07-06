@@ -1,6 +1,7 @@
-import { Paper } from "@material-ui/core";
+import { Divider, Paper } from "@material-ui/core";
 import { useConfigurationContext } from "../../context/ConfigurationContext";
-import DegradationLevelStateSelector from "../degradationLevelStateSelector/DegradationLevelStateSelector";
+import IDegradationLevel from "../../models/IDegradationLevel";
+import DegradationLevelStateSelector, { DegradationLevelStateSelectorType } from "../degradationLevelStateSelector/DegradationLevelStateSelector";
 import './DegradationStateConfigurationView.css'
 
 const DegradationStateConfigurationView = () => {
@@ -11,27 +12,36 @@ const DegradationStateConfigurationView = () => {
     return (
         <div id="degradation-state-configuration-view-container">
             <Paper elevation={1}>
-                {configuration.degradations.map(lvlChg => {
+                {configuration.degradations.length > 0?
+                    <div className="degradation-state-configuration-view-overflow-container">
+                        
+                        {configuration.degradations.map(lvlChg => {
 
-                        const startDegradationLevelIndex = configuration.degradationLevels.findIndex(dl => dl.id === lvlChg.startDegradationLevelId); 
-                        const resultDegradationLevelIndex = configuration.degradationLevels.findIndex(dl => dl.id === lvlChg.resultDegradationLevelId); 
+                                let startDegradationLevel: IDegradationLevel | null = null;
+                                if(lvlChg.startDegradationLevelId !== 0){
+                                    const startLevel = configuration.degradationLevels.find(dl => dl.id === lvlChg.startDegradationLevelId);
+                                    startDegradationLevel = startLevel === undefined ? null : startLevel;
+                                }
 
-                        if(startDegradationLevelIndex !== -1 && resultDegradationLevelIndex !== -1){
+                                let resultDegradationLevel: IDegradationLevel | null = null;
+                                if(lvlChg.resultDegradationLevelId !== 0){
+                                    const resultLevel = configuration.degradationLevels.find(dl => dl.id === lvlChg.resultDegradationLevelId);
+                                    resultDegradationLevel = resultLevel === undefined ? null : resultLevel;
+                                }
 
-                            return (
-                                <DegradationLevelStateSelector
-                                    startDegradationLevel={configuration.degradationLevels[startDegradationLevelIndex]}
-                                    resultDegradationLevel={configuration.degradationLevels[resultDegradationLevelIndex]}
-                                    levelChange={lvlChg}
-                                />
-                            );
-                        }else{
-                            // should never happen but just in chase
-                            console.log("Rendering not successful: start or result DegradationLevel for degradation not found");
-                            return (<>
-                            </>);
-                        }                       
-                    })
+                                return (
+                                    <DegradationLevelStateSelector
+                                        type={DegradationLevelStateSelectorType.Degradation}
+                                        startDegradationLevel={startDegradationLevel}
+                                        resultDegradationLevel={resultDegradationLevel}
+                                        levelChange={lvlChg}
+                                    />
+                                );                    
+                            })
+                        }
+                    </div>
+                : 
+                    null
                 }
             </Paper>
         </div>

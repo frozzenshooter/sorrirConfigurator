@@ -1,26 +1,17 @@
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import ILevelChange from '../../models/ILevelChange';
 import IDegradationLevel from '../../models/IDegradationLevel';
 import './DegradationLevelStateSelector.css';
+import StateSelector from './StateSelector/StateSelector';
+import IDegradationLevelState from '../../models/IDegradationLevelState';
 
-/**
- * Styles for the @DegradationLevelStateSelector
- */
- const useStyles = makeStyles((theme: Theme) =>
- createStyles({
-        formControl: {
-            marginRight: theme.spacing(1),
-            minWidth: 200,
-            maxWidth: 200,
-        }
-   })
-);
+export enum DegradationLevelStateSelectorType{
+    Degradation = 0,
+    Upgrade = 1
+}
+
 
 export interface IDegradationLevelStateSelectorProps {
+    type: DegradationLevelStateSelectorType;
     levelChange: ILevelChange;
     startDegradationLevel: IDegradationLevel | null;
     resultDegradationLevel: IDegradationLevel | null;
@@ -28,52 +19,75 @@ export interface IDegradationLevelStateSelectorProps {
 
 const DegradationLevelStateSelector = (props: IDegradationLevelStateSelectorProps) => {
     
-    const {levelChange, startDegradationLevel, resultDegradationLevel} = props;
+    const {type, levelChange, startDegradationLevel, resultDegradationLevel} = props;
 
-    const classes = useStyles();
+    const getDegradationLevelLabel = (degradationLevel : IDegradationLevel | null) : string => {
 
+        if(degradationLevel === null){
+            // OFF case
+            return "0 - OFF";
+        }
+
+        const labelText = degradationLevel.label !== "" ? degradationLevel.label : "Level";
+
+        return degradationLevel.id + " - " + labelText;
+    };
+
+    const typeString = type === DegradationLevelStateSelectorType.Degradation ? "degradation" : "upgrade";
+
+    const startLabel = getDegradationLevelLabel(startDegradationLevel);
+    const resultLabel = getDegradationLevelLabel(resultDegradationLevel)
 
     return (
         <div className="degradation-level-state-selector-container">
+                <div className="degradation-level-state-selector-title">
+                    {"State changes for "+ typeString + " from '"} 
+                        <b>{startLabel}</b>
+                    {"' to '"}
+                        <b>{resultLabel}</b>
+                    {"'"}
+                </div>
+                <div className="degradation-level-state-selector-selectors-container">
+                    {startDegradationLevel?.states.length === 0?
+                        <div className="degradation-level-state-selector-selectors-no-start-states-container">
+                            {"No start states found!"}
+                        </div>
+                    : 
+                        null
+                    }
 
-            <div className="degradation-level-state-selector-start-container">
-                {startDegradationLevel?.label} ({startDegradationLevel?.id})
-            </div>
+                    {startDegradationLevel?.states.map(s => {
 
-            <div className="degradation-level-state-selector-result-container">
-                {resultDegradationLevel?.label} ({resultDegradationLevel?.id})
-            </div>    
 
+                            let resultStates : IDegradationLevelState[] = [];
+                            if(resultDegradationLevel){
+                                resultStates = resultDegradationLevel.states;
+                            }
+
+                            let currentResultStateId : string | null = null;
+                            const currentResultState = levelChange.stateChanges.find(st => st.startStateId === s.id);
+                            if(currentResultState){
+                                currentResultStateId = currentResultState.resultStateId;
+                            }
+
+                            return (
+                                <div className="degradation-level-state-selector-selector-row">
+                                    <StateSelector
+                                        key={startDegradationLevel.id + s.id} // unqiue key required for react
+                                        startState={s}
+                                        resultStates={resultStates}  
+                                        currentResultStateId={currentResultStateId}
+                                        startLabel={startLabel}
+                                        resultLabel={resultLabel}
+                                    />
+                                </div>
+                            );
+                        })
+                    }
+
+                </div>
         </div>
     );
-
-/*
-    return (
-        <FormControl className={classes.formControl} key={subcomponent.id}>
-            <InputLabel shrink id="shadowmode-select-label">{subcomponent.name}</InputLabel>
-            <Select
-                variant="outlined"
-                labelId="shadowmode-select-label"
-                id="shadowmode-select"
-                value={shadowmodeId}
-                onChange={(ev)=> {
-                    handleChange((ev.target.value as string));
-                }}
-                displayEmpty
-                className={classes.selectEmpty}
-                >
-                <MenuItem value="">
-                    <em>DC</em>
-                </MenuItem>
-                {subcomponent.shadowmodes.map(sm => {
-                        return (
-                            <MenuItem value={sm.id}>{sm.name}</MenuItem>
-                        );
-                    })
-                }                
-            </Select>
-        </FormControl>
-    );*/
 };
 
 export default DegradationLevelStateSelector;

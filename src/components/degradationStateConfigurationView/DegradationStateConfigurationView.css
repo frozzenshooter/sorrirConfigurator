@@ -1,7 +1,14 @@
 #degradation-state-configuration-view-container{
-    height: 100%;
     padding-top: 16px;
     padding-left: 2%;
     padding-right: 2%;
     padding-bottom: 16px;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: auto;
+}
+
+.degradation-state-configuration-view-overflow-container{
+    overflow: auto;
+    padding: 24px;
 }
