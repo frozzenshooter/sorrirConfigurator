@@ -46,7 +46,28 @@ const LevelChangeDeletion = (newConfiguration: IConfiguration, type: LevelChange
     }else{
         // the deletion happend in the upgrade tree and therefore only the upgrades have to be updated and deleted
 
-        //TODO
+        const indexUpgradeLevelChange = newConfiguration.upgrades.findIndex(d => d.resultDegradationLevelId === levelToDelete.id);
+
+        if(indexUpgradeLevelChange !== -1){
+
+            // the node is used in the tree for the upgrades and therefore we have to update level changes
+            const parentNodeId : number = newConfiguration.upgrades[indexUpgradeLevelChange].startDegradationLevelId;
+
+            // Find all LevelChanges that are the result of the current degradation level - required to be able to create new LevelChanges that point directly from the parent to the children of this level
+            const childNodeLevelChanges = newConfiguration.upgrades.filter(d => d.startDegradationLevelId === levelToDelete.id).slice();
+
+            newConfiguration.degradations = newConfiguration.upgrades.filter(d => d.resultDegradationLevelId !== levelToDelete.id && d.startDegradationLevelId !== levelToDelete.id).slice();
+
+            // add the new Level Changes
+            for(const childNode of childNodeLevelChanges){
+
+                newConfiguration.degradations.push({
+                    resultDegradationLevelId: childNode.resultDegradationLevelId,
+                    startDegradationLevelId: parentNodeId,
+                    stateChanges: []
+                });
+            }
+        }
 
     }
 
