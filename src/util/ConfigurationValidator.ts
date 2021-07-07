@@ -41,7 +41,7 @@ class ConfigurationValidator {
                     if(err.instancePath != null && err.instancePath !== ""){
                         errors.push("Validation: (" + err.instancePath + ") " + err.message);
                     }else{
-                        errors.push("Validation" + err.message);
+                        errors.push("Validation: " + err.message);
                     }
                 }
             }
@@ -74,7 +74,7 @@ class ConfigurationValidator {
                         if(err.instancePath != null && err.instancePath !== ""){
                             errors.push("Validation: (" + err.instancePath + ") " + err.message);
                         }else{
-                            errors.push("Validation" + err.message);
+                            errors.push("Validation: " + err.message);
                         }
                     }
                 }
