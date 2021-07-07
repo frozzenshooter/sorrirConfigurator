@@ -74,7 +74,7 @@ const DegradationLevelStateSelector = (props: IDegradationLevelStateSelectorProp
                             }
 
                             return (
-                                <div className="degradation-level-state-selector-selector-row">
+                                <div className="degradation-level-state-selector-selector-row" key={startDegradationLevel.id + s.id + "row"}>
                                     <StateSelector
                                         key={startDegradationLevel.id + s.id} // unqiue key required for react
                                         startState={s}
