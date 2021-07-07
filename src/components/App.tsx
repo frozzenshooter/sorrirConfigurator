@@ -24,6 +24,7 @@ const App = () => {
   };
 
   const updateConfiguration = (newConfiguration: IConfiguration) => {
+    //TODO: remove
     console.log("Configuration updated: ", newConfiguration);
     setConfiguration(newConfiguration);
   };

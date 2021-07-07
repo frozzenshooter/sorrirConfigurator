@@ -17,7 +17,6 @@ const ConfigurationFileImport = () => {
         if(event?.target?.files !== null && event.target.files.length > 0){
             const newFilename = event.target.files[0].name;  
             
-            //TODO: is there a cleaner way to solve this ?
             const reader = new FileReader();
             reader.onload = () => {
                 if(!reader.error){

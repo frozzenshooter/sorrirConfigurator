@@ -101,10 +101,12 @@ const SubcomponentDialog = (props: ISubcomponentDialogProps) => {
             }
 
             // There might be degradation levels with a dependency on this subcomponent which have to be updated
+            // also the shadowmodes have to be updated too
             // TODO: !!!!!!!!!!!!!!!!!!!
 
         }else{
 
+            // creation of a new subcomponent - you can just add it because the validation already checked it
             const newSubcomponent : ISubcomponent = {
                 id: id,
                 name: name,

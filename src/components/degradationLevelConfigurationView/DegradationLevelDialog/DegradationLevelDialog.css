@@ -15,7 +15,6 @@
 }
 
 .degradation-level-dialog-properties-section-caption{
-    /* TODO: Can this be solved with an generated class from material ui? */
     font-size: 1.25rem;
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
     font-weight: 500;

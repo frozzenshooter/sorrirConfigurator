@@ -46,7 +46,7 @@ const ConfigurationSchema =
                 },
                 "shadowmodes":{
                     "type": "array",
-                    "description": "The name of a subcomponent",
+                    "description": "The shadowmodes of a subcomponent",
                     "minItems": 0,
                     "items": { "$ref": "#/$defs/shadowmode" }
                 }
@@ -55,15 +55,15 @@ const ConfigurationSchema =
         "degradationLevel": {
             "type": "object",
             "description": "A degradation level from a component",
-            "required": [ "id", "name", "dependencies" ],
+            "required": [ "id", "label", "dependencies" ],
             "properties": {
                 "id": {
                     "type": "number",
-                    "description": "The id of a degradation level, has to be unique",
+                    "description": "The id of a degradationLevel, has to be unique",
                 },
-                "name": {
+                "label": {
                     "type": "string",
-                    "description": "The name of a degradation level",
+                    "description": "The label of a degradationLevel",
                 },
                 "dependencies":{
                     "type": "array",
