@@ -1,16 +1,7 @@
-### Offene Punkte
-
-##### Nächste Schritte
- + Wenn man die Shadowmodes löscht müssen entsprechende Dependencies in den DegradationLevels gelöscht werden!! Gleiches gilt für das löschen an sich
- + States von dependencylevel muss überall nachgezogen werden
- + Json Validierung an neues Model anpassen + Testdaten aktualisieren
- + Deletion Handling of Levels - create/update LevelChanges for upgrades and degradations
- + ID update for degradation levels has to also update the levelchanges
- 
- + Löschen einer Zuordnung mittels drag and drop des knotens auf "Mülleimer" - hierfür am bestene eine zentrale lösch funktion bauen, die dann quasi nur das item, den typ(upgrade/degradation) und eine configuration erhält und eine modifizierte version zurückgibt - kann man auch in dem delete beim Löschen eines Levels verwenden
-
- + Id aktualisieren beim level -> alles nachziehen
-
-### Further general steps
-+ Static files require some work (change icons, ...)
-+ Welcome page with the offical logo
+#### Offene Punkte Schritte
+ + Für den Import muss noch das Schema ergänzt werden (um die LevelChanges, ...) - Neues Set an Testdaten notwendig
+ + Subcomponent erstell/anpassen/löschen muss entsprechend in den jeweiligen DegradationLevels angepasst werden
+ + Das löschen/anpassen von Shadowmodes (Im subcomponent) muss auch entsprechend in dem DegradationLevels die darauf aufbauen angepasst werden
+ + Die Zustände von einem DegradationLevel muss beim ändern/löschen entsprechend in den LevelChanges/etc angepasst werden.
+ + Löschen/aktualisieren von Leveln muss entsprechend angepasst werden, damit alle Abhängigkeiten entsprechend angepasst werden können 
+ + Code Cleanup/ Simplifications/ Vereinheitlichung (Benennung/Gross/Klein-schreibung/...) - allgemeine Anpassungen zum Vereinfachen des Codes
