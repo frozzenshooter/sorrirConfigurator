@@ -55,6 +55,7 @@ const DegradationLevelConfigurationView = () => {
                           onCreateClick={() =>{setCreateDialogOpen(true);}}
                           onEditClick={() =>{setEditDialogOpen(true);}}
                           onDeleteClick={() =>{setDeleteDialogOpen(true);}} 
+                          treeType={TreeType.Degradation}
                           />
                       <DegradationLevelHierarchyEditor
                             onSelectionChanged={handleSelectionChanged}

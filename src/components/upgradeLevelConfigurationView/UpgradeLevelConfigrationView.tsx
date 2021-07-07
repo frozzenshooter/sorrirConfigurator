@@ -55,6 +55,7 @@ const UpgradeLevelConfigrationView = () => {
                         onCreateClick={() =>{setCreateDialogOpen(true);}}
                         onEditClick={() =>{setEditDialogOpen(true);}}
                         onDeleteClick={() =>{setDeleteDialogOpen(true);}}
+                        treeType={TreeType.Upgrade}
                         />
                     <DegradationLevelHierarchyEditor
                         onSelectionChanged={handleSelectionChanged}

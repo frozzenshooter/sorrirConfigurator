@@ -7,13 +7,20 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
+import { TreeType } from '../../models/TreeType';
+import MergeTypeIcon from '@material-ui/icons/MergeType';
 import './SelectionMenuBar.css';
+import DecisionDialog from '../decisionDialog/DecisionDialog';
+import { useState } from 'react';
+import { useConfigurationContext } from '../../context/ConfigurationContext';
+import IConfiguration from '../../models/IConfiguration';
 
 export interface ISelectionMenuBarProps {
     amountOfSelectedItems: number;
     onCreateClick: () => void;
     onEditClick: () => void;
     onDeleteClick: () => void;
+    treeType: TreeType;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -44,8 +51,30 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const SelectionMenuBar = (props: ISelectionMenuBarProps) => {
 
-    const {amountOfSelectedItems, onCreateClick, onEditClick, onDeleteClick} = props;
+    const {amountOfSelectedItems, treeType, onCreateClick, onEditClick, onDeleteClick} = props;
     const classes = useStyles();
+
+    const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+
+    const {configuration, updateConfiguration} = useConfigurationContext();
+
+    const autoCreateTree = () => {
+        let newConfiguration : IConfiguration = Object.assign({}, configuration);
+
+        newConfiguration.upgrades = [];
+
+        for(const levelChange of newConfiguration.degradations){
+
+            newConfiguration.upgrades.push({
+                resultDegradationLevelId: levelChange.startDegradationLevelId,
+                startDegradationLevelId: levelChange.resultDegradationLevelId,
+                stateChanges: []
+            });
+        }
+        
+        setIsDialogOpen(false);
+        updateConfiguration(newConfiguration);
+    };
 
     return (
         <>
@@ -59,7 +88,14 @@ const SelectionMenuBar = (props: ISelectionMenuBarProps) => {
                     null                    
                 }
 
-                <Tooltip title="Create">
+                { treeType === TreeType.Upgrade ?
+                <Tooltip title="Auto create tree">
+                    <IconButton onClick={()=>{setIsDialogOpen(true);}}>
+                        <MergeTypeIcon/>
+                    </IconButton>
+                </Tooltip> 
+                : null}   
+                <Tooltip title="Create level">
                     <IconButton onClick={()=>{onCreateClick();}}>
                         <AddIcon />
                     </IconButton>
@@ -67,19 +103,19 @@ const SelectionMenuBar = (props: ISelectionMenuBarProps) => {
                 {amountOfSelectedItems > 0?
                     amountOfSelectedItems === 1 ?
                             <>
-                                <Tooltip title="Edit">
+                                <Tooltip title="Edit level">
                                     <IconButton onClick={()=>{onEditClick();}}>
                                         <EditIcon />
                                     </IconButton>
                                 </Tooltip>            
-                                <Tooltip title="Delete">
+                                <Tooltip title="Delete level">
                                     <IconButton onClick={()=>{onDeleteClick();}}>
                                         <DeleteIcon />
                                     </IconButton>
                                 </Tooltip>  
                             </>
                         :
-                            <Tooltip title="Delete">
+                            <Tooltip title="Delete levels">
                                 <IconButton onClick={()=>{onDeleteClick();}}>
                                     <DeleteIcon />
                                 </IconButton>
@@ -90,6 +126,14 @@ const SelectionMenuBar = (props: ISelectionMenuBarProps) => {
 
             </div>
             <Divider></Divider>
+
+            <DecisionDialog 
+                onCancelClick={() => {setIsDialogOpen(false);}}
+                onConfirmClick={autoCreateTree}
+                open={isDialogOpen}
+                title={"Auto create tree"}
+                text={"The current tree will be deleted and replaced with a automatic generated tree. The automatic generated tree will be the inverse of the degradation tree."}                
+            />
         </>
     );
 };
