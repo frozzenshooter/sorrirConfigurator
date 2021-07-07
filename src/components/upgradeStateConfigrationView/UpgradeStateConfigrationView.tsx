@@ -13,25 +13,24 @@ const UpgradeStateConfigrationView = () => {
     const {configuration, updateConfiguration} = useConfigurationContext();
     
     const handleChange = (levelChange: ILevelChange, startState: IDegradationLevelState, resultStateId: string) => {
-       /* const newConfiguration: IConfiguration = Object.assign({}, configuration);
+        const newConfiguration: IConfiguration = Object.assign({}, configuration);
         
-        const levelChangeIndex = newConfiguration.degradations.findIndex(d => d.startDegradationLevelId === levelChange.startDegradationLevelId && d.resultDegradationLevelId === levelChange.resultDegradationLevelId);
+        const levelChangeIndex = newConfiguration.upgrades.findIndex(lc => lc.startDegradationLevelId === levelChange.startDegradationLevelId && lc.resultDegradationLevelId === levelChange.resultDegradationLevelId);
 
         if(levelChangeIndex !== -1){
 
             if(resultStateId === ""){
                 // This is the DC case - just remove the stateChange because we dont save empty values
-                newConfiguration.degradations[levelChangeIndex].stateChanges = newConfiguration.degradations[levelChangeIndex].stateChanges.filter(sc => sc.startStateId !== startState.id).slice();
+                newConfiguration.upgrades[levelChangeIndex].stateChanges = newConfiguration.upgrades[levelChangeIndex].stateChanges.filter(sc => sc.startStateId !== startState.id).slice();
             }else{
 
-                const stateChangeIndex = newConfiguration.degradations[levelChangeIndex].stateChanges.findIndex(sc => sc.startStateId === startState.id);
+                const stateChangeIndex = newConfiguration.upgrades[levelChangeIndex].stateChanges.findIndex(sc => sc.startStateId === startState.id);
 
                 if(stateChangeIndex !== -1 ){
-                    newConfiguration.degradations[levelChangeIndex].stateChanges[stateChangeIndex].resultStateId = resultStateId;
-    
+                    newConfiguration.upgrades[levelChangeIndex].stateChanges[stateChangeIndex].resultStateId = resultStateId;
                 }else{
                     // we have to add the state change
-                    newConfiguration.degradations[levelChangeIndex].stateChanges.push({
+                    newConfiguration.upgrades[levelChangeIndex].stateChanges.push({
                         startStateId: startState.id,
                         resultStateId: resultStateId
                     });  
@@ -39,12 +38,11 @@ const UpgradeStateConfigrationView = () => {
             }          
             
             updateConfiguration(newConfiguration);
+
         }else{
             // Should never happen
             console.log("Not possible to find changed levelChange in configuration");
-        }
-        */
-       //TODO
+        }       
     }
 
     return (
