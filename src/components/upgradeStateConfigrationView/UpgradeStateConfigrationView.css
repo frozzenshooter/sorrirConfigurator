@@ -5,3 +5,16 @@
     padding-right: 2%;
     padding-bottom: 16px;
 }
+
+.upgrade-state-configuration-view-overflow-container{
+    overflow: auto;
+    padding-left: 24px;
+    padding-right: 24px;
+    padding-bottom: 24px;
+    padding-top: 8px;
+}
+
+.upgrade-state-configuration-view-no-upgrades-container{
+    padding: 16px;
+    font-weight: 500;
+}

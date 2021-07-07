@@ -78,7 +78,9 @@ const DegradationStateConfigurationView = () => {
                         }
                     </div>
                 : 
-                    null
+                    <div className="degradation-state-configuration-view-no-degradations-container">
+                        {"No degradations specified!"}
+                    </div>
                 }
             </Paper>
         </div>

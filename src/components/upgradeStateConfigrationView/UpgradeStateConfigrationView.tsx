@@ -78,7 +78,9 @@ const UpgradeStateConfigrationView = () => {
                             }
                         </div>
                     : 
-                        null
+                        <div className="upgrade-state-configuration-view-no-upgrades-container">
+                            {"No upgrades specified!"}
+                        </div>
                     }
             </Paper>
         </div>
