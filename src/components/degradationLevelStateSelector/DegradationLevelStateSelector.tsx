@@ -52,7 +52,7 @@ const DegradationLevelStateSelector = (props: IDegradationLevelStateSelectorProp
                     {"'"}
                 </div>
                 <div className="degradation-level-state-selector-selectors-container">
-                    {startDegradationLevel?.states.length === 0?
+                    {startDegradationLevel?.states.length === 0 || startDegradationLevel === null ?
                         <div className="degradation-level-state-selector-selectors-no-start-states-container">
                             {"No start states found!"}
                         </div>
