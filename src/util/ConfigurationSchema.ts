@@ -1,7 +1,7 @@
 const ConfigurationSchema = 
 {
-    "title": "SorrirConfigurationSchema",
-    "description": "Schema for a sorrir configuration",
+    "title": "SORRIRConfigurationSchema",
+    "description": "Schema for a SORRIR configuration",
     "type": "object",
     "required": [ "subcomponents", "degradationLevels" ],
     "properties": {

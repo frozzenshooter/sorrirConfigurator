@@ -1,6 +1,7 @@
 import { Button } from "@material-ui/core";
 import View from "../../util/Views";
 import './AppWelcome.css';
+import logo from './logo384.png';
 
 export interface IAppWelcomeProps {
     onWizardStart: (requiredViews: View[]) => void;
@@ -20,7 +21,10 @@ const AppWelcome = (props: IAppWelcomeProps) => {
 
     return (
         <div id="welcome-container">
-            <h1>SORRIR CONFIGURATOR</h1>
+            <div id="welcome-title-container">
+                <img src={logo} alt={"Sorrir Logo"} height={192} width={192}/>
+                <h1>CONFIGURATOR</h1>
+            </div>
             <div id="welcome-button-container">
                 <Button variant="outlined" color="primary" onClick={handleNewConfigurationClick}>
                     New Configuration
