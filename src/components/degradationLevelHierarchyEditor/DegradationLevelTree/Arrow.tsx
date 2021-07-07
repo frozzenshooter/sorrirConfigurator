@@ -1,21 +1,17 @@
+import { TreeType } from "../../../models/TreeType";
 import { DEFAULT_NODE_Y_DISTANCE } from "./TreeConstants";
-
-export enum ArrowType {
-    Degradation = 0,
-    Upgrade = 1
-}
 
 export interface IArrowProps {
     left: number,
     top: number,
     width: number,
     endXCoordinate: number,
-    type: ArrowType,
+    treeType: TreeType,
 }
 
 const Arrow = (props: IArrowProps) => {
 
-    const {top, left, width, endXCoordinate, type} = props;
+    const {top, left, width, endXCoordinate, treeType} = props;
 
     const arrowXCoordinateStart = width/2;
     const height = DEFAULT_NODE_Y_DISTANCE + 16; // + 16 is because of the internal padding of the tree nodes
@@ -25,7 +21,7 @@ const Arrow = (props: IArrowProps) => {
 
     let pathString: string =  "";
     let orientString = "";
-    if(type === ArrowType.Upgrade){
+    if(treeType === TreeType.Upgrade){
         pathString = "M"+ arrowXCoordinateStart +" 0 L"+ arrowXCoordinateStart+" "+ halfHeight + " H"+endXCoordinate+" L"+endXCoordinate+" "+(height-10);
         orientString = "0";
     }else{

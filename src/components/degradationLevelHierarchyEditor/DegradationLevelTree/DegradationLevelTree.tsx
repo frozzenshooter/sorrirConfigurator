@@ -1,26 +1,22 @@
 import IDegradationLevel from "../../../models/IDegradationLevel";
 import ILevelChange from "../../../models/ILevelChange";
-import DeleteDropNode, { DeleteDropNodeType } from "./DeleteDropNode";
-import GetSubtree, { SubtreeType } from "./Subtree";
-
-export enum DegradationLevelTreeType {
-    Degradation = 0,
-    Upgrade = 1
-}
+import { TreeType } from "../../../models/TreeType";
+import DeleteDropNode from "./DeleteDropNode";
+import GetSubtree from "./Subtree";
 
 export interface IDegradationLevelTreeProps {
     degradationLevels: IDegradationLevel[]; // presort the relevant levels to just have to do it once
     levelChanges: ILevelChange[];
     onSelectionChanged: (selected: IDegradationLevel) => void;
     selectedDegradationLevels: IDegradationLevel[];
-    degradationLevelTreeType: DegradationLevelTreeType;
+    treeType: TreeType;
 }
 
 const DegradationLevelTree = (props: IDegradationLevelTreeProps) => {
 
     // Reason for not using subtree directly: we want to be able to set the default OFF state and also calculate the tree recursively
 
-    const {degradationLevels, levelChanges, degradationLevelTreeType, selectedDegradationLevels, onSelectionChanged} = props;
+    const {degradationLevels, levelChanges, treeType, selectedDegradationLevels, onSelectionChanged} = props;
 
     const deleteDropNodeHeight = 53;
 
@@ -30,14 +26,14 @@ const DegradationLevelTree = (props: IDegradationLevelTreeProps) => {
         levelChanges: levelChanges,
         onSelectionChanged: onSelectionChanged,
         selectedDegradationLevels: selectedDegradationLevels,
-        subtreeType: degradationLevelTreeType === DegradationLevelTreeType.Degradation ? SubtreeType.Degradation : SubtreeType.Upgrade,
+        treeType: treeType,
         yOffset: deleteDropNodeHeight
     });
 
     return (
         <>
             <DeleteDropNode 
-                type={degradationLevelTreeType === DegradationLevelTreeType.Degradation ? DeleteDropNodeType.Degradation : DeleteDropNodeType.Upgrade}
+                treeType={treeType}
                 width={subtreeResult.width}
                 height={deleteDropNodeHeight}
             />

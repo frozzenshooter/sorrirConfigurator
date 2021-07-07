@@ -4,7 +4,8 @@ import IConfiguration from "../../models/IConfiguration";
 import IDegradationLevel from "../../models/IDegradationLevel";
 import IDegradationLevelState from "../../models/IDegradationLevelState";
 import ILevelChange from "../../models/ILevelChange";
-import DegradationLevelStateSelector, { DegradationLevelStateSelectorType } from "../degradationLevelStateSelector/DegradationLevelStateSelector";
+import { TreeType } from "../../models/TreeType";
+import DegradationLevelStateSelector from "../degradationLevelStateSelector/DegradationLevelStateSelector";
 import './DegradationStateConfigurationView.css'
 
 const DegradationStateConfigurationView = () => {
@@ -66,7 +67,7 @@ const DegradationStateConfigurationView = () => {
 
                                 return (
                                     <DegradationLevelStateSelector
-                                        type={DegradationLevelStateSelectorType.Degradation}
+                                        treeType={TreeType.Degradation}
                                         startDegradationLevel={startDegradationLevel}
                                         resultDegradationLevel={resultDegradationLevel}
                                         levelChange={lvlChg}

@@ -1,14 +1,10 @@
 import React from "react";
 import IDegradationLevel from "../../../models/IDegradationLevel";
 import ILevelChange from "../../../models/ILevelChange";
-import Arrow, { ArrowType } from "./Arrow";
-import DegradationLevelTreeNode, { DegradationLevelTreeNodeType } from "./DegradationLevelTreeNode";
+import { TreeType } from "../../../models/TreeType";
+import Arrow from "./Arrow";
+import DegradationLevelTreeNode from "./DegradationLevelTreeNode";
 import { DEFAULT_NODE_HEIGHT, DEFAULT_NODE_WIDTH, DEFAULT_NODE_Y_DISTANCE, DEFAULT_TREE_X_OFFSET, DEFAULT_TREE_Y_OFFSET } from "./TreeConstants";
-
-export enum SubtreeType {
-    Degradation = 0,
-    Upgrade = 1
-}
 
 export interface ISubtreeProps {
     currentDegradationLevel?: IDegradationLevel; // not set value means inital OFF state
@@ -22,7 +18,7 @@ export interface ISubtreeProps {
     // SELECTION
     onSelectionChanged: (selected: IDegradationLevel) => void;
     selectedDegradationLevels: IDegradationLevel[];
-    subtreeType: SubtreeType;
+    treeType: TreeType;
 }
 
 /**
@@ -42,7 +38,7 @@ export interface ISubtreeResult {
  */
 const GetSubtree = (props: ISubtreeProps): ISubtreeResult => {
 
-    const {currentDegradationLevel, degradationLevels, levelChanges, subtreeType, onSelectionChanged, selectedDegradationLevels} = props;
+    const {currentDegradationLevel, degradationLevels, levelChanges, treeType, onSelectionChanged, selectedDegradationLevels} = props;
     let { xOffset, yOffset } = props;
 
     // For the case it is nothing set (which is the inital case) use the default offset of the graph
@@ -62,7 +58,7 @@ const GetSubtree = (props: ISubtreeProps): ISubtreeResult => {
 
     // Calculate the childnodes to determine if a recursion is required or if you can just return the current node 
     let relevantChildIds : number[]= [];
-    if(subtreeType === SubtreeType.Degradation){
+    if(treeType === TreeType.Degradation){
         relevantChildIds = levelChanges.filter(lc => lc.resultDegradationLevelId === currentDegradationLevelId).map(lc => lc.startDegradationLevelId);
     }else{
         // for the upgrade case the level changes are inverted ("arrow direction inverted")
@@ -111,7 +107,7 @@ const GetSubtree = (props: ISubtreeProps): ISubtreeResult => {
                 xOffset: xOffsetCurrent, 
                 yOffset: yOffsetCurrent,
                 onSelectionChanged: onSelectionChanged,
-                subtreeType: subtreeType           
+                treeType: treeType           
             });
 
             arrowsEndXCoordinates.push(completeSubtreeWidth + subtreeResult.width/2);
@@ -137,7 +133,7 @@ const GetSubtree = (props: ISubtreeProps): ISubtreeResult => {
                     degradationLevel={currentDegradationLevel}
                     left={currentNodeLeft}
                     top={yOffset}
-                    type={subtreeType === SubtreeType.Degradation ? DegradationLevelTreeNodeType.Degradation : DegradationLevelTreeNodeType.Upgrade}
+                    treeType={treeType}
                 />
                 {subtreeNodes}
                 {arrowsEndXCoordinates.length > 0 ? 
@@ -159,7 +155,7 @@ const GetSubtree = (props: ISubtreeProps): ISubtreeResult => {
                                     top={yOffset+DEFAULT_NODE_HEIGHT - 8}
                                     width={completeSubtreeWidth}
                                     endXCoordinate={arrowsEndXCoordinates[index]}
-                                    type={subtreeType === SubtreeType.Degradation ? ArrowType.Degradation : ArrowType.Upgrade}
+                                    treeType={treeType}
                                     />
                             );
                         })}
@@ -183,7 +179,7 @@ const GetSubtree = (props: ISubtreeProps): ISubtreeResult => {
                         degradationLevel={currentDegradationLevel}
                         left={xOffset}
                         top={yOffset}
-                        type={subtreeType === SubtreeType.Degradation ? DegradationLevelTreeNodeType.Degradation : DegradationLevelTreeNodeType.Upgrade}
+                        treeType={treeType}
                     />
                 )
 

@@ -1,8 +1,9 @@
 import { DegradationLevelTreeNodeDropPositionType } from "../components/degradationLevelHierarchyEditor/DegradationLevelTree/DegradationLevelTreeNodeDropPositionType";
 import IConfiguration from "../models/IConfiguration";
 import IDegradationLevel from "../models/IDegradationLevel";
+import { TreeType } from "../models/TreeType";
 
-const HandleTreeDrop = (newConfiguration: IConfiguration, positionType: DegradationLevelTreeNodeDropPositionType, item: IDegradationLevel, degradationLevelId: number, type: number) : IConfiguration => {
+const HandleTreeDrop = (newConfiguration: IConfiguration, positionType: DegradationLevelTreeNodeDropPositionType, item: IDegradationLevel, degradationLevelId: number, treeType: TreeType) : IConfiguration => {
 
         
     //#region Handle the removal of the current item from another position in the tree

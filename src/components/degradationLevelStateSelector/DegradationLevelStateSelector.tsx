@@ -3,15 +3,10 @@ import IDegradationLevel from '../../models/IDegradationLevel';
 import './DegradationLevelStateSelector.css';
 import StateSelector from './StateSelector/StateSelector';
 import IDegradationLevelState from '../../models/IDegradationLevelState';
-
-export enum DegradationLevelStateSelectorType{
-    Degradation = 0,
-    Upgrade = 1
-}
-
+import { TreeType } from '../../models/TreeType';
 
 export interface IDegradationLevelStateSelectorProps {
-    type: DegradationLevelStateSelectorType;
+    treeType: TreeType;
     levelChange: ILevelChange;
     startDegradationLevel: IDegradationLevel | null;
     resultDegradationLevel: IDegradationLevel | null;
@@ -20,7 +15,7 @@ export interface IDegradationLevelStateSelectorProps {
 
 const DegradationLevelStateSelector = (props: IDegradationLevelStateSelectorProps) => {
     
-    const {type, levelChange, startDegradationLevel, resultDegradationLevel, onChange} = props;
+    const {treeType, levelChange, startDegradationLevel, resultDegradationLevel, onChange} = props;
 
     //#region Label creation
 
@@ -36,7 +31,7 @@ const DegradationLevelStateSelector = (props: IDegradationLevelStateSelectorProp
         return degradationLevel.id + " - " + labelText;
     };
 
-    const typeString = type === DegradationLevelStateSelectorType.Degradation ? "degradation" : "upgrade";
+    const typeString = treeType === TreeType.Degradation ? "degradation" : "upgrade";
 
     const startLabel = getDegradationLevelLabel(startDegradationLevel);
     const resultLabel = getDegradationLevelLabel(resultDegradationLevel)

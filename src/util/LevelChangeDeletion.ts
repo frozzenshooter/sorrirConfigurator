@@ -1,10 +1,6 @@
 import IConfiguration from "../models/IConfiguration";
 import IDegradationLevel from "../models/IDegradationLevel";
-
-export enum LevelChangeDeletionType {
-    Degradation = 0,
-    Upgrade = 1
-}
+import { TreeType } from "../models/TreeType";
 
 /**
  * This functions is a helper function to delete LevelChanges that are related with the @param levelToDelete  from the @param newConfiguration
@@ -16,9 +12,9 @@ export enum LevelChangeDeletionType {
  * @param levelToDelete 
  * @returns 
  */
-const LevelChangeDeletion = (newConfiguration: IConfiguration, type: LevelChangeDeletionType, levelToDelete: IDegradationLevel) : IConfiguration => {
+const LevelChangeDeletion = (newConfiguration: IConfiguration, type: TreeType, levelToDelete: IDegradationLevel) : IConfiguration => {
 
-    if(type === LevelChangeDeletionType.Degradation){
+    if(type === TreeType.Degradation){
         // if the deletion happens in the degradation tree only delete and update the degredations
         
         const indexDegradationLevelChange = newConfiguration.degradations.findIndex(d => d.startDegradationLevelId === levelToDelete.id);

@@ -3,11 +3,12 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import React from 'react';
 import IDegradationLevel from '../../models/IDegradationLevel';
 import SelectionMenuBar from '../selectionMenuBar/SelectionMenuBar';
-import DegradationLevelHierarchyEditor, { DegradationLevelHierarchyEditorType } from '../degradationLevelHierarchyEditor/DegradationLevelHierarchyEditor';
+import DegradationLevelHierarchyEditor from '../degradationLevelHierarchyEditor/DegradationLevelHierarchyEditor';
 import './UpgradeLevelConfigrationView.css'
 import DegradationLevelDialog from '../degradationLevelConfigurationView/DegradationLevelDialog/DegradationLevelDialog';
 import DegradationLevelDeleteDialog from '../degradationLevelConfigurationView/DegradationLevelDeleteDialog/DegradationLevelDeleteDialog';
 import DegradationLevelDialogType from '../degradationLevelConfigurationView/DegradationLevelDialog/DegradationLevelDialogType';
+import { TreeType } from '../../models/TreeType';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -58,7 +59,7 @@ const UpgradeLevelConfigrationView = () => {
                     <DegradationLevelHierarchyEditor
                         onSelectionChanged={handleSelectionChanged}
                         selectedDegradationLevels={selectedDegradationLevels}
-                        degradationLevelHierarchyEditorType={DegradationLevelHierarchyEditorType.Upgrade}
+                        treeType={TreeType.Upgrade}
                         />
               </div>
             </Paper>

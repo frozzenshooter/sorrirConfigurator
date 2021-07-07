@@ -7,21 +7,17 @@ import { useState, useEffect } from "react";
 import IDegradationLevel from "../../../models/IDegradationLevel";
 import IConfiguration from "../../../models/IConfiguration";
 import { useConfigurationContext } from "../../../context/ConfigurationContext";
-import LevelChangeDeletion, { LevelChangeDeletionType } from '../../../util/LevelChangeDeletion';
-
-export enum  DeleteDropNodeType {
-    Degradation = 0,
-    Upgrade = 1
-}
+import LevelChangeDeletion from '../../../util/LevelChangeDeletion';
+import { TreeType } from '../../../models/TreeType';
 
 export interface DeleteDropNodeProps {
-    type:  DeleteDropNodeType;
+    treeType: TreeType;
     width: number;
     height: number
 }
 
 const DeleteDropNode = (props: DeleteDropNodeProps) => {
-    const {type, width, height} = props;
+    const {treeType, width, height} = props;
 
     const {configuration, updateConfiguration} = useConfigurationContext();
 
@@ -32,10 +28,8 @@ const DeleteDropNode = (props: DeleteDropNodeProps) => {
 
         let newConfiguration : IConfiguration = Object.assign({}, configuration);
 
-        const levelChangeDeletionType = type === DeleteDropNodeType.Degradation ? LevelChangeDeletionType.Degradation : LevelChangeDeletionType.Upgrade;
-
         // Delete either the degradations or the upgrades (depending on the tree)
-        newConfiguration = LevelChangeDeletion(newConfiguration, levelChangeDeletionType, item);
+        newConfiguration = LevelChangeDeletion(newConfiguration, treeType, item);
 
         updateConfiguration(newConfiguration);
 

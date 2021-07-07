@@ -1,15 +1,11 @@
 import { Paper } from "@material-ui/core";
 import React from "react";
 import IDegradationLevel from "../../../models/IDegradationLevel";
+import { TreeType } from "../../../models/TreeType";
 import DegradationLevelNode from "../DegradationLevelNode/DegradationLevelNode";
-import DegradationLevelTreeNodeDrop, { DegradationLevelTreeNodeDropType } from "./DegradationLevelTreeNodeDrop";
+import DegradationLevelTreeNodeDrop from "./DegradationLevelTreeNodeDrop";
 import { DegradationLevelTreeNodeDropPositionType } from "./DegradationLevelTreeNodeDropPositionType";
 import { DEFAULT_DROP_NODE_HEIGHT, DEFAULT_NODE_HEIGHT, DEFAULT_NODE_WIDTH } from "./TreeConstants";
-
-export enum DegradationLevelTreeNodeType{
-    Degradation = 0,
-    Upgrade = 1
-}
 
 export interface IDegradationLevelTreeNodeProps {
     top: number;
@@ -17,12 +13,12 @@ export interface IDegradationLevelTreeNodeProps {
     degradationLevel?: IDegradationLevel;
     isSelected: boolean;
     onSelectionChanged: (selected: IDegradationLevel) => void;
-    type: DegradationLevelTreeNodeType;
+    treeType: TreeType;
 }
 
 const DegradationLevelTreeNode = (props: IDegradationLevelTreeNodeProps) => {
 
-    const {degradationLevel, isSelected, top, left, type, onSelectionChanged} = props;
+    const {degradationLevel, isSelected, top, left, treeType, onSelectionChanged} = props;
 
     if(!degradationLevel){
 
@@ -60,7 +56,7 @@ const DegradationLevelTreeNode = (props: IDegradationLevelTreeNodeProps) => {
                     top={top+DEFAULT_NODE_HEIGHT-8} // remove 8 pixels because the normal nodes have a padding - to align them correctly
                     degradationLevelId={0}
                     positionType={DegradationLevelTreeNodeDropPositionType.BELOW}
-                    type={type === DegradationLevelTreeNodeType.Degradation? DegradationLevelTreeNodeDropType.Degradation : DegradationLevelTreeNodeDropType.Upgrade}
+                    treeType={treeType}
                 />
 
             </React.Fragment>
@@ -74,7 +70,7 @@ const DegradationLevelTreeNode = (props: IDegradationLevelTreeNodeProps) => {
                 top={top-DEFAULT_DROP_NODE_HEIGHT + 8} // - DEFAULT_DROP_NODE_HEIGHT to align the dropzone above the TreeNode
                 degradationLevelId={degradationLevel.id}
                 positionType={DegradationLevelTreeNodeDropPositionType.ABOVE}
-                type={type === DegradationLevelTreeNodeType.Degradation? DegradationLevelTreeNodeDropType.Degradation : DegradationLevelTreeNodeDropType.Upgrade}
+                treeType={treeType}
             />
             <DegradationLevelNode
                 degradationLevel={degradationLevel}
@@ -88,7 +84,7 @@ const DegradationLevelTreeNode = (props: IDegradationLevelTreeNodeProps) => {
                 top={top + DEFAULT_NODE_HEIGHT - 8} // remove 8 pixels because the normal nodes have a padding - to align them correctly
                 degradationLevelId={degradationLevel.id}
                 positionType={DegradationLevelTreeNodeDropPositionType.BELOW}
-                type={type === DegradationLevelTreeNodeType.Degradation? DegradationLevelTreeNodeDropType.Degradation : DegradationLevelTreeNodeDropType.Upgrade}
+                treeType={treeType}
             />
         </React.Fragment>
     );

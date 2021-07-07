@@ -9,23 +9,19 @@ import IConfiguration from "../../../models/IConfiguration";
 import { useEffect, useState } from "react";
 import { DegradationLevelTreeNodeDropPositionType } from "./DegradationLevelTreeNodeDropPositionType";
 import HandleTreeDrop from "../../../util/HandleTreeDrop";
-
-export enum DegradationLevelTreeNodeDropType {
-    Degradation = 0,
-    Upgrade = 1
-}
+import { TreeType } from "../../../models/TreeType";
 
 export interface IDegradationLevelTreeNodeDropProps {
     top: number;
     left: number;
     degradationLevelId: number;
     positionType: DegradationLevelTreeNodeDropPositionType;
-    type: DegradationLevelTreeNodeDropType;
+    treeType: TreeType;
 }
 
 const DegradationLevelTreeNodeDrop = (props: IDegradationLevelTreeNodeDropProps) => {
 
-    const {top, left, degradationLevelId, positionType, type} = props;
+    const {top, left, degradationLevelId, positionType, treeType} = props;
 
     const {configuration, updateConfiguration} = useConfigurationContext();
 
@@ -40,7 +36,7 @@ const DegradationLevelTreeNodeDrop = (props: IDegradationLevelTreeNodeDropProps)
 
             let newConfiguration : IConfiguration = Object.assign({}, configuration);
 
-            newConfiguration = HandleTreeDrop(newConfiguration, positionType, item, degradationLevelId, type);
+            newConfiguration = HandleTreeDrop(newConfiguration, positionType, item, degradationLevelId, treeType);
 
             updateConfiguration(newConfiguration);
         }

@@ -4,22 +4,18 @@ import './DegradationLevelHierarchyEditor.css';
 import DegradationLevelNode from './DegradationLevelNode/DegradationLevelNode';
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
-import DegradationLevelTree, { DegradationLevelTreeType } from './DegradationLevelTree/DegradationLevelTree';
-
-export enum DegradationLevelHierarchyEditorType {
-    Degradation = 0,
-    Upgrade = 1
-}
+import DegradationLevelTree from './DegradationLevelTree/DegradationLevelTree';
+import { TreeType } from '../../models/TreeType';
 
 export interface DegradationLevelHierarchyEditorProps {
     selectedDegradationLevels: IDegradationLevel[];
     onSelectionChanged: (selected: IDegradationLevel) => void;
-    degradationLevelHierarchyEditorType: DegradationLevelHierarchyEditorType;
+    treeType: TreeType;
 }
 
 const DegradationLevelHierarchyEditor =  (props: DegradationLevelHierarchyEditorProps) => {
 
-    const {onSelectionChanged, selectedDegradationLevels, degradationLevelHierarchyEditorType} = props;
+    const {onSelectionChanged, selectedDegradationLevels, treeType} = props;
 
     const {configuration} = useConfigurationContext();
 
@@ -27,7 +23,7 @@ const DegradationLevelHierarchyEditor =  (props: DegradationLevelHierarchyEditor
     const unsortedLevels: IDegradationLevel[] = [];
     const sortedLevels: IDegradationLevel[] = [];
 
-    if(degradationLevelHierarchyEditorType === DegradationLevelHierarchyEditorType.Degradation){
+    if(treeType === TreeType.Degradation){
 
         // Tree will show degradation and therefore we have to look into the degradations
 
@@ -91,10 +87,10 @@ const DegradationLevelHierarchyEditor =  (props: DegradationLevelHierarchyEditor
                     <div id="degradation-level-hierarchy-editor-tree-container">
                         <DegradationLevelTree
                                 degradationLevels={sortedLevels}
-                                levelChanges={degradationLevelHierarchyEditorType === DegradationLevelHierarchyEditorType.Degradation ? configuration.degradations : configuration.upgrades}
+                                levelChanges={treeType === TreeType.Degradation ? configuration.degradations : configuration.upgrades}
                                 onSelectionChanged={onSelectionChanged}
                                 selectedDegradationLevels={selectedDegradationLevels}
-                                degradationLevelTreeType={degradationLevelHierarchyEditorType === DegradationLevelHierarchyEditorType.Degradation ? DegradationLevelTreeType.Degradation : DegradationLevelTreeType.Upgrade}
+                                treeType={treeType}
                             />
                         
                     </div>

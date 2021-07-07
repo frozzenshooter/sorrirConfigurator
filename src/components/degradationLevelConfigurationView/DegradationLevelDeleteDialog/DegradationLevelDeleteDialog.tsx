@@ -1,7 +1,8 @@
 import { useConfigurationContext } from "../../../context/ConfigurationContext";
 import IConfiguration from "../../../models/IConfiguration";
 import IDegradationLevel from "../../../models/IDegradationLevel";
-import LevelChangeDeletion, { LevelChangeDeletionType } from "../../../util/LevelChangeDeletion";
+import { TreeType } from "../../../models/TreeType";
+import LevelChangeDeletion from "../../../util/LevelChangeDeletion";
 import DecisionDialog from "../../decisionDialog/DecisionDialog";
 
 export interface IDegradationLevelDeleteDialogProps {
@@ -32,13 +33,13 @@ const DegradationLevelDeleteDialog = (props: IDegradationLevelDeleteDialogProps)
 
             //#region Handling of the degradations
 
-            newConfiguration = LevelChangeDeletion(newConfiguration, LevelChangeDeletionType.Degradation, dl);
+            newConfiguration = LevelChangeDeletion(newConfiguration, TreeType.Degradation, dl);
             
             //#endregion
 
             //#region Handling of the upgrades
 
-            newConfiguration = LevelChangeDeletion(newConfiguration, LevelChangeDeletionType.Degradation, dl);
+            newConfiguration = LevelChangeDeletion(newConfiguration, TreeType.Upgrade, dl);
 
             //#endregion
         });
