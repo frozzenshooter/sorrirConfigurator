@@ -52,12 +52,12 @@ const LevelChangeDeletion = (newConfiguration: IConfiguration, type: TreeType, l
             // Find all LevelChanges that are the result of the current degradation level - required to be able to create new LevelChanges that point directly from the parent to the children of this level
             const childNodeLevelChanges = newConfiguration.upgrades.filter(d => d.startDegradationLevelId === levelToDelete.id).slice();
 
-            newConfiguration.degradations = newConfiguration.upgrades.filter(d => d.resultDegradationLevelId !== levelToDelete.id && d.startDegradationLevelId !== levelToDelete.id).slice();
+            newConfiguration.upgrades = newConfiguration.upgrades.filter(d => d.resultDegradationLevelId !== levelToDelete.id && d.startDegradationLevelId !== levelToDelete.id).slice();
 
             // add the new Level Changes
             for(const childNode of childNodeLevelChanges){
 
-                newConfiguration.degradations.push({
+                newConfiguration.upgrades.push({
                     resultDegradationLevelId: childNode.resultDegradationLevelId,
                     startDegradationLevelId: parentNodeId,
                     stateChanges: []

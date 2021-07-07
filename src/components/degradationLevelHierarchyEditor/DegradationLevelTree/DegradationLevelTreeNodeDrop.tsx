@@ -30,8 +30,7 @@ const DegradationLevelTreeNodeDrop = (props: IDegradationLevelTreeNodeDropProps)
 
     const handleDrop = (item: IDegradationLevel) => {
            
-        // check if an update is required (trivial case - you would insert it on the same spot again - ids are the same)
-        
+        // check if an update is required (trivial case - you would insert it on the same spot again -this happens if the ids of the item and the current node are equal)
         if(item.id !== degradationLevelId){
 
             let newConfiguration : IConfiguration = Object.assign({}, configuration);
