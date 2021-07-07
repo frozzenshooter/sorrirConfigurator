@@ -68,7 +68,6 @@ const LevelChangeDeletion = (newConfiguration: IConfiguration, type: LevelChange
                 });
             }
         }
-
     }
 
     return newConfiguration;

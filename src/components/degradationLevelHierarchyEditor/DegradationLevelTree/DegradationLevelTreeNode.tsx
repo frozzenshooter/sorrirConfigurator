@@ -2,7 +2,8 @@ import { Paper } from "@material-ui/core";
 import React from "react";
 import IDegradationLevel from "../../../models/IDegradationLevel";
 import DegradationLevelNode from "../DegradationLevelNode/DegradationLevelNode";
-import DegradationLevelTreeNodeDrop, { DegradationLevelTreeNodeDropPositionType, DegradationLevelTreeNodeDropType } from "./DegradationLevelTreeNodeDrop";
+import DegradationLevelTreeNodeDrop, { DegradationLevelTreeNodeDropType } from "./DegradationLevelTreeNodeDrop";
+import { DegradationLevelTreeNodeDropPositionType } from "./DegradationLevelTreeNodeDropPositionType";
 import { DEFAULT_DROP_NODE_HEIGHT, DEFAULT_NODE_HEIGHT, DEFAULT_NODE_WIDTH } from "./TreeConstants";
 
 export enum DegradationLevelTreeNodeType{
