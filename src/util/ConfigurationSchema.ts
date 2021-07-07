@@ -3,21 +3,32 @@ const ConfigurationSchema =
     "title": "SORRIRConfigurationSchema",
     "description": "Schema for a SORRIR configuration",
     "type": "object",
-    "required": [ "subcomponents", "degradationLevels" ],
+    "required": [ "subcomponents", "degradationLevels", "degradations", "upgrades"],
     "properties": {
         "subcomponents": {
             "description": "The subcomponents of the component of this configuration",
             "type": "array",
             "minItems": 0,
             "items": { "$ref": "#/$defs/subcomponent" }
-
         },
         "degradationLevels":{
             "description": "The degradation levels of the component",
             "type": "array",
             "minItems": 0,
             "items": { "$ref": "#/$defs/degradationLevel" }
-        }        
+        },
+        "degradations":{
+            "description": "The degradations of the component",
+            "type": "array",
+            "minItems": 0,
+            "items": { "$ref": "#/$defs/levelChange" }
+        },
+        "upgrades":{
+            "description": "The upgrades of the component",
+            "type": "array",
+            "minItems": 0,
+            "items": { "$ref": "#/$defs/levelChange" }
+        },
     },
     "$defs": {
         "subcomponent": {
@@ -91,7 +102,44 @@ const ConfigurationSchema =
                     "description": "The id of a shadowmode of a subcomponent",
                 },
             }
-        }
+        },
+        "levelChange":{
+            "type": "object",
+            "description": "A levelChange is either a upgrade or a degradation from on degradationLevel to another",
+            "required": [ "startDegradationLevelId", "resultDegradationLevelId", "stateChanges" ],
+            "properties": {
+                "startDegradationLevelId": {
+                    "type": "number",
+                    "description": "The start degradationLevel of a levelChange",
+                },
+                "resultDegradationLevelId": {
+                    "type": "number",
+                    "description": "The degradationLevel in which the change results in",
+                },
+                "stateChanges":{
+                    "type": "array",
+                    "description": "The states changes from the start to the result degradationLevel",
+                    "minItems": 0,
+                    "items": { "$ref": "#/$defs/stateChange" }
+                }
+            }
+        },
+        "stateChange": {
+            "type": "object",
+            "description": "A stateChange contains the start state of a levelChange and the result state that the result degradationLevel will be in after the levelChange",
+            "required": [ "startStateId", "resultStateId"],
+            "properties": {
+                "startStateId": {
+                    "type": "string",
+                    "description": "The id of the state of the start degradationLevel",
+                },
+                "resultStateId": {
+                    "type": "string",
+                    "description": "The id of the state of the result degradationLevel",
+                },
+            }
+        },
+
     }
 };
 

@@ -49,7 +49,7 @@ const UpgradeStateConfigrationView = () => {
         <div id="upgrade-state-configuration-view-container">
             <Paper elevation={1}>
                 {configuration.upgrades.length > 0?
-                        <div className="degradation-state-configuration-view-overflow-container">
+                        <div className="upgrade-state-configuration-view-overflow-container">
                             
                             {configuration.upgrades.map(lvlChg => {
 
