@@ -86,6 +86,51 @@ const SubcomponentDialog = (props: ISubcomponentDialogProps) => {
             //Check if id was changed and get index in one step
             const index = newConfiguration.subcomponents.findIndex(s => s.id === id);
             if(index === -1){
+
+                // Get previous subcomponent to be able to delete the dependencies on the shadowmodes
+                const prevIndex = newConfiguration.subcomponents.findIndex(s => s.id === subcomponent.id);
+
+                // Generate a list of the ids of all the deleted shadowmodes to remove the dependencies on them
+                const idsOfshadowModesToDelete: string[] = [];
+
+                if(prevIndex !== -1){
+                    newConfiguration.subcomponents[prevIndex].shadowmodes.forEach(s => {
+
+                        const ind = shadowmodes.findIndex(sm => s.id === sm.id);
+    
+                        if(ind === -1){
+                            // shadowmode not found in the new shadowmodes - remove from dependencies
+                            idsOfshadowModesToDelete.push(s.id);
+                        }
+                    });
+                }
+
+                // It is required to update the dependencies of the degradationLevels because there might be some deleted shadowmodes and required to update the subcomponentId
+                for(let degradationLevelsIndex=0; degradationLevelsIndex < newConfiguration.degradationLevels.length; degradationLevelsIndex++){
+
+                    // Update the id with the new id in all dependencies
+                    for(let dependencyIndex = 0; dependencyIndex < newConfiguration.degradationLevels[degradationLevelsIndex].dependencies.length; dependencyIndex++){
+                        if(newConfiguration.degradationLevels[degradationLevelsIndex].dependencies[dependencyIndex].subcomponentId === subcomponent.id){
+                            newConfiguration.degradationLevels[degradationLevelsIndex].dependencies[dependencyIndex].subcomponentId = id;
+                        }
+                    }
+
+                    // delete all the dependencies that were dependend on a deleted shadowmodes
+                    newConfiguration.degradationLevels[degradationLevelsIndex].dependencies = newConfiguration.degradationLevels[degradationLevelsIndex].dependencies.filter(d => {
+                        if(d.subcomponentId !== id){
+                            return true;
+                        }else{
+                            const smIndex = idsOfshadowModesToDelete.findIndex(idToDelete => idToDelete === d.shadowmodeId);
+                            if(smIndex !== -1){
+                                // shadowmode is in the list of deleted shadowmodes - remove it
+                                return false;
+                            }else{
+                                return true;
+                            }
+                        }
+                    }).slice();
+                }
+
                 //Delete the subcomponent with previous id and add a new one with the updated data
                 newConfiguration.subcomponents = newConfiguration.subcomponents.filter(s => s.id !== subcomponent.id).slice();
                 const newSubcomponent : ISubcomponent = {
@@ -94,12 +139,7 @@ const SubcomponentDialog = (props: ISubcomponentDialogProps) => {
                     shadowmodes: shadowmodes
                 };
                 newConfiguration.subcomponents.push(newSubcomponent);
-
-
-                // There might be degradation levels with a dependency on this subcomponent which have to be updated
-                // also the shadowmodes have to be updated too
-                // TODO: !!!!!!!!!!!!!!!!!!!
-
+                
             }else{
                 // id stays the same - just update the other values
                 newConfiguration.subcomponents[index].name = name;
