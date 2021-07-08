@@ -1,9 +1,9 @@
 #### Offene Punkte Schritte
- + Die Zustände von einem DegradationLevel muss beim ändern/löschen entsprechend in den LevelChanges/etc angepasst werden.
- + Löschen/aktualisieren von Leveln muss entsprechend angepasst werden, damit alle Abhängigkeiten entsprechend angepasst werden können 
+
  + Code Cleanup/ Simplifications/ Vereinheitlichung (Benennung/Gross/Klein-schreibung/...) - allgemeine Anpassungen zum Vereinfachen des Codes
 
  + Verifizieren, dass die Json Validierung mit dem neuen Schema funktioniert + neue Testdaten
+ + Verifizieren, dass alle Funktionalitäten passen (löschen/anpassen von ids, states, shadowmodes, ...)
 
  + Optional: anpassen der GUI für Zustände - "Titel" schwer zu lesen
 

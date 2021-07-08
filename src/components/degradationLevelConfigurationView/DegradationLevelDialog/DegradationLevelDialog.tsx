@@ -131,7 +131,19 @@ const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
 
             }else if(type === DegradationLevelDialogType.Edit) {
 
+                // Find all states that will be deleted to update stateChanges later
+                const idsOfStatesToDelete: string[] = [];
+
+                initalDegradationLevel.states.forEach(s => {
+                    const ind = states.findIndex(newS => newS.id === s.id);
+                    if(ind === -1){
+                        // old sate not found in new states - has to be deleted
+                        idsOfStatesToDelete.push(s.id);
+                    }
+                });
+
                 if(id !== initalDegradationLevel.id){
+                
                     // id has changed - remove old level and insert new one
                     newConfiguration.degradationLevels = newConfiguration.degradationLevels.filter(d => d.id !== initalDegradationLevel.id).slice();
                     const newDegradationLevel: IDegradationLevel = {
@@ -142,12 +154,106 @@ const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
                     };
             
                     newConfiguration.degradationLevels.push(newDegradationLevel);
+
+                    //#region LevelChange updates
+
+                    // update the stateChanges(degradation and upgrade) because the states might be changed and also update the id of the levelChange                    
+                    for(let degradationIndex = 0; degradationIndex < newConfiguration.degradations.length; degradationIndex++){
+
+                        // Update the LevelChangeIds
+                        if(newConfiguration.degradations[degradationIndex].startDegradationLevelId === initalDegradationLevel.id){
+                            newConfiguration.degradations[degradationIndex].startDegradationLevelId = id;
+                        }
+
+                        if(newConfiguration.degradations[degradationIndex].resultDegradationLevelId === initalDegradationLevel.id){
+                            newConfiguration.degradations[degradationIndex].resultDegradationLevelId = id;
+                        }
+
+                        // Update the stateChanges of the current LevelChange (Degradation) - remove the stateChanges that rely on not exitsing states (they have to be set again anyway)
+                        newConfiguration.degradations[degradationIndex].stateChanges = newConfiguration.degradations[degradationIndex].stateChanges.filter(sc => {
+                            const startStateIndex = idsOfStatesToDelete.findIndex(id => id === sc.startStateId);
+                            const resultStateIndex = idsOfStatesToDelete.findIndex(id => id === sc.resultStateId);
+
+                            if(startStateIndex !== -1 || resultStateIndex !== -1){
+                                return false;
+                            }else{
+                                return true;
+                            }
+                        });
+                    }
+
+                    for(let upgradeIndex = 0; upgradeIndex < newConfiguration.upgrades.length; upgradeIndex++){
+
+                        // Update the LevelChangeIds
+                        if(newConfiguration.upgrades[upgradeIndex].startDegradationLevelId === initalDegradationLevel.id){
+                            newConfiguration.upgrades[upgradeIndex].startDegradationLevelId = id;
+                        }
+
+                        if(newConfiguration.upgrades[upgradeIndex].resultDegradationLevelId === initalDegradationLevel.id){
+                            newConfiguration.upgrades[upgradeIndex].resultDegradationLevelId = id;
+                        }
+
+                        // Update the stateChanges of the current LevelChange (Upgrade) - remove the stateChanges that rely on not exitsing states (they have to be set again anyway)
+                        newConfiguration.upgrades[upgradeIndex].stateChanges = newConfiguration.upgrades[upgradeIndex].stateChanges.filter(sc => {
+                            const startStateIndex = idsOfStatesToDelete.findIndex(id => id === sc.startStateId);
+                            const resultStateIndex = idsOfStatesToDelete.findIndex(id => id === sc.resultStateId);
+
+                            if(startStateIndex !== -1 || resultStateIndex !== -1){
+                                return false;
+                            }else{
+                                return true;
+                            }
+                        });
+                    }
+
+                    //#endregion
+
                 }else{
-                    // id the same - update
+                     // id the same - update the existing degradation level
                     const index = newConfiguration.degradationLevels.findIndex(d => d.id === id);
-                    newConfiguration.degradationLevels[index].label = label;
-                    newConfiguration.degradationLevels[index].dependencies = dependencies.slice();
-                    newConfiguration.degradationLevels[index].states = states.slice();
+
+                    if(index !== -1){
+                        // should always find the level, but just to be sure
+
+                        newConfiguration.degradationLevels[index].label = label;
+                        newConfiguration.degradationLevels[index].dependencies = dependencies.slice();
+                        newConfiguration.degradationLevels[index].states = states.slice();
+                    }
+
+                    //#region LevelChange updates
+
+                    // update the stateChanges(degradation and upgrade) because the states might be changed                 
+                    for(let degradationIndex = 0; degradationIndex < newConfiguration.degradations.length; degradationIndex++){
+
+                        // Update the stateChanges of the current LevelChange (Degradation) - remove the stateChanges that rely on not exitsing states (they have to be set again anyway)
+                        newConfiguration.degradations[degradationIndex].stateChanges = newConfiguration.degradations[degradationIndex].stateChanges.filter(sc => {
+                            const startStateIndex = idsOfStatesToDelete.findIndex(id => id === sc.startStateId);
+                            const resultStateIndex = idsOfStatesToDelete.findIndex(id => id === sc.resultStateId);
+
+                            if(startStateIndex !== -1 || resultStateIndex !== -1){
+                                return false;
+                            }else{
+                                return true;
+                            }
+                        });
+                    }
+
+                    for(let upgradeIndex = 0; upgradeIndex < newConfiguration.upgrades.length; upgradeIndex++){
+                        
+                        // Update the stateChanges of the current LevelChange (Upgrade) - remove the stateChanges that rely on not exitsing states (they have to be set again anyway)
+                        newConfiguration.upgrades[upgradeIndex].stateChanges = newConfiguration.upgrades[upgradeIndex].stateChanges.filter(sc => {
+                            const startStateIndex = idsOfStatesToDelete.findIndex(id => id === sc.startStateId);
+                            const resultStateIndex = idsOfStatesToDelete.findIndex(id => id === sc.resultStateId);
+
+                            if(startStateIndex !== -1 || resultStateIndex !== -1){
+                                return false;
+                            }else{
+                                return true;
+                            }
+                        });
+                    }
+
+                    //#endregion
                 }
             }
 
