@@ -239,7 +239,7 @@ const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
                     }
 
                     for(let upgradeIndex = 0; upgradeIndex < newConfiguration.upgrades.length; upgradeIndex++){
-                        
+
                         // Update the stateChanges of the current LevelChange (Upgrade) - remove the stateChanges that rely on not exitsing states (they have to be set again anyway)
                         newConfiguration.upgrades[upgradeIndex].stateChanges = newConfiguration.upgrades[upgradeIndex].stateChanges.filter(sc => {
                             const startStateIndex = idsOfStatesToDelete.findIndex(id => id === sc.startStateId);
@@ -365,7 +365,13 @@ const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
             title = "Edit";
 
             if(label !== ""){
-                title = title + " - " + label;
+
+                if(label.length > 20){
+                    title = title + " - " + label.substring(0,17)+"...";
+                }else{
+                    title = title + " - " + label;
+                }
+                
             }
         }
 

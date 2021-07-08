@@ -26,8 +26,13 @@ const DegradationLevelStateSelector = (props: IDegradationLevelStateSelectorProp
             return "0 - OFF";
         }
 
-        const labelText = degradationLevel.label !== "" ? degradationLevel.label : "Level";
+        let shortDegradationLevelLabel = degradationLevel.label ;
+        if(shortDegradationLevelLabel.length > 20){
+            shortDegradationLevelLabel = shortDegradationLevelLabel.substring(0, 17) + "...";
+        } 
 
+        const labelText = shortDegradationLevelLabel !== "" ? shortDegradationLevelLabel : "Level";
+        
         return degradationLevel.id + " - " + labelText;
     };
 
