@@ -99,6 +99,14 @@ const SubComponentTable = () => {
     const handleDeleteConfirm = () => {
         const newConfiguration : IConfiguration = Object.assign({}, configuration);
         newConfiguration.subcomponents = configuration.subcomponents.filter(subcomponent => !isSelected(subcomponent.id)).slice();
+
+        // Delete all the dependencies in the degradationLevels too
+        for(let degradationLevelIndex=0; degradationLevelIndex < newConfiguration.degradationLevels.length; degradationLevelIndex++){
+          newConfiguration.degradationLevels[degradationLevelIndex].dependencies = newConfiguration.degradationLevels[degradationLevelIndex].dependencies.filter(dep => {
+            return !isSelected(dep.subcomponentId);
+          }).slice();
+        }
+
         setSelected([]);
         setDeleteDialogOpen(false);
         updateConfiguration(newConfiguration);
