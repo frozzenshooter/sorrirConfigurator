@@ -1,16 +1,18 @@
 \section{Technology Stack}
 \label{sec:tech_stack}
+The goal of this project is the development of a web application and due to the large number of different frameworks and libraries, the selection was relevant from the beginning. To develop a web application you can work without a framework or library, but nowadays there are also various frameworks available to make the work easier, such as React, Vue or Angular.
+
+The choice for this application fell on React, because React is not only extremely popular \cite{2020DeveloperSurvey}, but it also allowed me to learn the required fundamentals and use it for the first time. React is a JavaScript library to create single-page applications, but also provides typings to use it with TypeScript \cite{createReactApp}. In order to facilitate future development and enhancements for this applcation, the choice fell on TypeScript. In addition to this, TypeScript allowed to define interfaces that help to understand the model of the application.
+
+With this technologies as base, the next step is the decision is related to the build system. It would be possible to use a custom build system based on webpack or similar bundlers, but for React there is an officially supported way: create-react-app. This is a npx package that will setup a single-page application with all the required configuration, like the bundler or the typescript compiler. It is possible to later exchange and adapt parts of the configuration or the build system in general, but for this project it was not required to further adapt the default setup.
+
+In addition to react some additional libraries were used:
 
 \begin{itemize}
-    \item React (create-react-app)
-    \item Typescript
-    \item most important libraries: 
-        \begin{itemize}
-            \item material-ui ( Material design of the application)
-            \item react-syntax-highlighter (SyntaxHighlighter: preview of the import and the current configuration in the export)
-            \item ajv ( Json Validation for the import)
-            \item react-dnd: Drag and Drop Library for react
-        \end{itemize}
+    \item \textbf{material-ui}: a library that offers standard material design components
+    \item \textbf{react-syntax-highlighter}: a syntax highlighter that is used to display the configuration as Json in the import and export 
+    \item \textbf{ajv}: a validator that is used in the import to validate that the Json fits the configuration schema
+    \item \textbf{react-dnd}: a drag and drop library for react
 \end{itemize}
 
 \newpage
