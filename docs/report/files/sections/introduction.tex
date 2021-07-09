@@ -1,10 +1,17 @@
 \section{Introduction}
 \label{sec:intro}
 
-\begin{itemize}
-    \item Short introduction 
-    \item Motivation
-    \item Goal of the project
-\end{itemize}
+More and more IoT (Internet of Things) devices are finding their way into our daily lives, making it possible to combine a wide variety of end devices or sensors and design new composite systems. 
+Such systems can encounter internal problems, for example, when a component no longer operates properly. The system as such must react to this and, for example, cease functionality or operate in another way.
+
+This is where the SORRIR project comes in to develop a self-organising, resilient execution platform for IoT services. In order to make such a system resilient, i.e. resistant to errors of the subcomponents of the system, different levels were introduced in which such a system can operate. 
+
+A system that is composed of several subcomponents may be forced to change the level if, for example, one of these subcomponents is no longer functional. In the worst case, up to the complete deactivation of the system. In order to prevent a system from going directly into the deactivated state whenever an error occurs, various intermediate levels, the so-called degradation levels, can be defined. For example, a degradation level can continue to provide some of the original functionality, but with some limitations depending on the non-functional subcomponent.
+
+An example of this is a smart barrier in a parking garage, which in the ideal case, i.e. when all subcomponents are functioning, recognizes a car by means of a camera and is opened automatically. If, for some reason, the camera failed, the system would no longer be able to function. However, if one uses the degradation levels, a part of the functionality could be guaranteed. For example, by opening the barrier manually with an ID card. To configure such degradation levels a json file is required which defines the different transitions between the levels. For example, what should happen when a certain subcomponent is no longer functional.
+
+This is the starting point of this project, in which the goal is to create a graphical interface in form of a web application that allows to configure a system with the different degradation levels and finally to export it as Json. In order to change or create a configuration, several components for the web application are required, like the definition of subcomponents or the import of an existing configuration. 
+
+This report starts with a short description of the technology stack, in section \ref{sec:tech_stack}, that was used to implement the web interface. It is followed by the architecture of the application, in section\ref{sec:architecture}, that includes a description of the general components, their usage, and some additional information about the implementation. The last section is the conclusion that contains a short summary as well as potential further enhancements.
 
 \newpage

@@ -8,10 +8,9 @@
  + Liste an Fragen erstellen und klären
  + Optional: anpassen der GUI für Zustände - "Titel" schwer zu lesen
  + Planning in den Docs anpassen - auf aktuelle Version anpassen
- + Bei den States das Label anpassen - wenn man einen zu langen Namen hat wird es mehrzeilig 
- 
 
 #### Fragen
  + Passen die Zustände der Level so oder muss man dafür noch etwas anpassen? zB muss man etwas anzeigen wenn man im Off State landet? - DC speichere ich nicht
+ + Passt das auch wenn man vom Off State ein Upgrade macht - momentan wird da ja "keine States gefunde" angezeigt
  + GUI Anpassungen? Screenshots mitsenden?
  + Benennungen?
