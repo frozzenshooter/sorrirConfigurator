@@ -43,7 +43,7 @@ const StateSelector = (props: IStateSelectorProps) => {
 
     return (
         <div className="state-selector-container" key={startLabel + " "+ resultLabel}>
-            <FormControl className={classes.formControl} key={startState.id}>
+            <FormControl className={classes.formControl} key={startState.id+"start"}>
                 <InputLabel shrink id="start-state-selector-label">{startLabel}</InputLabel>
                 <Select
                     variant="outlined"
@@ -65,7 +65,7 @@ const StateSelector = (props: IStateSelectorProps) => {
                 width={150}
             />
 
-            <FormControl className={classes.formControl} key={(currentResultStateId === null? "": currentResultStateId)}>
+            <FormControl className={classes.formControl} key={(currentResultStateId === null? "": currentResultStateId)+"result"}>
                 <InputLabel shrink id="result-state-selector-label">{resultLabel}</InputLabel>
                 <Select
                     variant="outlined"

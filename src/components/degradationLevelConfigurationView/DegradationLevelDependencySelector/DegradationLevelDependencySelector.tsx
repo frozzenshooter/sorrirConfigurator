@@ -15,6 +15,7 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
             marginRight: theme.spacing(1),
             minWidth: 200,
             maxWidth: 200,
+            marginTop: "8px",
         },
        selectEmpty: {
            marginTop: theme.spacing(2),
@@ -44,9 +45,14 @@ const DegradationLevelDependencySelector = (props: IDegradationLevelDependencySe
         onChange(newDegradationLevelDependency);
     };
 
+    let label = subcomponent.name;
+    if(label.length > 20){
+        label = label.substring(0, 17) + "...";
+    }
+
     return (
         <FormControl className={classes.formControl} key={subcomponent.id}>
-            <InputLabel shrink id="shadowmode-select-label">{subcomponent.name}</InputLabel>
+            <InputLabel shrink id="shadowmode-select-label">{label}</InputLabel>
             <Select
                 variant="outlined"
                 labelId="shadowmode-select-label"
