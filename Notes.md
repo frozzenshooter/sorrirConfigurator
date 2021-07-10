@@ -8,6 +8,7 @@
  + Liste an Fragen erstellen und klären
  + Optional: anpassen der GUI für Zustände - "Titel" schwer zu lesen
  + Planning in den Docs anpassen - auf aktuelle Version anpassen
+ + States fehlen noch vollständig in der Schema validierung
 
 #### Fragen
  + Passen die Zustände der Level so oder muss man dafür noch etwas anpassen? zB muss man etwas anzeigen wenn man im Off State landet? - DC speichere ich nicht

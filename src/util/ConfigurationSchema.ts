@@ -55,7 +55,7 @@ const ConfigurationSchema =
         "degradationLevel": {
             "type": "object",
             "description": "A degradation level from a component",
-            "required": [ "id", "label", "dependencies" ],
+            "required": [ "id", "label", "dependencies", "states" ],
             "properties": {
                 "id": {
                     "type": "number",
@@ -70,6 +70,12 @@ const ConfigurationSchema =
                     "description": "The dependencies for a degradation level",
                     "minItems": 0,
                     "items": { "$ref": "#/$defs/degradationLevelDependency" }
+                },
+                "states":{
+                    "type": "array",
+                    "description": "The states of this degradation level",
+                    "minItems": 0,
+                    "items": { "$ref": "#/$defs/degradationLevelState" }
                 }
             }
         },
@@ -100,6 +106,21 @@ const ConfigurationSchema =
                 "shadowmodeId": {
                     "type": "string",
                     "description": "The id of a shadowmode of a subcomponent",
+                },
+            }
+        },
+        "degradationLevelState":{
+            "type": "object",
+            "description": "A state of a degradation level",
+            "required": [ "id", "name"],
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "The id of the state, has to be unique for each state of a degradation level",
+                },
+                "name": {
+                    "type": "string",
+                    "description": "The name of the state",
                 },
             }
         },

@@ -84,7 +84,22 @@ The change from the JSON Schema to the JSON Type Definition is for this applicat
 \subsubsection{JSON schema}
 \begin{itemize}
     \item Overview of the schema and the different elements
+    \item subcomponents: all the components of the component to configure - example (park barrier,...) has shadowmodes: the modes in which the subcomponents can operate + id + name
+    \item shadowmode: id + name
+    \item degradationLevels: the different Levels in which the component can operate (example?) - has dependencies: the subcomponent and the shadowmode in which the subcomponent is in for this level + id + label
+    \item degradations: the levelchanges that describe a degradation - has start and result level + the state changes 
+    \item upgrades: the levelchanges that describe an upgrade - has start and result level + the state changes 
+    \item state changes: each level can be in one state of a state machine - the state change describes the change in the internal state for each degradation level when an upgrade or degradation happens
+    \item if for one state of a degradation level no value is set - no state change is saved (dc case)
 \end{itemize}
+
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{img/configuration_diagramm.png}
+    \caption{Configuration diagram}
+    \label{fig:configuration_diagram}
+\end{figure}
 
 \subsection{Subcomponent configuration}
 \begin{itemize}
