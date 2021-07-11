@@ -151,8 +151,8 @@ const SubComponentTable = () => {
             return (
                 <>
                     <DecisionDialog 
-                        title={"Delete "+ selected.length + " items"}
-                        text="The selected items will be irreversibly deleted."
+                        title={"Delete "+ selected.length + " item"}
+                        text="The selected item will be irreversibly deleted."
                         open={deleteDialogOpen}
                         onCancelClick={handleDeleteCancel}
                         onConfirmClick={handleDeleteConfirm}         

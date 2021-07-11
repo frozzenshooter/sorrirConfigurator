@@ -82,17 +82,7 @@ There are two different schema languages that allow the definition of JSON data.
 The change from the JSON Schema to the JSON Type Definition is for this application quiet simple, because you just have to replace the schema file and adapt the configuration of ajv, which can be found in src\textbackslash util\textbackslash
 
 \subsubsection{JSON schema}
-\begin{itemize}
-    \item Overview of the schema and the different elements
-    \item subcomponents: all the components of the component to configure - example (park barrier,...) has shadowmodes: the modes in which the subcomponents can operate + id + name
-    \item shadowmode: id + name
-    \item degradationLevels: the different Levels in which the component can operate (example?) - has dependencies: the subcomponent and the shadowmode in which the subcomponent is in for this level + id + label
-    \item degradations: the levelchanges that describe a degradation - has start and result level + the state changes 
-    \item upgrades: the levelchanges that describe an upgrade - has start and result level + the state changes 
-    \item state changes: each level can be in one state of a state machine - the state change describes the change in the internal state for each degradation level when an upgrade or degradation happens
-    \item if for one state of a degradation level no value is set - no state change is saved (dc case)
-\end{itemize}
-
+This section provides a short overview of the configuration schema, but the complete definition can be found in the source code.
 
 \begin{figure}[ht]
     \centering
@@ -101,18 +91,62 @@ The change from the JSON Schema to the JSON Type Definition is for this applicat
     \label{fig:configuration_diagram}
 \end{figure}
 
+The first part of the configuration are the subcomponents. A system that has to be configured consists of several subcomponents, these are stored in an array in the configuration. The subcomponents are highlighted in green in figure \ref{fig:configuration_diagram} a together with the shadowmodes. Each subcomponent has a set of shadowmodes that are all the operational states a subcomponent can have. For example the typical states are an \textit{on}-state or an \textit{off}-state.
+
+The next part of the configuration are the degradation levels which represent the levels in which the system can be. In figure \ref{fig:configuration_diagram} the blue highlighted parts are all relevant parts that are related to the degradation levels. The degradation level dependencies are a set of all the states the subcomponents have to be in for a degradation level or in other words the dependencies of a degradation level. Only the subcomponents and the states that are relevant for a level are stored in this array and the \textit{don't care} cases will be ignored to save storage space. The degradation level states are the internal states of each degradation level. They describe the states the state machine of each degradation level can be in.
+
+The central part of the configuration are the upgrade and degradation of the system, in figure \ref{fig:configuration_diagram} highlighted in red. Both the upgrade and the downgrade from on degradation level to another degradation level can be represented as level change. A level change object consists of the degradation level where the change starts and where it results in. A simple example could be a system that starts at the off-state and after an upgrade results in the on-state. In addition to the level change, it is also required to define in what internal state the start and the result degradation level has to be. In order to map the states each level change contains a set of mapping of the states of the start and result degradation level.
+
+
 \subsection{Subcomponent configuration}
-\begin{itemize}
-    \item Subcomponents required for the creation of degradation levels
-    \item Subcomponent has an id, a name and several shadowmodes (internal state of the subcomponent)
-    \item each shadowmode has an id and a name 
-    \item In order to be able to manage the relevant subcomponents for the component, a table with a creation/edit and deletion dialog is offered
-    \item The creation/edit dialog offers several functions: 
-        \begin{itemize}
-            \item Internal validation function (non empty fields + check for already existing subcomponents with the same id)
-            \item id autofill ( based on the name) if no value is set
-        \end{itemize}
-\end{itemize}
+
+The subcomponent configuration is the first step when you start the wizard without importing an existing configuration. Otherwise it is the second step that allows the adjustment of the imported subcomponents.
+This component offers a table that displays all defined subcomponents and allows to sort and navigate them and in addition to this the general creation, update or deletion of them. In figure \ref{fig:subcomponent_view} an example is shown with several defined subcomponents.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{img/subcomponents_overview.png}
+    \caption{Subcomponent view}
+    \label{fig:subcomponent_view}
+\end{figure}
+
+The table allows to select subcomponents and depending on the amount of selected subcomponents different actions are possible. If only one subcomponent is selected it is possible to either delete, edit the selected one or create a new subcomponent (compare figure \ref{fig:subcomponent_view_single} on the top right corner of the table).
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{img/subcomponents_single_select.png}
+    \caption{Subcomponent single selection}
+    \label{fig:subcomponent_view_single}
+\end{figure}
+
+If a user selects multiple subcomponents it is only possible to delete all of them or to create a new one. (compare figure \ref{fig:subcomponent_view_multi}).
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{img/subcomponents_multi_select.png}
+    \caption{Subcomponent multi selection}
+    \label{fig:subcomponent_view_multi}
+\end{figure}
+
+For the deletion, the creation and the update of a subcomponent different dialogs are displayed.
+The deletion dialog is shown in figure \ref{fig:subcomponent_delete_dialog} and shows the amount of deleted subcomponents. The deletion of one or more subcomponent will also delete the references that exist in other components. For example a degradation level depends on a subcomponent and therefore has a degradation level dependency object that will be deleted too.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.7\textwidth]{img/subcomponents_delete.png}
+    \caption{Subcomponent delete dialog}
+    \label{fig:subcomponent_delete_dialog}
+\end{figure}
+
+The create and edit dialog will allow to create or edit a subcomponent. If no name is set for a subcomponent the dialog will autofill the id with the value of the name. In addition to this the dialog will validate if there are empty fields and if another subcomponent already exists with the id set in the dialog. This can be the case when either a new component is created with an existing id or the id of an existing one is changed. Changing the id of an existing subcomponent will also update the dependencies of the degradation levels that depend on this subcomponent. An example of the create dialog is shown in figure \ref{fig:subcomponent_create_dialog}. For each subcomponent it is required to define one or more shadowmode and therefore a custom input was designed. This input allows to enter a value in the text field and after the "enter" button is pressed the value will be added as chip on the right side. For example the \textit{On} or \textit{Off} shadowmodes in figure \ref{fig:subcomponent_create_dialog}. Deleting a shadowmode will also update the degradation level dependencies that rely on this shadowmode.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{img/subcomponents_create.png}
+    \caption{Subcomponent create dialog}
+    \label{fig:subcomponent_create_dialog}
+\end{figure}
+
 
 \subsection{Degradation Level Management}
 \begin{itemize}
