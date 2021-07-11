@@ -65,7 +65,7 @@ const StateSelector = (props: IStateSelectorProps) => {
                 width={150}
             />
 
-            <FormControl className={classes.formControl} key={(currentResultStateId === null? "": currentResultStateId)+"result"}>
+            <FormControl className={classes.formControl} key={(currentResultStateId === null? "": currentResultStateId)+startState.id+"result"}>
                 <InputLabel shrink id="result-state-selector-label">{resultLabel}</InputLabel>
                 <Select
                     variant="outlined"

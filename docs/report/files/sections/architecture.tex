@@ -147,21 +147,35 @@ The create and edit dialog will allow to create or edit a subcomponent. If no na
     \label{fig:subcomponent_create_dialog}
 \end{figure}
 
-
 \subsection{Degradation Level Management}
-\begin{itemize}
-    \item Creation/Deletion in the Degradation and Upgrade Configuration views
-    \item Create/Edit with a Dialog:
-    \begin{itemize}
-        \item name and id as string
-        \item the subcomponent states of the level (will show all possible values of a subcomponent and to choose what has to be true for this level)
-        \item creation of internal states of the Level (with custom chip input)
-        \item validation if id exists/ etc.
-    \end{itemize}
-    \item Multi selection in the Degradation and Upgrade Configuration View
-\end{itemize}
+The creation, update and deletion of degradation levels is combined with the functionality to define upgrades and degradations, as described in section \ref{sec:deg_and_upg}. The degradtion level tree allows to select single and multiple degradation levels and depending on that there are different actions possible. If only one is selected there are three possible actions: creating a new degradation level, edit the selected one or delete the selected one (compare figure \ref{fig:degradation_crud_level_single}). The selection of multiple degradation levels (compare figure \ref{fig:degradation_crud_level_multi}) allows only the deletion of the selected levels or the creation of a new level. The deletion for both cases will display a dialog similar to the one shown in figure \ref{fig:subcomponent_delete_dialog}.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{img/degradation_level_crud_single.PNG}
+    \caption{Degradation level single selection}
+    \label{fig:degradation_crud_level_single}
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{img/degradation_level_crud_multi.PNG}
+    \caption{Degradation level multi selection}
+    \label{fig:degradation_crud_level_multi}
+\end{figure}
+
+The creation and edit dialog (shown in figure \ref{fig:degradation_level_dialog}) allows to either create or edit a degradation level. The dialog will validate the id to enforce unique ids for each degradation level in the configuration. Depending on the subcomponents that are already defined, the dropdown selection inputs will be generated dynamically. These dropdown selection inputs allow to define the dependencies of the degradation level by selecting a shadowmode for each subcomponent. If the shadowmode is set to \textit{DC} (don't care) then no value will be created in the configuration (or an existing value will be deleted in the edit case). The internal states are a custom input that allows again to add a state for degradation level by entering a string and pressing enter. After the enter button was pressed the state will be added as chip on the right and can be deleted with the X-button. 
+The deletion of the states of a degradation level will also trigger an update of the configuration and will remove all references that require the state (the state changes).
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{img/degradation_level_dialog.png}
+    \caption{Degradation level dialog}
+    \label{fig:degradation_level_dialog}
+\end{figure}
 
 \subsection{Degradation and Upgrade configuration}
+\label{sec:deg_and_upg}
 \begin{itemize}
     \item Custom Graph View for the Hierarchy (Recursive generation of the Graph)
     \item Drag and Drop Support to update the Graph (degradation level hierarchy)
