@@ -176,15 +176,41 @@ The deletion of the states of a degradation level will also trigger an update of
 
 \subsection{Degradation and Upgrade configuration}
 \label{sec:deg_and_upg}
-\begin{itemize}
-    \item Custom Graph View for the Hierarchy (Recursive generation of the Graph)
-    \item Drag and Drop Support to update the Graph (degradation level hierarchy)
-    \item Off state as default node
-    \item Explain model on how to save the hierarchy (LevelChange model) 
-    \item shows all levels even the ones that are not inserted in the hierarchy yet
-    \item Upgrade: Inverse of the Degradation Graph - same functionality as Degradation Graph
-    \item Both will be saved separately in the configuration and are also separate steps in the wizard
-\end{itemize}
+
+The second part of the degradation level configuration is the specification of the degradations and upgrades. In order to be able to specify the hierarchy of the degradation levels a custom component was created that allowed to drag and drop the degradation levels into a tree structure.
+
+An example for a possible degradation is shown in figure \ref{fig:degradation_level_tree} that also shows several features. All unsorted degradation levels will be displayed in a sidebar and can be tracked to any position in the tree. If there is no unsorted degradation level left, the sidebar will not be displayed. The selection can vary from one to many selected degradation levels whereby the degradation levels can be in the tree and the sidebar at the same time. An example for the selection is also shown in figure \ref{fig:degradation_level_tree} where the selection is highlighted in red. In order to remove a degradation level from the tree it is possible to drag the node onto the delete zone at the top. This will remove the degradation or upgrade from the configuration. The degradation level will be added as unsorted degradation level again. The OFF degradation level will always be the top node in the tree and can't be removed or changed. It will have as id '0' and won't explicitly be saved in the configuration.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{img/degradation_tree.png}
+    \caption{Degradation level tree}
+    \label{fig:degradation_level_tree}
+\end{figure}
+
+The tree allows to insert (drag and drop) degradation levels above or below a sorted level. In figure \ref{fig:degradation_level_tree_drop} an example for the drop above and below a degradation level in the tree is shown. Hovering over the drop zone (above or below of a node in the tree) will highlight the zone in blue and allows to add the dragged degradation level at this position. 
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{img/degradation_tree_drop.png}
+    \caption{Degradation level tree drop behavior (left: below, right: above)}
+    \label{fig:degradation_level_tree_drop}
+\end{figure}
+
+Changing the position of a degradation level will reset the configuration or more precise the level change itself. The level changes stores the start and result state of the degradation levels that have to be configured again in the next view. Inserting the node above another one will therefore update the level changes (degradation or upgrade) for the already connected degradation levels, but reset the state changes.
+
+The tree show up to this point is used to define the degradations, but allows not to specify the upgrades. For the upgrades the tree will show an inverse version, which means that the arrows will not start from a degradation level and point in the direction of the OFF degradation level. Instead the arrows will point starting from the OFF degradation level to the child nodes.
+The specification of the upgrades will be therefore done in a separate step in the wizard that allows a completely independent configuration from the degradations. In order to simplify the process, there is an additional button that allows the automatic creation of the upgrade tree based on the already specified degradations tree. The button, in figure \ref{fig:upgrade_level_tree_drop} in the sidebar on the top right, will open a confirmation dialog that will ask a user to confirm the changes. After the confirmation the previous upgrade tree will be deleted and the inverse of the degradation tree will be calculated and saved in the configuration as new upgrade tree. An important note is here, that both of the trees can be changed independently (before and afterwards the auto creation) and it is therefore possible to create two completely different trees. This explains also why the configuration contains two separate arrays for the tree configuration: one for the upgrades and one for the degradations. In contrast to this, the deletion/update or creation of a degradation level will influence both trees. For example the change of the id of a degradation level will update the id in both the upgrade and the degradation tree.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{img/upgrade_tree.png}
+    \caption{Upgrade degradation level tree}
+    \label{fig:upgrade_level_tree_drop}
+\end{figure}
+
+
+
 
 \subsection{LevelChange configuration}
 \begin{itemize}
