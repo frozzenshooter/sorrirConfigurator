@@ -209,15 +209,42 @@ The specification of the upgrades will be therefore done in a separate step in t
     \label{fig:upgrade_level_tree_drop}
 \end{figure}
 
-
-
-
 \subsection{LevelChange configuration}
-\begin{itemize}
-    \item configure the state in which the level after the degradation or upgrade is
-    \item separate step in the wizard for both degradation and uprade
-    \item shows for all LevelChanges the states of the corresponding level and allows the selection of the state the level will be in after the degradation/upgrade 
-\end{itemize}
+Another important part for the configuration is the specification of the states the level changes start and result in. To realize this, every level change contains a set of state changes which will contain the start and result state of the involved degradation levels. In order to configure these states another component was implemented that allows to define the result state for each start state of a level change. Since there are level changes for the upgrades and the downgrade, the configuration for these states have to be done for both cases and therefore these are two independent steps in the wizard. Example for the degradation state changes can be found in figure \ref{fig:deg_state_change} and examples for the upgrade state changes in figure \ref{fig:upg:state_change}. 
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{img/degradation_level_change_states.png}
+    \caption{Degradation state change configuration}
+    \label{fig:deg_state_change}
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{img/upgrade_level_change_states.png}
+    \caption{Upgrade state change configuration}
+    \label{fig:upg:state_change}
+\end{figure}
+
+\newpage
 
 \subsection{File structure}
-Explain in short the structure (folders/files/...) of the project
+This section will give a short overview of the file structure of the project to facilitate further enhancements:
+
+\dirtree{%
+.1 root.
+.2 docs.
+.2 examples.
+.2 public.
+.2 src.
+.3 components.
+.3 context.
+.3 models.
+.3 util.
+}\hfill
+
+The docs directory contains the documentation for this project, like this report. The examples folder contains example files for the configuration. In the public folder the public resources for the web application are stored. For example the favicon or the index.html.
+
+The src folder contains the application that consists of different parts. In components folder are all components of the application which means their typescript files as well as their css files. Each component has its own folder that contains these files as well as other sub components. For example the importView contains a component for the file import. The context folder contains the definition of the configuration context that is used to store the current configuration on application level. The models folder contains a set of interfaces that describe the configuration and its components to allow validating the typescript code. There is a set of different functionalities in the util folder that help to solve some general problems, for example the validator for the schema with the corresponding schema description file.
+
+\clearpage
