@@ -2,7 +2,6 @@ import { Paper } from "@material-ui/core";
 import { useConfigurationContext } from "../../context/ConfigurationContext";
 import IConfiguration from "../../models/IConfiguration";
 import IDegradationLevel from "../../models/IDegradationLevel";
-import IDegradationLevelState from "../../models/IDegradationLevelState";
 import ILevelChange from "../../models/ILevelChange";
 import { TreeType } from "../../models/TreeType";
 import DegradationLevelStateSelector from "../degradationLevelStateSelector/DegradationLevelStateSelector";
@@ -12,7 +11,7 @@ const DegradationStateConfigurationView = () => {
 
     const {configuration, updateConfiguration} = useConfigurationContext();
     
-    const handleChange = (levelChange: ILevelChange, startState: IDegradationLevelState, resultStateId: string) => {
+    const handleChange = (levelChange: ILevelChange, startStateId: string | null, resultStateId: string | null) => {
         const newConfiguration: IConfiguration = Object.assign({}, configuration);
         
         const levelChangeIndex = newConfiguration.degradations.findIndex(d => d.startDegradationLevelId === levelChange.startDegradationLevelId && d.resultDegradationLevelId === levelChange.resultDegradationLevelId);
@@ -21,10 +20,10 @@ const DegradationStateConfigurationView = () => {
 
             if(resultStateId === ""){
                 // This is the DC case - just remove the stateChange because we dont save empty values
-                newConfiguration.degradations[levelChangeIndex].stateChanges = newConfiguration.degradations[levelChangeIndex].stateChanges.filter(sc => sc.startStateId !== startState.id).slice();
+                newConfiguration.degradations[levelChangeIndex].stateChanges = newConfiguration.degradations[levelChangeIndex].stateChanges.filter(sc => sc.startStateId !== startStateId).slice();
             }else{
 
-                const stateChangeIndex = newConfiguration.degradations[levelChangeIndex].stateChanges.findIndex(sc => sc.startStateId === startState.id);
+                const stateChangeIndex = newConfiguration.degradations[levelChangeIndex].stateChanges.findIndex(sc => sc.startStateId === startStateId);
 
                 if(stateChangeIndex !== -1 ){
                     newConfiguration.degradations[levelChangeIndex].stateChanges[stateChangeIndex].resultStateId = resultStateId;
@@ -32,7 +31,7 @@ const DegradationStateConfigurationView = () => {
                 }else{
                     // we have to add the state change
                     newConfiguration.degradations[levelChangeIndex].stateChanges.push({
-                        startStateId: startState.id,
+                        startStateId: startStateId,
                         resultStateId: resultStateId
                     });  
                 }
@@ -66,11 +65,11 @@ const DegradationStateConfigurationView = () => {
                                 }
 
                                 return (
-                                    <DegradationLevelStateSelector key={startDegradationLevel?.id + " " + resultDegradationLevel?.id + " " +TreeType.Degradation} // key required for react
+                                    <DegradationLevelStateSelector key={lvlChg + " " +TreeType.Degradation} // key required for react
                                         treeType={TreeType.Degradation}
+                                        levelChange={lvlChg}
                                         startDegradationLevel={startDegradationLevel}
                                         resultDegradationLevel={resultDegradationLevel}
-                                        levelChange={lvlChg}
                                         onChange={handleChange}
                                     />
                                 );                    

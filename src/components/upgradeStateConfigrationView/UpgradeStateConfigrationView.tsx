@@ -2,7 +2,6 @@ import { Paper } from "@material-ui/core";
 import { useConfigurationContext } from "../../context/ConfigurationContext";
 import IConfiguration from "../../models/IConfiguration";
 import IDegradationLevel from "../../models/IDegradationLevel";
-import IDegradationLevelState from "../../models/IDegradationLevelState";
 import ILevelChange from "../../models/ILevelChange";
 import { TreeType } from "../../models/TreeType";
 import DegradationLevelStateSelector from "../degradationLevelStateSelector/DegradationLevelStateSelector";
@@ -12,7 +11,7 @@ const UpgradeStateConfigrationView = () => {
 
     const {configuration, updateConfiguration} = useConfigurationContext();
     
-    const handleChange = (levelChange: ILevelChange, startState: IDegradationLevelState, resultStateId: string) => {
+    const handleChange = (levelChange: ILevelChange, startStateId: string | null, resultStateId: string | null) => {
         const newConfiguration: IConfiguration = Object.assign({}, configuration);
         
         const levelChangeIndex = newConfiguration.upgrades.findIndex(lc => lc.startDegradationLevelId === levelChange.startDegradationLevelId && lc.resultDegradationLevelId === levelChange.resultDegradationLevelId);
@@ -21,17 +20,17 @@ const UpgradeStateConfigrationView = () => {
 
             if(resultStateId === ""){
                 // This is the DC case - just remove the stateChange because we dont save empty values
-                newConfiguration.upgrades[levelChangeIndex].stateChanges = newConfiguration.upgrades[levelChangeIndex].stateChanges.filter(sc => sc.startStateId !== startState.id).slice();
+                newConfiguration.upgrades[levelChangeIndex].stateChanges = newConfiguration.upgrades[levelChangeIndex].stateChanges.filter(sc => sc.startStateId !== startStateId).slice();
             }else{
 
-                const stateChangeIndex = newConfiguration.upgrades[levelChangeIndex].stateChanges.findIndex(sc => sc.startStateId === startState.id);
+                const stateChangeIndex = newConfiguration.upgrades[levelChangeIndex].stateChanges.findIndex(sc => sc.startStateId === startStateId);
 
                 if(stateChangeIndex !== -1 ){
                     newConfiguration.upgrades[levelChangeIndex].stateChanges[stateChangeIndex].resultStateId = resultStateId;
                 }else{
                     // we have to add the state change
                     newConfiguration.upgrades[levelChangeIndex].stateChanges.push({
-                        startStateId: startState.id,
+                        startStateId: startStateId,
                         resultStateId: resultStateId
                     });  
                 }

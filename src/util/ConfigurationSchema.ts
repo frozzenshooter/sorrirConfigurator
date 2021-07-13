@@ -151,11 +151,11 @@ const ConfigurationSchema =
             "required": [ "startStateId", "resultStateId"],
             "properties": {
                 "startStateId": {
-                    "type": "string",
+                    "type": ["string", "null"],
                     "description": "The id of the state of the start degradationLevel",
                 },
                 "resultStateId": {
-                    "type": "string",
+                    "type": ["string", "null"],
                     "description": "The id of the state of the result degradationLevel",
                 },
             }

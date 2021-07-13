@@ -4,19 +4,18 @@ import './DegradationLevelStateSelector.css';
 import StateSelector from './StateSelector/StateSelector';
 import IDegradationLevelState from '../../models/IDegradationLevelState';
 import { TreeType } from '../../models/TreeType';
-import IOffState from '../../models/IOffState';
 
 export interface IDegradationLevelStateSelectorProps {
     treeType: TreeType;
     levelChange: ILevelChange;
     startDegradationLevel: IDegradationLevel | null;
     resultDegradationLevel: IDegradationLevel | null;
-    onChange: (levelChange: ILevelChange, startState: IDegradationLevelState, resultStateId: string) => void;
+    onChange: (levelChange: ILevelChange, startStateId: string | null, resultStateId: string | null) => void;
 }
 
 const DegradationLevelStateSelector = (props: IDegradationLevelStateSelectorProps) => {
     
-    const {treeType, levelChange, startDegradationLevel, resultDegradationLevel, onChange} = props;
+    const {treeType, levelChange, startDegradationLevel,  resultDegradationLevel, onChange} = props;
 
     //#region Label creation
 
@@ -40,20 +39,29 @@ const DegradationLevelStateSelector = (props: IDegradationLevelStateSelectorProp
     const typeString = treeType === TreeType.Degradation ? "degradation" : "upgrade";
 
     const startLabel = getDegradationLevelLabel(startDegradationLevel);
-    const resultLabel = getDegradationLevelLabel(resultDegradationLevel)
+    const resultLabel = getDegradationLevelLabel(resultDegradationLevel);
 
     //#endregion
 
-    const handleChange = (startState: IDegradationLevelState, resultStateId: string) => {
-        onChange(levelChange, startState, resultStateId);
+    const handleChange = (startStateId: string | null, resultStateId: string | null) => {
+        onChange(levelChange, startStateId, resultStateId);
     }
 
-    let resultStates : IDegradationLevelState[] | IOffState[] = [];
+
+    let resultStates : IDegradationLevelState[] = [];
     if(resultDegradationLevel !== null){
         resultStates = resultDegradationLevel.states;
-    }else{
-        // the OFF case
-        resultStates = [{isOffState: true}]
+    }
+
+
+    let currentResultStateId : string | null = null;
+    if(startDegradationLevel === null){
+        // OFF STATE as start state - find the result state
+        const currentResultState = levelChange.stateChanges.find(st => st.startStateId === null);
+
+        if(currentResultState){
+            currentResultStateId = currentResultState.resultStateId;
+        }
     }
 
 
@@ -76,36 +84,24 @@ const DegradationLevelStateSelector = (props: IDegradationLevelStateSelectorProp
                     }
 
                     {startDegradationLevel === null ?                    
-                        () => {
-                            // This handles the OFF case as the current start level
-
-                            let currentResultStateId : string | null = null;
-                            const currentResultState = levelChange.stateChanges.find(st => st.startStateId === null);
-                            if(currentResultState){
-                                currentResultStateId = currentResultState.resultStateId;
-                            }
-
-                            return (
-                                <div className="degradation-level-state-selector-selector-row" key={"off row"}>
-                                    <StateSelector
-                                        startState={{isOffState: true}}
-                                        resultStates={resultStates}  
-                                        currentResultStateId={currentResultStateId}
-                                        startLabel={startLabel}
-                                        resultLabel={resultLabel}
-                                        onChange={handleChange}
-                                    />
-                                </div>
-                            );
-                        }
+                        <div className="degradation-level-state-selector-selector-row" key={"off row"}>
+                            <StateSelector
+                                states={{
+                                    isResultOffState: false,
+                                    isStartOffState: true,
+                                    currentResultStateId: currentResultStateId,
+                                    startState: null,
+                                    resultStates: resultStates
+                                }}
+                                startLabel={startLabel}
+                                resultLabel={resultLabel}
+                                onChange={handleChange}
+                            />
+                        </div>
                     : 
-                        null    
-                    }
+                        startDegradationLevel.states.map(s => {
 
-                    {startDegradationLevel?.states.map(s => {
                             // this will only render if the startDegradationLevel is not the OFF-Level
-
-                            let currentResultStateId : string | null = null;
                             const currentResultState = levelChange.stateChanges.find(st => st.startStateId === s.id);
                             if(currentResultState){
                                 currentResultStateId = currentResultState.resultStateId;
@@ -115,9 +111,13 @@ const DegradationLevelStateSelector = (props: IDegradationLevelStateSelectorProp
                                 <div className="degradation-level-state-selector-selector-row" key={startDegradationLevel.id + s.id + "row"}>
                                     <StateSelector
                                         key={startDegradationLevel.id + s.id} // unqiue key required for react
-                                        startState={s}
-                                        resultStates={resultStates}  
-                                        currentResultStateId={currentResultStateId}
+                                        states={{
+                                            isResultOffState: resultDegradationLevel === null? true : false,
+                                            isStartOffState: false,
+                                            currentResultStateId: currentResultStateId,
+                                            startState: s,
+                                            resultStates: resultStates
+                                        }}
                                         startLabel={startLabel}
                                         resultLabel={resultLabel}
                                         onChange={handleChange}
