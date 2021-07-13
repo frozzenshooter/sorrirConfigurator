@@ -45,18 +45,20 @@ const StateSelector = (props: IStateSelectorProps) => {
 
     const handleChange = (newStateId: string) => {
         let currentStartStateId : string | null = null;
-        if(states.isStartOffState === false && states.startState!= null){
-            currentStartStateId = states.startState.id;
+        if(states.isStartOffState === false){
+            if(states.startState){
+                currentStartStateId = states.startState.id;
+            }            
         }
 
         onChange(currentStartStateId, newStateId);
     }
-    
+
     return (
         <div className="state-selector-container" key={startLabel + " "+ resultLabel}>
 
             {states.isStartOffState === true ?
-                <FormControl className={classes.formControl} key={"isOffState-start"}>
+                <FormControl className={classes.formControl} key={startLabel + " "+ resultLabel + " " +states.currentResultStateId}>
                     <InputLabel shrink id="start-state-selector-label">{startLabel}</InputLabel>
                     <Select
                         variant="outlined"

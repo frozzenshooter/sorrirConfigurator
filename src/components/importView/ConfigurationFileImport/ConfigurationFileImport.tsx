@@ -68,7 +68,7 @@ const ConfigurationFileImport = () => {
                     <div id="configuration-file-import-alert">
                             <Alert severity="error">
                             {errors.map(error => {
-                             return (<div> {error} </div>);
+                             return (<div key={error}> {error} </div>);
                             })}    
                         </Alert>                    
                     </div>

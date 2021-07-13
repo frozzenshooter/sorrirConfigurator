@@ -65,7 +65,7 @@ const DegradationStateConfigurationView = () => {
                                 }
 
                                 return (
-                                    <DegradationLevelStateSelector key={lvlChg + " " +TreeType.Degradation} // key required for react
+                                    <DegradationLevelStateSelector key={lvlChg.startDegradationLevelId + " "+ lvlChg.resultDegradationLevelId + " " +TreeType.Degradation} // key required for react
                                         treeType={TreeType.Degradation}
                                         levelChange={lvlChg}
                                         startDegradationLevel={startDegradationLevel}

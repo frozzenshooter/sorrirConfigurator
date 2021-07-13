@@ -54,13 +54,14 @@ const DegradationLevelStateSelector = (props: IDegradationLevelStateSelectorProp
     }
 
 
-    let currentResultStateId : string | null = null;
+    let currentOffLevelResultStateId : string | null = null;
     if(startDegradationLevel === null){
-        // OFF STATE as start state - find the result state
+        // OFF STATE as start state - find the result state as an extra step
+
         const currentResultState = levelChange.stateChanges.find(st => st.startStateId === null);
 
         if(currentResultState){
-            currentResultStateId = currentResultState.resultStateId;
+            currentOffLevelResultStateId = currentResultState.resultStateId;
         }
     }
 
@@ -89,7 +90,7 @@ const DegradationLevelStateSelector = (props: IDegradationLevelStateSelectorProp
                                 states={{
                                     isResultOffState: false,
                                     isStartOffState: true,
-                                    currentResultStateId: currentResultStateId,
+                                    currentResultStateId: currentOffLevelResultStateId,
                                     startState: null,
                                     resultStates: resultStates
                                 }}
@@ -100,6 +101,9 @@ const DegradationLevelStateSelector = (props: IDegradationLevelStateSelectorProp
                         </div>
                     : 
                         startDegradationLevel.states.map(s => {
+
+                            
+                            let currentResultStateId : string | null = null;
 
                             // this will only render if the startDegradationLevel is not the OFF-Level
                             const currentResultState = levelChange.stateChanges.find(st => st.startStateId === s.id);
