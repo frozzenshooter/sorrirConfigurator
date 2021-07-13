@@ -23,7 +23,7 @@ const AppWelcome = (props: IAppWelcomeProps) => {
         <div id="welcome-container">
             <div id="welcome-title-container">
                 <img src={logo} alt={"Sorrir Logo"} height={192} width={192}/>
-                <h1>CONFIGURATOR</h1>
+                <h1>DEGRADATION CONFIGURATOR</h1>
             </div>
             <div id="welcome-button-container">
                 <Button variant="outlined" color="primary" onClick={handleNewConfigurationClick}>
