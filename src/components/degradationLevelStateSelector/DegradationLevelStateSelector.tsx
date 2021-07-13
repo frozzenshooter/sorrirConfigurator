@@ -4,6 +4,7 @@ import './DegradationLevelStateSelector.css';
 import StateSelector from './StateSelector/StateSelector';
 import IDegradationLevelState from '../../models/IDegradationLevelState';
 import { TreeType } from '../../models/TreeType';
+import IOffState from '../../models/IOffState';
 
 export interface IDegradationLevelStateSelectorProps {
     treeType: TreeType;
@@ -47,6 +48,15 @@ const DegradationLevelStateSelector = (props: IDegradationLevelStateSelectorProp
         onChange(levelChange, startState, resultStateId);
     }
 
+    let resultStates : IDegradationLevelState[] | IOffState[] = [];
+    if(resultDegradationLevel !== null){
+        resultStates = resultDegradationLevel.states;
+    }else{
+        // the OFF case
+        resultStates = [{isOffState: true}]
+    }
+
+
     return (
         <div className="degradation-level-state-selector-container" key={(startLabel+ " " + resultLabel)}>
                 <div className="degradation-level-state-selector-title">
@@ -57,7 +67,7 @@ const DegradationLevelStateSelector = (props: IDegradationLevelStateSelectorProp
                     {"'"}
                 </div>
                 <div className="degradation-level-state-selector-selectors-container">
-                    {startDegradationLevel?.states.length === 0 || startDegradationLevel === null ?
+                    {startDegradationLevel?.states.length === 0 ?
                         <div className="degradation-level-state-selector-selectors-no-start-states-container">
                             {"No start states found!"}
                         </div>
@@ -65,12 +75,35 @@ const DegradationLevelStateSelector = (props: IDegradationLevelStateSelectorProp
                         null
                     }
 
-                    {startDegradationLevel?.states.map(s => {
+                    {startDegradationLevel === null ?                    
+                        () => {
+                            // This handles the OFF case as the current start level
 
-                            let resultStates : IDegradationLevelState[] = [];
-                            if(resultDegradationLevel){
-                                resultStates = resultDegradationLevel.states;
+                            let currentResultStateId : string | null = null;
+                            const currentResultState = levelChange.stateChanges.find(st => st.startStateId === null);
+                            if(currentResultState){
+                                currentResultStateId = currentResultState.resultStateId;
                             }
+
+                            return (
+                                <div className="degradation-level-state-selector-selector-row" key={"off row"}>
+                                    <StateSelector
+                                        startState={{isOffState: true}}
+                                        resultStates={resultStates}  
+                                        currentResultStateId={currentResultStateId}
+                                        startLabel={startLabel}
+                                        resultLabel={resultLabel}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+                            );
+                        }
+                    : 
+                        null    
+                    }
+
+                    {startDegradationLevel?.states.map(s => {
+                            // this will only render if the startDegradationLevel is not the OFF-Level
 
                             let currentResultStateId : string | null = null;
                             const currentResultState = levelChange.stateChanges.find(st => st.startStateId === s.id);

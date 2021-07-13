@@ -1,6 +1,6 @@
 interface IStateChange {
-    startStateId: string;
-    resultStateId: string;
+    startStateId: string | null;
+    resultStateId: string | null;
 };
 
 export default IStateChange;
