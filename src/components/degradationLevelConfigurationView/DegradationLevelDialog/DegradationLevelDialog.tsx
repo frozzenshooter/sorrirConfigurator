@@ -406,10 +406,10 @@ const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
                     <div id="degradation-level-dialog-error-container">
                         {errorMessages.map(e => {
                                 return (
-                                    <div className="degradation-level-dialog-error-container-item">
+                                    <div className="degradation-level-dialog-error-container-item" key={e}>
                                         <Alert severity="error">
                                             {e}
-                                        </Alert>                                    
+                                        </Alert>
                                     </div>
                                 );
                             }

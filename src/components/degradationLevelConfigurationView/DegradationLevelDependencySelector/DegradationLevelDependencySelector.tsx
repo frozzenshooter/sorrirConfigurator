@@ -51,7 +51,7 @@ const DegradationLevelDependencySelector = (props: IDegradationLevelDependencySe
     }
 
     return (
-        <FormControl className={classes.formControl} key={subcomponent.id}>
+        <FormControl className={classes.formControl} key={subcomponent.id + shadowmodeId}>
             <InputLabel shrink id="shadowmode-select-label">{label}</InputLabel>
             <Select
                 variant="outlined"

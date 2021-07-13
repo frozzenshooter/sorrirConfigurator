@@ -3,7 +3,6 @@
  + Verifizieren, dass die Json Validierung mit dem neuen Schema funktioniert + neue Testdaten
  + Verifizieren, dass alle Funktionalitäten passen (löschen/anpassen von ids, states, shadowmodes, ...)
 
- + Off default zustand mit off - nicht änderbar
  + Multiple instances of Level Dependencies -> add/delete Button um Zeilen hinzuzufügen /zu entfernen
 
 
