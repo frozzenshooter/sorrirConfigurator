@@ -58,7 +58,7 @@ const StateSelector = (props: IStateSelectorProps) => {
         <div className="state-selector-container" key={startLabel + " "+ resultLabel}>
 
             {states.isStartOffState === true ?
-                <FormControl className={classes.formControl} key={startLabel + " "+ resultLabel + " " +states.currentResultStateId}>
+                <FormControl className={classes.formControl} key={startLabel + " "+ resultLabel + " " +states.currentResultStateId + "start"}>
                     <InputLabel shrink id="start-state-selector-label">{startLabel}</InputLabel>
                     <Select
                         variant="outlined"
