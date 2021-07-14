@@ -65,11 +65,11 @@ const ConfigurationSchema =
                     "type": "string",
                     "description": "The label of a degradationLevel",
                 },
-                "dependencies":{
+                "dependencySets":{
                     "type": "array",
-                    "description": "The dependencies for a degradation level",
+                    "description": "The dependency sets for a degradation level",
                     "minItems": 0,
-                    "items": { "$ref": "#/$defs/degradationLevelDependency" }
+                    "items": { "$ref": "#/$defs/degradationLevelDependencySet" }
                 },
                 "states":{
                     "type": "array",
@@ -91,6 +91,23 @@ const ConfigurationSchema =
                 "name": {
                     "type": "string",
                     "description": "The name of shadowmode",
+                },
+            }
+        },
+        "degradationLevelDependencySet":{
+            "type": "object",
+            "description": "A dependency set of a degradation level",
+            "required": [ "id", "dependencies"],
+            "properties": {
+                "id": {
+                    "type": "number",
+                    "description": "The id of this set",
+                },
+                "dependencies": {
+                    "type": "array",
+                    "description": "The dependencies of this set",
+                    "minItems": 0,
+                    "items": { "$ref": "#/$defs/degradationLevelDependency" }
                 },
             }
         },
