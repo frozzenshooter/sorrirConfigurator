@@ -237,7 +237,7 @@ const SubcomponentDialog = (props: ISubcomponentDialogProps) => {
                         {errors.length > 0?
                             errors.map(e => {
                                     return (
-                                        <div className="subcomponent-dialog-content-container-error">
+                                        <div className="subcomponent-dialog-content-container-error" key={e}>
                                             <Alert severity="error">
                                                 {e}
                                             </Alert>                                    

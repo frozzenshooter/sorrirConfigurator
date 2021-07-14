@@ -1,0 +1,317 @@
+{
+    "subcomponents": [
+        {
+            "id": "BU",
+            "name": "Barrier Unit",
+            "shadowmodes": [
+                {
+                    "id": "On"
+                },
+                {
+                    "id": "Off",
+                    "name": "Off"
+                }
+            ]
+        },
+        {
+            "id": "TL",
+            "name": "Traffic Light",
+            "shadowmodes": [
+                {
+                    "id": "On",
+                    "name": "On"
+                },
+                {
+                    "id": "Off",
+                    "name": "Off"
+                }
+            ]
+        },
+        {
+            "id": "CAM",
+            "name": "Camera",
+            "shadowmodes": [
+                {
+                    "id": "On",
+                    "name": "On"
+                },
+                {
+                    "id": "Off",
+                    "name": "Off"
+                }
+            ]
+        },
+        {
+            "id": "CS",
+            "name": "Car Sensor",
+            "shadowmodes": [
+                {
+                    "id": "On",
+                    "name": "On"
+                },
+                {
+                    "id": "Off",
+                    "name": "Off"
+                }
+            ]
+        },
+        {
+            "id": "TSL",
+            "name": "Touchscreen",
+            "shadowmodes": [
+                {
+                    "id": "On",
+                    "name": "On"
+                },
+                {
+                    "id": "Off",
+                    "name": "Off"
+                }
+            ]
+        },
+        {
+            "name": "Card Reader",
+            "shadowmodes": [
+                {
+                    "id": "On",
+                    "name": "On"
+                },
+                {
+                    "id": "Off",
+                    "name": "Off"
+                }
+            ]
+        },
+        {
+            "id": "BDS",
+            "shadowmodes": [
+                {
+                    "id": "On",
+                    "name": "On"
+                },
+                {
+                    "id": "Off",
+                    "name": "Off"
+                }
+            ]
+        },
+        {
+            "id": "PRS",
+            "name": "Plate Recognition Service"
+        },
+        {
+            "id": "PMS",
+            "name": "Parking Management Service",
+            "shadowmodes": [
+                {
+                    "id": "On",
+                    "name": "On"
+                },
+                {
+                    "id": "Off",
+                    "name": "Off"
+                }
+            ]
+        }
+    ],
+    "degradationLevels": [
+        {
+            "label": "Blocked",
+            "dependencySets": [
+                {
+                    "id": 1,
+                    "dependencies": [
+                        {
+                            "shadowmodeId": "Off",
+                            "subcomponentId": "CAM"
+                        },
+                        {
+                            "shadowmodeId": "Off",
+                            "subcomponentId": "CS"
+                        },
+                        {
+                            "shadowmodeId": "On",
+                            "subcomponentId": "BU"
+                        }
+                    ]
+                },
+                {
+                    "id": 2,
+                    "dependencies": [
+                        {
+                            "shadowmodeId": "On",
+                            "subcomponentId": "CAM"
+                        },
+                        {
+                            "shadowmodeId": "Off",
+                            "subcomponentId": "CS"
+                        },
+                        {
+                            "shadowmodeId": "On",
+                            "subcomponentId": "BU"
+                        },
+                        {
+                            "shadowmodeId": "Off",
+                            "subcomponentId": "PRS"
+                        }
+                    ]
+                },
+                {
+                    "id": 3,
+                    "dependencies": [
+                        {
+                            "shadowmodeId": "On",
+                            "subcomponentId": "BU"
+                        },
+                        {
+                            "shadowmodeId": "Off",
+                            "subcomponentId": "CS"
+                        }
+                    ]
+                },
+                {
+                    "id": 4,
+                    "dependencies": [
+                        {
+                            "shadowmodeId": "On",
+                            "subcomponentId": "BU"
+                        },
+                        {
+                            "shadowmodeId": "Off",
+                            "subcomponentId": "PMS"
+                        }
+                    ]
+                }
+            ],
+            "states": [
+                {
+                    "id": "defined",
+                    "name": "defined"
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "dependencySets": [
+                {
+                    "id": 1,
+                    "dependencies": [
+                        {
+                            "shadowmodeId": "On",
+                            "subcomponentId": "BU"
+                        }
+                    ]
+                }
+            ],
+            "states": [
+                {
+                    "id": "open",
+                    "name": "open"
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "label": "Manual",
+            "states": [
+                {
+                    "id": "closed",
+                    "name": "closed"
+                },
+                {
+                    "id": "open",
+                    "name": "open"
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "label": "Automatic",
+            "dependencySets": [
+                {
+                    "id": 1,
+                    "dependencies": [
+                        {
+                            "shadowmodeId": "On",
+                            "subcomponentId": "CAM"
+                        },
+                        {
+                            "shadowmodeId": "On",
+                            "subcomponentId": "BU"
+                        },
+                        {
+                            "shadowmodeId": "On",
+                            "subcomponentId": "PRS"
+                        },
+                        {
+                            "shadowmodeId": "On",
+                            "subcomponentId": "PMS"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "degradations": [
+        {
+            "startDegradationLevelId": 1,
+            "stateChanges": []
+        },
+        {
+            "resultDegradationLevelId": 0,
+            "stateChanges": []
+        },
+        {
+            "resultDegradationLevelId": 1,
+            "startDegradationLevelId": 3
+        },
+        {
+            "resultDegradationLevelId": 3,
+            "startDegradationLevelId": 4,
+            "stateChanges": [
+                {
+                    "startStateId": "closed"
+                },
+                {
+                    "resultStateId": "open"
+                }
+            ]
+        }
+    ],
+    "upgrades": [
+        {
+            "startDegradationLevelId": 0,
+            "stateChanges": [
+                {
+                    "startStateId": null,
+                    "resultStateId": "defined"
+                }
+            ]
+        },
+        {
+            "resultDegradationLevelId": 2,
+            "stateChanges": [
+                {
+                    "startStateId": null,
+                    "resultStateId": "open"
+                }
+            ]
+        },
+        {
+            "resultDegradationLevelId": 3,
+            "startDegradationLevelId": 1
+        },
+        {
+            "resultDegradationLevelId": 4,
+            "startDegradationLevelId": 3,
+            "stateChanges": [
+                {
+                    "resultStateId": "closed"
+                },
+                {
+                    "startStateId": "open"
+                }
+            ]
+        }
+    ]
+}

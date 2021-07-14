@@ -64,7 +64,7 @@ const DegradationLevelDependencySetInputRow = (props: IDegradationLevelDependenc
     };
 
     return (
-        <div className="degradation-level-dependency-set-input-row-container">
+        <div className="degradation-level-dependency-set-input-row-container" key={"row "+degradationLevelDependencySet.id}>
             <Paper variant="outlined" className={classes.rowPaper}>
                 <div className="degradation-level-dependency-set-input-row-delete-button-container">
                     <IconButton onClick={handleDelete} color="secondary">
@@ -84,7 +84,7 @@ const DegradationLevelDependencySetInputRow = (props: IDegradationLevelDependenc
                         {subcomponents.map(subc => {
                                 return (
                                     <DegradationLevelDependencySelector
-                                        key={subc.id} 
+                                        key={subc.id + " " + degradationLevelDependencySet.id} 
                                         subcomponent={subc}
                                         onChange={handleChange}
                                         shadowmodeId={getShadowmodeId(subc.id)}
