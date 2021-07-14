@@ -272,7 +272,7 @@ const SubComponentTable = () => {
                 <SubcomponentDialog 
                     open={createDialogOpen}
                     type={SubcomponentDialogType.Create}
-                    subcomponent={{id: "", name:"", shadowmodes: []}}
+                    subcomponent={{id: "", name:"", shadowmodes: [{ "id": "Off", "name":"Off"}]}}
                     onClose={handleSubcomponentCreateDialogClose}
                 />   
                 : 

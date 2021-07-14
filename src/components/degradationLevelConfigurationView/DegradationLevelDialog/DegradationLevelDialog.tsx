@@ -60,13 +60,48 @@ export interface IDegradationLevelDialogProps {
   }
 );
 
+// INternal function to calculate the smallest id
+const findSmallestId = (unsortedIds: number[]): number => {
+
+    let n = unsortedIds.length;
+
+    if(n === 0){
+        return 1; // return 1 as smallest id because 0 is reserved for off state
+    }
+
+    // only positive values, sorted
+    let sortedIds = unsortedIds.filter(x => x >= 1).sort((a, b) => a - b);
+
+    let x = 1;
+
+    for(let i = 0; i < sortedIds.length; i++) {
+        // We can return if we have a smaller number, because the array is sorted
+        if(x < sortedIds[i]) {
+            return x;
+        }
+        x = sortedIds[i] + 1;
+    }
+
+    return x;
+}
+
 const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
 
     const {open, type, degradationLevel, onClose} = props;
 
+    const {configuration, updateConfiguration} = useConfigurationContext();
+
+    let smallestId= 1;
+    if(type === DegradationLevelDialogType.Create){
+        // Get smallest unused id
+        const usedIds = configuration.degradationLevels.map(d => d.id);
+
+        smallestId = findSmallestId(usedIds);
+    }
+
     //#region Init state
     const initalDegradationLevel :IDegradationLevel = {
-        id: 1,
+        id: smallestId,
         label: "",
         dependencySets: [],
         states: []
@@ -90,22 +125,9 @@ const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
 
     const classes = useStyles();
 
-    const {configuration, updateConfiguration} = useConfigurationContext();
-
     //#region Close/Save handling
-    const resetState = () => {
-        if(type === DegradationLevelDialogType.Create){
-            setId(1);
-            setLabel("");
-            setDependencySets([]);
-            setStates([]);
-            setErrorMessages([]);
-        }
-        // This is not required for type === Edit, because then the dialog has to be rerendered anyway
-    }
 
     const handleClose = () => {
-        resetState();
         onClose();
     }
 
@@ -258,7 +280,6 @@ const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
                 }
             }
 
-            resetState();
             updateConfiguration(newConfiguration);
             onClose();
         }
@@ -400,7 +421,7 @@ const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
                     <h3 className="degradation-level-dialog-properties-section-caption">Details</h3>
                     <FormControl className={classes.formControl}>
                         <TextField
-                            label="Id"
+                            label="Level"
                             type="number"
                             variant="outlined"
                             value={id}

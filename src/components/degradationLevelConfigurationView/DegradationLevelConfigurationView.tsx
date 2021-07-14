@@ -66,11 +66,15 @@ const DegradationLevelConfigurationView = () => {
               </Paper>
           </div>
 
-          <DegradationLevelDialog 
-            open={createDialogOpen}
-            type={DegradationLevelDialogType.Create}
-            onClose={() => {setCreateDialogOpen(false);}}
-          />
+          {createDialogOpen?
+            <DegradationLevelDialog 
+              open={createDialogOpen}
+              type={DegradationLevelDialogType.Create}
+              onClose={() => {setCreateDialogOpen(false);}}
+            />
+            :
+            null
+          }
 
           {selectedDegradationLevels.length === 1 && editDialogOpen? 
 
