@@ -1,6 +1,26 @@
-.degradation-level-dependency-set-input-row-container{
+.degradation-level-dependency-set-input-row-dependency-container{
     display: inline-flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: flex-start;
+    padding: 16px;
+}
+
+.degradation-level-dependency-set-input-row-container{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+}
+
+.degradation-level-dependency-set-input-row-delete-button-container{
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.degradation-level-dependency-set-input-row-no-subcomponents-container{
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
 }

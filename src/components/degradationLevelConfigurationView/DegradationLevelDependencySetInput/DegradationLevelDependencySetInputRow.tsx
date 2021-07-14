@@ -2,6 +2,12 @@ import IDegradationLevelDependency from "../../../models/IDegradationLevelDepend
 import IDegradationLevelDependencySet from "../../../models/IDegradationLevelDependencySet";
 import ISubcomponent from "../../../models/ISubcomponent";
 import DegradationLevelDependencySelector from "../DegradationLevelDependencySelector/DegradationLevelDependencySelector";
+import RemoveCircleOutlineOutlinedIcon from '@material-ui/icons/RemoveCircleOutlineOutlined';
+import { IconButton } from "@material-ui/core";
+import Divider from '@material-ui/core/Divider';
+import { Paper } from "@material-ui/core";
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import './DegradationLevelDependencySetInputRow.css';
 
 export interface IDegradationLevelDependencySetInputRowProps {
     subcomponents: ISubcomponent[];
@@ -10,9 +16,21 @@ export interface IDegradationLevelDependencySetInputRowProps {
     onChange: (degradationLevelDependencySet: IDegradationLevelDependencySet) => void;
 }
 
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    rowPaper: {
+        width: "100%",
+        display: "inline-flex",
+        margin: theme.spacing(1)
+    }
+  }),
+);
+
 const DegradationLevelDependencySetInputRow = (props: IDegradationLevelDependencySetInputRowProps) => {
 
     const {subcomponents, degradationLevelDependencySet, onDelete, onChange} = props;
+
+    const classes = useStyles();
 
     const handleChange = (degradationLevelDependency: IDegradationLevelDependency) => {
 
@@ -46,28 +64,40 @@ const DegradationLevelDependencySetInputRow = (props: IDegradationLevelDependenc
     };
 
     return (
-        <div>
-            <div onClick={handleDelete}>
-                Delete Button
-            </div>           
-            {subcomponents.length > 0?
-                <div className="degradation-level-dependency-set-input-row-dependency-container">
-                    {subcomponents.map(subc => {
-                            return (
-                                <DegradationLevelDependencySelector
-                                    key={subc.id} 
-                                    subcomponent={subc}
-                                    onChange={handleChange}
-                                    shadowmodeId={getShadowmodeId(subc.id)}
-                                />
-                            );
-                    })}
-                </div>
-                :
-                <div>
-                    No subcomponents defined!
-                </div>
-            }
+        <div className="degradation-level-dependency-set-input-row-container">
+            <Paper variant="outlined" className={classes.rowPaper}>
+                <div className="degradation-level-dependency-set-input-row-delete-button-container">
+                    <IconButton onClick={handleDelete} color="secondary">
+                        <RemoveCircleOutlineOutlinedIcon /> 
+                    </IconButton>    
+                </div>    
+                <Divider 
+                    className="degradation-level-dependency-set-input-row-divider"
+                    orientation="vertical" 
+                    flexItem 
+                    style={{
+                        marginRight: "8px",  
+                    }}
+                />       
+                {subcomponents.length > 0?
+                    <div className="degradation-level-dependency-set-input-row-dependency-container">
+                        {subcomponents.map(subc => {
+                                return (
+                                    <DegradationLevelDependencySelector
+                                        key={subc.id} 
+                                        subcomponent={subc}
+                                        onChange={handleChange}
+                                        shadowmodeId={getShadowmodeId(subc.id)}
+                                    />
+                                );
+                        })}
+                    </div>
+                    :
+                    <div className="degradation-level-dependency-set-input-row-no-subcomponents-container">
+                        No subcomponents defined!
+                    </div>
+                }
+            </Paper>
         </div>
     );
 };

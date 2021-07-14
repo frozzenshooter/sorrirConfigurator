@@ -2,6 +2,9 @@ import React from "react";
 import IDegradationLevelDependencySet from "../../../models/IDegradationLevelDependencySet";
 import ISubcomponent from "../../../models/ISubcomponent";
 import DegradationLevelDependencySetInputRow from "./DegradationLevelDependencySetInputRow";
+import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
+import { Button } from "@material-ui/core";
+import './DegradationLevelDependencySetInput.css';
 
 export interface IDegradationLevelDependencySetInputProps {
     subcomponents: ISubcomponent[];
@@ -72,9 +75,11 @@ const DegradationLevelDependencySetInput = (props: IDegradationLevelDependencySe
                     )
                     })
                 }
-                <div onClick={handleAdd}>
-                    ADD BUTTON
-                </div>
+                <div className="degradation-level-dependency-set-input-add-container">
+                    <Button onClick={handleAdd} variant="outlined" color="primary" style={{width: "100%"}}>                
+                        <AddCircleOutlineOutlinedIcon/>
+                    </Button> 
+                </div>  
             </React.Fragment>           
         </React.Fragment>
     );
