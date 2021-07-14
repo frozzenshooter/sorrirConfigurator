@@ -1,16 +1,16 @@
-\section{Architecture}
+\chapter{Architecture}
 \label{sec:architecture}
 This section will give an overview of the general concepts and will show with examples how to use the application.
 
-\subsection{General concepts}
+\section{General concepts}
 The complete code was structured with too general ideas in mind. On the one hand it should be modular in the sense that the application consists of components that can be reused on multiple occasions. For example a dialog for the deletion can be always the same and only the handling and the description text have to be adapted based on the usage. The modularity will be introduced implicitly by React, because the general idea is the creation of components that will be updated internally by react.
 
 Another relevant aspect was the future extension of the application, in order to be able to integrate more steps for the creation of the configuration. For example adding additional properties for the subcomponent configuration.
 
-\subsection{App-Component}
+\section{App-Component}
 The App is the central component that will contain all the relevant components for the application. The App keeps track of the current configuration and provides the access for the components via a context provider. This allows the access and update of the configuration from all the components, which will also trigger the React lifecycle to re-render a component.
 
-\subsection{Welcome page}
+\section{Welcome page}
 The welcome page is the first component that will be displayed when you start the application.
 In figure \ref{fig:app_welcome} you can see that there are two buttons that allow to start the configuration. There are two choices on how to start the configuration, the start with an import and without an import, based on the choice a user makes the wizard (compare section \ref{sec:wizard}) will be started with different steps.
 
@@ -21,7 +21,7 @@ In figure \ref{fig:app_welcome} you can see that there are two buttons that allo
     \label{fig:app_welcome}
 \end{figure}
 
-\subsection{Wizard}
+\section{Wizard}
 \label{sec:wizard}
 The creation of the configuration can be divided into several steps. To facilitate the configuration, a wizard has been developed that allows the step-by-step configuration. In addition to that it is also possible to navigate arbitrary back and forth between the different steps of the configuration. 
 
@@ -48,7 +48,7 @@ Figure \ref{fig:wizard} shows the menu bar and the stepper for the configuration
 
 \noindent After these steps the wizard can be configured to display the new view as an additional step.
 
-\subsection{Import}
+\section{Import}
 The import view is only inserted as a step when the wizard is started with the "LOAD CONFIGURATION" button on the welcome page. The import page allows to import an existing configuration file and will update the current configuration in the app. The import will also override all previous changes in the configuration. The configuration will be displayed with syntax highlighter that will be updated with the new configuration after a successful import. 
 
 There are several cases when the import has to fail to enforce a correct state of the configuration and therefore it will be validated that file contains a valid configuration. If this is not the case the import will display all errors that occurred during the import validation. The first part of the validation is to check if the file contains a string that can be parsed to a JSON object. if this is not the case an error message similar to the message in figure \ref{fig:import_invalid_file} will be displayed.
@@ -70,7 +70,7 @@ The found problems of the second part of the validation will also be displayed. 
     \label{fig:import_invalid_json}
 \end{figure}
 
-\subsection{Validation}
+\section{Validation}
 \label{sec:validation}
 
 The validation of the configuration at the import is a central part of the application, because it enforces a valid configuration. Another validation is not necessary because all current configuration steps will always update the configuration correct and end up in a valid state.
@@ -81,7 +81,7 @@ There are two different schema languages that allow the definition of JSON data.
 
 The change from the JSON Schema to the JSON Type Definition is for this application quiet simple, because you just have to replace the schema file and adapt the configuration of ajv, which can be found in src\textbackslash util\textbackslash
 
-\subsubsection{JSON schema}
+\subsection{JSON schema}
 This section provides a short overview of the configuration schema, but the complete definition can be found in the source code.
 
 \begin{figure}[ht]
@@ -98,7 +98,7 @@ The next part of the configuration are the degradation levels which represent th
 The central part of the configuration are the upgrade and degradation of the system, in figure \ref{fig:configuration_diagram} highlighted in red. Both the upgrade and the downgrade from on degradation level to another degradation level can be represented as level change. A level change object consists of the degradation level where the change starts and where it results in. A simple example could be a system that starts at the off-state and after an upgrade results in the on-state. In addition to the level change, it is also required to define in what internal state the start and the result degradation level has to be. In order to map the states each level change contains a set of mapping of the states of the start and result degradation level.
 
 
-\subsection{Subcomponent configuration}
+\section{Subcomponent configuration}
 
 The subcomponent configuration is the first step when you start the wizard without importing an existing configuration. Otherwise it is the second step that allows the adjustment of the imported subcomponents.
 This component offers a table that displays all defined subcomponents and allows to sort and navigate them and in addition to this the general creation, update or deletion of them. In figure \ref{fig:subcomponent_view} an example is shown with several defined subcomponents.
@@ -147,7 +147,7 @@ The create and edit dialog will allow to create or edit a subcomponent. If no na
     \label{fig:subcomponent_create_dialog}
 \end{figure}
 
-\subsection{Degradation Level Management}
+\section{Degradation Level Management}
 The creation, update and deletion of degradation levels is combined with the functionality to define upgrades and degradations, as described in section \ref{sec:deg_and_upg}. The degradtion level tree allows to select single and multiple degradation levels and depending on that there are different actions possible. If only one is selected there are three possible actions: creating a new degradation level, edit the selected one or delete the selected one (compare figure \ref{fig:degradation_crud_level_single}). The selection of multiple degradation levels (compare figure \ref{fig:degradation_crud_level_multi}) allows only the deletion of the selected levels or the creation of a new level. The deletion for both cases will display a dialog similar to the one shown in figure \ref{fig:subcomponent_delete_dialog}.
 
 \begin{figure}[ht]
@@ -174,7 +174,7 @@ The deletion of the states of a degradation level will also trigger an update of
     \label{fig:degradation_level_dialog}
 \end{figure}
 
-\subsection{Degradation and Upgrade configuration}
+\section{Degradation and Upgrade configuration}
 \label{sec:deg_and_upg}
 
 The second part of the degradation level configuration is the specification of the degradations and upgrades. In order to be able to specify the hierarchy of the degradation levels a custom component was created that allowed to drag and drop the degradation levels into a tree structure.
@@ -209,7 +209,7 @@ The specification of the upgrades will be therefore done in a separate step in t
     \label{fig:upgrade_level_tree_drop}
 \end{figure}
 
-\subsection{LevelChange configuration}
+\section{LevelChange configuration}
 Another important part for the configuration is the specification of the states the level changes start and result in. To realize this, every level change contains a set of state changes which will contain the start and result state of the involved degradation levels. In order to configure these states another component was implemented that allows to define the result state for each start state of a level change. Since there are level changes for the upgrades and the downgrade, the configuration for these states have to be done for both cases and therefore these are two independent steps in the wizard. Example for the degradation state changes can be found in figure \ref{fig:deg_state_change} and examples for the upgrade state changes in figure \ref{fig:upg:state_change}. 
 
 \begin{figure}[ht]
@@ -228,7 +228,7 @@ Another important part for the configuration is the specification of the states 
 
 \newpage
 
-\subsection{File structure}
+\section{File structure}
 This section will give a short overview of the file structure of the project to facilitate further enhancements:
 
 \dirtree{%
