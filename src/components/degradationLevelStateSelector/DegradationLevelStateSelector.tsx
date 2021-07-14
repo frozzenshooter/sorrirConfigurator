@@ -87,6 +87,7 @@ const DegradationLevelStateSelector = (props: IDegradationLevelStateSelectorProp
                     {startDegradationLevel === null ?                    
                         <div className="degradation-level-state-selector-selector-row" key={"off row"}>
                             <StateSelector
+                                key={startLabel+" "+resultLabel}
                                 states={{
                                     isResultOffState: false,
                                     isStartOffState: true,

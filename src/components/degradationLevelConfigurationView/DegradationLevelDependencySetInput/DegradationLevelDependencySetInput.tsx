@@ -67,6 +67,7 @@ const DegradationLevelDependencySetInput = (props: IDegradationLevelDependencySe
                 {dependencySets.map(set => {
                     return (
                         <DegradationLevelDependencySetInputRow
+                            key={"row "+set.id}
                             degradationLevelDependencySet={set}
                             subcomponents={subcomponents}
                             onDelete={handleDelete}
