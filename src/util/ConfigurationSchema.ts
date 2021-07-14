@@ -55,7 +55,7 @@ const ConfigurationSchema =
         "degradationLevel": {
             "type": "object",
             "description": "A degradation level from a component",
-            "required": [ "id", "label", "dependencies", "states" ],
+            "required": [ "id", "label", "dependencySets", "states" ],
             "properties": {
                 "id": {
                     "type": "number",
