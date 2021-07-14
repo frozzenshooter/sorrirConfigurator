@@ -102,9 +102,13 @@ const SubComponentTable = () => {
 
         // Delete all the dependencies in the degradationLevels too
         for(let degradationLevelIndex=0; degradationLevelIndex < newConfiguration.degradationLevels.length; degradationLevelIndex++){
-          newConfiguration.degradationLevels[degradationLevelIndex].dependencies = newConfiguration.degradationLevels[degradationLevelIndex].dependencies.filter(dep => {
-            return !isSelected(dep.subcomponentId);
-          }).slice();
+
+          for(let dependencySetIndex = 0; dependencySetIndex < newConfiguration.degradationLevels[degradationLevelIndex].dependencySets.length; dependencySetIndex++){
+            newConfiguration.degradationLevels[degradationLevelIndex].dependencySets[dependencySetIndex].dependencies = newConfiguration.degradationLevels[degradationLevelIndex].dependencySets[dependencySetIndex].dependencies.filter(dep => {
+              return !isSelected(dep.subcomponentId);
+            }).slice();
+          }
+
         }
 
         setSelected([]);

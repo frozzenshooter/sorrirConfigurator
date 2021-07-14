@@ -109,26 +109,30 @@ const SubcomponentDialog = (props: ISubcomponentDialogProps) => {
                 for(let degradationLevelsIndex=0; degradationLevelsIndex < newConfiguration.degradationLevels.length; degradationLevelsIndex++){
 
                     // Update the id with the new id in all dependencies
-                    for(let dependencyIndex = 0; dependencyIndex < newConfiguration.degradationLevels[degradationLevelsIndex].dependencies.length; dependencyIndex++){
-                        if(newConfiguration.degradationLevels[degradationLevelsIndex].dependencies[dependencyIndex].subcomponentId === subcomponent.id){
-                            newConfiguration.degradationLevels[degradationLevelsIndex].dependencies[dependencyIndex].subcomponentId = id;
-                        }
-                    }
-
-                    // delete all the dependencies that were dependend on a deleted shadowmodes
-                    newConfiguration.degradationLevels[degradationLevelsIndex].dependencies = newConfiguration.degradationLevels[degradationLevelsIndex].dependencies.filter(d => {
-                        if(d.subcomponentId !== id){
-                            return true;
-                        }else{
-                            const smIndex = idsOfshadowModesToDelete.findIndex(idToDelete => idToDelete === d.shadowmodeId);
-                            if(smIndex !== -1){
-                                // shadowmode is in the list of deleted shadowmodes - remove it
-                                return false;
-                            }else{
-                                return true;
+                    for(let dependencySetIndex = 0; dependencySetIndex < newConfiguration.degradationLevels[degradationLevelsIndex].dependencySets.length; dependencySetIndex++){
+                        // Therefore it is required to iteratoe over each set and all the dependencies in there
+                        for( let dependencyIndex = 0; dependencyIndex < newConfiguration.degradationLevels[degradationLevelsIndex].dependencySets[dependencySetIndex].dependencies.length; dependencyIndex++){
+                            
+                            if(newConfiguration.degradationLevels[degradationLevelsIndex].dependencySets[dependencySetIndex].dependencies[dependencyIndex].subcomponentId === subcomponent.id){
+                                newConfiguration.degradationLevels[degradationLevelsIndex].dependencySets[dependencySetIndex].dependencies[dependencyIndex].subcomponentId = id;
                             }
-                        }
-                    }).slice();
+                        }                        
+                    
+                        // delete all the dependencies that were dependend on a deleted shadowmodes
+                        newConfiguration.degradationLevels[degradationLevelsIndex].dependencySets[dependencySetIndex].dependencies = newConfiguration.degradationLevels[degradationLevelsIndex].dependencySets[dependencySetIndex].dependencies.filter(d => {
+                            if(d.subcomponentId !== id){
+                                return true;
+                            }else{
+                                const smIndex = idsOfshadowModesToDelete.findIndex(idToDelete => idToDelete === d.shadowmodeId);
+                                if(smIndex !== -1){
+                                    // shadowmode is in the list of deleted shadowmodes - remove it
+                                    return false;
+                                }else{
+                                    return true;
+                                }
+                            }
+                        }).slice();
+                    }
                 }
 
                 //Delete the subcomponent with previous id and add a new one with the updated data
@@ -162,20 +166,22 @@ const SubcomponentDialog = (props: ISubcomponentDialogProps) => {
 
                 // It is required to update the dependencies of the degradationLevels because there might be some deleted shadowmodes
                 for(let degradationLevelsIndex=0; degradationLevelsIndex < newConfiguration.degradationLevels.length; degradationLevelsIndex++){
-                    
-                    newConfiguration.degradationLevels[degradationLevelsIndex].dependencies = newConfiguration.degradationLevels[degradationLevelsIndex].dependencies.filter(d => {
-                        if(d.subcomponentId !== id){
-                            return true;
-                        }else{
-                            const smIndex = idsOfshadowModesToDelete.findIndex(idToDelete => idToDelete === d.shadowmodeId);
-                            if(smIndex !== -1){
-                                // shadowmode is in the list of deleted shadowmodes - remove it
-                                return false;
-                            }else{
+                    for(let dependencySetIndex = 0; dependencySetIndex < newConfiguration.degradationLevels[degradationLevelsIndex].dependencySets.length; dependencySetIndex++){
+                        
+                        newConfiguration.degradationLevels[degradationLevelsIndex].dependencySets[dependencySetIndex].dependencies = newConfiguration.degradationLevels[degradationLevelsIndex].dependencySets[dependencySetIndex].dependencies.filter(d => {
+                            if(d.subcomponentId !== id){
                                 return true;
+                            }else{
+                                const smIndex = idsOfshadowModesToDelete.findIndex(idToDelete => idToDelete === d.shadowmodeId);
+                                if(smIndex !== -1){
+                                    // shadowmode is in the list of deleted shadowmodes - remove it
+                                    return false;
+                                }else{
+                                    return true;
+                                }
                             }
-                        }
-                    }).slice();
+                        }).slice();
+                    }                   
                 }
             }
 

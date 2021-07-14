@@ -1,0 +1,6 @@
+.degradation-level-dependency-set-input-row-container{
+    display: inline-flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}

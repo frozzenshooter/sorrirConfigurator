@@ -16,13 +16,13 @@ import { Divider } from '@material-ui/core';
 import './DegradationLevelDialog.css';
 import { useConfigurationContext } from '../../../context/ConfigurationContext';
 import IConfiguration from '../../../models/IConfiguration';
-import DegradationLevelDependencySelector from '../DegradationLevelDependencySelector/DegradationLevelDependencySelector';
-import IDegradationLevelDependency from '../../../models/IDegradationLevelDependency';
 import DecisionDialog from '../../decisionDialog/DecisionDialog';
 import DegradationLevelDialogType from './DegradationLevelDialogType';
 import Alert from '@material-ui/lab/Alert';
 import ChipInput from '../../chipInput/ChipInput';
 import IDegradationLevelState from '../../../models/IDegradationLevelState';
+import IDegradationLevelDependencySet from '../../../models/IDegradationLevelDependencySet';
+import DegradationLevelDependencySetInput from '../DegradationLevelDependencySetInput/DegradationLevelDependencySetInput';
 
 export interface IDegradationLevelDialogProps {
     open: boolean
@@ -68,14 +68,14 @@ const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
     const initalDegradationLevel :IDegradationLevel = {
         id: 1,
         label: "",
-        dependencies: [],
+        dependencySets: [],
         states: []
     };
 
     if(type === DegradationLevelDialogType.Edit && degradationLevel !== null && degradationLevel !== undefined){
         initalDegradationLevel.id = degradationLevel.id;
         initalDegradationLevel.label = degradationLevel.label;
-        initalDegradationLevel.dependencies = degradationLevel.dependencies.slice();
+        initalDegradationLevel.dependencySets = degradationLevel.dependencySets.slice();
         initalDegradationLevel.states = degradationLevel.states.slice();
     }
 
@@ -83,7 +83,7 @@ const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
 
     const [id, setId] = React.useState<number>(initalDegradationLevel.id);
     const [label, setLabel] = React.useState<string>(initalDegradationLevel.label);
-    const [dependencies, setDependencies] = React.useState<IDegradationLevelDependency[]>(initalDegradationLevel.dependencies);
+    const [dependencySets, setDependencySets] = React.useState<IDegradationLevelDependencySet[]>(initalDegradationLevel.dependencySets);
     const [states, setStates] = React.useState<IDegradationLevelState[]>(initalDegradationLevel.states);
     const [openConfirmationDialog, setOpenConfirmationDialog] = React.useState<boolean>(false);
     const [errorMessages, setErrorMessages] = React.useState<string[]>([]);
@@ -92,13 +92,12 @@ const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
 
     const {configuration, updateConfiguration} = useConfigurationContext();
 
-
     //#region Close/Save handling
     const resetState = () => {
         if(type === DegradationLevelDialogType.Create){
             setId(1);
             setLabel("");
-            setDependencies([]);
+            setDependencySets([]);
             setStates([]);
             setErrorMessages([]);
         }
@@ -115,15 +114,17 @@ const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
             const newConfiguration: IConfiguration = Object.assign({}, configuration);
 
             // Remove all dont cares and only save the relevant ones
-            const newDependencies = dependencies.filter(d => d.shadowmodeId !== "").slice();
-    
+            for(let setIndex = 0; setIndex < dependencySets.length; setIndex++){
+                dependencySets[setIndex].dependencies = dependencySets[setIndex].dependencies.filter(d => d.shadowmodeId !== "").slice();
+            }
+
             if(type === DegradationLevelDialogType.Create) {
 
                 // you can just push it - validate ensures there can't be an invalid state
                 const newDegradationLevel: IDegradationLevel = {
                     id: id,
                     label: label,
-                    dependencies: newDependencies,
+                    dependencySets: dependencySets,
                     states: states
                 };
         
@@ -149,7 +150,7 @@ const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
                     const newDegradationLevel: IDegradationLevel = {
                         id: id,
                         label: label,
-                        dependencies: newDependencies,
+                        dependencySets: dependencySets,
                         states: states
                     };
             
@@ -216,7 +217,7 @@ const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
                         // should always find the level, but just to be sure
 
                         newConfiguration.degradationLevels[index].label = label;
-                        newConfiguration.degradationLevels[index].dependencies = dependencies.slice();
+                        newConfiguration.degradationLevels[index].dependencySets = dependencySets;
                         newConfiguration.degradationLevels[index].states = states.slice();
                     }
 
@@ -305,31 +306,8 @@ const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
 
     //#region change handlers
 
-    const handleDegradationLevelDependencySelectorChange = (degradationLevelDependency: IDegradationLevelDependency) => {
-
-        const newDependencies = dependencies.slice();
-
-        const index = newDependencies.findIndex(d => d.subcomponentId === degradationLevelDependency.subcomponentId);
-
-        if(index ===-1){
-            newDependencies.push(degradationLevelDependency);
-        }else{
-            newDependencies[index].shadowmodeId = degradationLevelDependency.shadowmodeId;
-        }
-
-        setDependencies(newDependencies);
-    };
-
-    const getShadowmodeIdFromExistingDependency = (subcomponentId: string) => {
-
-        const index = dependencies.findIndex(d => d.subcomponentId === subcomponentId);
-
-        if(index !== -1){
-            return dependencies[index].shadowmodeId;
-        }
-
-        //This means the subcomponent is "DC" - don't care
-        return "";
+    const handleDependecySetChange = (currentDependencySets: IDegradationLevelDependencySet[]) => {
+        setDependencySets(currentDependencySets);
     };
 
     const handleStateChange = (newStates: IDegradationLevelState[]) => {
@@ -439,28 +417,16 @@ const DegradationLevelDialog = (props: IDegradationLevelDialogProps) => {
                     </FormControl> 
                 </div>
                 <Divider className="degradation-level-dialog-properties-divider"/>
-                {configuration.subcomponents.length > 0?
-                    <React.Fragment>
-                        <div id="degradation-level-dialog-dependency-container">
-                            <h3 className="degradation-level-dialog-properties-section-caption">Shadowmode dependencies</h3>
-                            <div id="degradation-level-dialog-dependency-container-item">
-                                
-                                {configuration.subcomponents.map(subc => {
-                                    return (
-                                        <DegradationLevelDependencySelector
-                                            key={subc.id} 
-                                            subcomponent={subc}
-                                            onChange={handleDegradationLevelDependencySelectorChange}
-                                            shadowmodeId={getShadowmodeIdFromExistingDependency(subc.id)}
-                                        />
-                                    );
-                                })}
-                            </div>
-                        </div>
-                        <Divider className="degradation-level-dialog-properties-divider"/>
-                    </React.Fragment>
-                    : null
-                }
+                <div id="degradation-level-dialog-dependency-container">
+                    <h3 className="degradation-level-dialog-properties-section-caption">Shadowmode dependencies</h3>
+                    
+                        <DegradationLevelDependencySetInput 
+                            dependencySets={dependencySets}
+                            subcomponents={configuration.subcomponents}
+                            onChange={handleDependecySetChange}
+                        /> 
+                </div>
+                <Divider className="degradation-level-dialog-properties-divider"/>
                 <div id="degradation-level-dialog-states-container">
                     <h3 className="degradation-level-dialog-properties-section-caption">Internal states</h3>
                     <ChipInput

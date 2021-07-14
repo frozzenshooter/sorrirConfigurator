@@ -1,9 +1,9 @@
-import IDegradationLevelDependency from "./IDegradationLevelDependency";
+import IDegradationLevelDependencySet from "./IDegradationLevelDependencySet";
 import IDegradationLevelState from "./IDegradationLevelState";
 
 export default interface IDegradationLevel{
     id: number;
     label: string;
-    dependencies: IDegradationLevelDependency[];
+    dependencySets: IDegradationLevelDependencySet[];
     states: IDegradationLevelState[];
 }
