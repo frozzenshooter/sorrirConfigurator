@@ -1,12 +1,12 @@
 \chapter{Technology Stack}
 \label{sec:tech_stack}
-The goal of this project is the development of a web application and due to the large number of different frameworks and libraries, the selection was relevant from the beginning. To develop a web application it is possible to develop without a framework or library, but nowadays there are also various frameworks available to facilitate the development, such as React, Vue or Angular.
+The goal of this project is the development of a web application and due to the large number of different frameworks and libraries, a selection at the beginning of the project was required. To develop a web application it is possible to develop without a framework or library, but nowadays there are also various frameworks available to facilitate the development, such as React, Vue or Angular.
 
-The choice for this application fell on React, because React is not only very popular \cite{2020DeveloperSurvey}, but also allowed me to learn the required fundamentals and use it for the first time. React is a JavaScript library to create single-page applications, but also provides typings for TypeScript \cite{createReactApp}. In order to facilitate future development, the choice fell on TypeScript. TypeScript provides a more structured approach for the development of web applications, for example by defining interfaces as model classes that can be validated at compile time.
+The choice for this application fell on React, because React is not only very popular \cite{2020DeveloperSurvey}, but also allowed me to  use it for the first time and learn the required fundamentals. React is a JavaScript library to create single-page applications, but also provides typings for TypeScript \cite{createReactApp}. TypeScript provides a more structured approach for the development of web applications, for example by defining interfaces as model classes that can be validated at compile time. In order to facilitate future development, the choice fell on TypeScript. 
 
 With these technologies as a starting point, the next step is the decision of what build system should be used. It would be possible to use a custom build system based on webpack or similar bundlers, but for React there is an officially supported way: create-react-app. This is a npx package that will set up a single-page application with all the required configuration, like the bundler and the typescript compiler. It is possible to later exchange and adapt parts of the configuration or the build system, but for this project it was not required to further adapt the default setup.
 
-In addition to react some additional libraries were used:
+In addition to react some additional libraries are used:
 
 \begin{itemize}
     \item \textbf{material-ui}: a library that offers standard material design components
